@@ -1,0 +1,19 @@
+{
+  "name":"jvh/puzzel-db-bundle",
+  "description":"Jan van Haasteren Puzzel Database.",
+  "type": "contao-bundle",
+  "license":"AGPL-3.0-or-later",
+  "version": "1.0.0",
+  "require": {
+    "contao/core-bundle": "^4.13",
+    "isotope/isotope-core": "^2.8"
+  },
+  "extra": {
+    "contao-manager-plugin": "JvH\\JvHPuzzelDbBundle\\ContaoManager\\Plugin"
+  },
+  "autoload": {
+    "psr-4": {
+      "JvH\\JvHPuzzelDbBundle\\": "src/"
+    }
+  }
+}
