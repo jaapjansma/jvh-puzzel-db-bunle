@@ -65,16 +65,16 @@ $GLOBALS['TL_DCA']['tl_jvh_db_puzzel_plaat'] = array
     ),
     'operations' => array
     (
+      'edit' => array
+      (
+        'href'                => 'act=edit',
+        'icon'                => 'edit.svg',
+      ),
       'toggle' => array
       (
         'href'                => 'act=toggle&amp;field=visible',
         'icon'                => 'visible.svg',
         'button_callback'     => array('\JvH\JvHPuzzelDbBundle\DCA\PuzzelPlaat', 'toggleIcon')
-      ),
-      'edit' => array
-      (
-        'href'                => 'act=edit',
-        'icon'                => 'edit.svg',
       ),
       'delete' => array
       (
@@ -88,7 +88,7 @@ $GLOBALS['TL_DCA']['tl_jvh_db_puzzel_plaat'] = array
   // Palettes
   'palettes' => array
   (
-    'default'                     => 'alias_nl,alias_en;naam_nl,naam_en;tekenaar;singleSRC;jaar_uitgifte;opmerkingen;opmerkingen_intern;visible'
+    'default'                     => 'naam_nl,naam_en;alias_nl,alias_en;tekenaar;singleSRC;jaar_uitgifte;opmerkingen;opmerkingen_intern;visible'
   ),
 
   // Subpalettes
@@ -111,14 +111,22 @@ $GLOBALS['TL_DCA']['tl_jvh_db_puzzel_plaat'] = array
     (
       'search'                  => true,
       'inputType'               => 'text',
-      'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
+      'eval'                    => array('rgxp'=>'alias', 'doNotCopy'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
+      'save_callback' => array
+      (
+        array('\JvH\JvHPuzzelDbBundle\DCA\PuzzelPlaat', 'generateAliasNL')
+      ),
       'sql'                     => "varchar(255) NOT NULL default ''"
     ),
     'alias_en' => array
     (
       'search'                  => true,
       'inputType'               => 'text',
-      'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
+      'eval'                    => array('rgxp'=>'alias', 'doNotCopy'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
+      'save_callback' => array
+      (
+        array('\JvH\JvHPuzzelDbBundle\DCA\PuzzelPlaat', 'generateAliasEN')
+      ),
       'sql'                     => "varchar(255) NOT NULL default ''"
     ),
     'naam_nl' => array

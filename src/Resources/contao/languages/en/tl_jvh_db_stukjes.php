@@ -18,3 +18,4 @@
 
 $GLOBALS['TL_LANG']['tl_jvh_db_stukjes']['deleteConfirm'] = 'Weet u zeker dat u deze categorie wilt verwijderen?';
 $GLOBALS['TL_LANG']['tl_jvh_db_stukjes']['label'] = ['Stukjes', ''];
+$GLOBALS['TL_LANG']['tl_jvh_db_stukjes']['tl_jvh_db_puzzel_product'] = ['Terug', 'Puzzel Producten'];

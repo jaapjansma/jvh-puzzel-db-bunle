@@ -50,6 +50,12 @@ $GLOBALS['TL_DCA']['tl_jvh_db_series'] = array
     ),
     'global_operations' => array
     (
+      'tl_jvh_db_puzzel_product' => array
+      (
+        'attributes'          => 'onclick="Backend.getScrollOffset()" accesskey="t"',
+        'icon'                => 'back.svg',
+        'href'                => 'table=tl_jvh_db_puzzel_product',
+      ),
       'all' => array
       (
         'href'                => 'act=select',

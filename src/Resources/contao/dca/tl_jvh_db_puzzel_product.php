@@ -83,16 +83,16 @@ $GLOBALS['TL_DCA']['tl_jvh_db_puzzel_product'] = array
     ),
     'operations' => array
     (
+      'edit' => array
+      (
+        'href'                => 'act=edit',
+        'icon'                => 'edit.svg',
+      ),
       'toggle' => array
       (
         'href'                => 'act=toggle&amp;field=visible',
         'icon'                => 'visible.svg',
         'button_callback'     => array('\JvH\JvHPuzzelDbBundle\DCA\PuzzelProduct', 'toggleIcon')
-      ),
-      'edit' => array
-      (
-        'href'                => 'act=edit',
-        'icon'                => 'edit.svg',
       ),
       'delete' => array
       (

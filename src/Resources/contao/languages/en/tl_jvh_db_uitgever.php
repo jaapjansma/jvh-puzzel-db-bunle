@@ -18,3 +18,4 @@
 
 $GLOBALS['TL_LANG']['tl_jvh_db_uitgever']['deleteConfirm'] = 'Weet u zeker dat u deze uitgever wilt verwijderen?';
 $GLOBALS['TL_LANG']['tl_jvh_db_uitgever']['naam'] = ['Uitgever', ''];
+$GLOBALS['TL_LANG']['tl_jvh_db_uitgever']['tl_jvh_db_puzzel_product'] = ['Terug', 'Puzzel Producten'];

@@ -20,6 +20,7 @@ namespace JvH\JvHPuzzelDbBundle\DCA;
 
 use Contao\Backend;
 use Contao\CoreBundle\Security\ContaoCorePermissions;
+use Contao\DataContainer;
 use Contao\Image;
 use Contao\StringUtil;
 use Contao\System;
@@ -54,6 +55,57 @@ class PuzzelPlaat extends Backend {
     }
 
     return '<a href="' . $this->addToUrl($href) . '" title="' . StringUtil::specialchars($title) . '" onclick="Backend.getScrollOffset();return AjaxRequest.toggleField(this,true)">' . Image::getHtml($icon, $label, 'data-icon="' . Image::getPath('visible.svg') . '" data-icon-disabled="' . Image::getPath('invisible.svg') . '" data-state="' . ($row['visible'] ? 1 : 0) . '"') . '</a> ';
+  }
+
+  public function generateAliasNL($varValue, DataContainer $dc)
+  {
+    return $this->generateAlias($dc->activeRecord->naam_nl, 'alias_nl', $varValue, $dc);
+  }
+
+  public function generateAliasEN($varValue, DataContainer $dc)
+  {
+    return $this->generateAlias($dc->activeRecord->naam_en, 'alias_en', $varValue, $dc);
+  }
+
+  /**
+   * Auto-generate an article alias if it has not been set yet
+   *
+   * @param string        $name
+   * @param string        $field
+   * @param mixed         $varValue
+   * @param DataContainer $dc
+   *
+   * @return string
+   *
+   * @throws Exception
+   */
+  public function generateAlias($name, $field, $varValue, DataContainer $dc)
+  {
+    $aliasExists = function (string $alias) use ($dc, $field): bool
+    {
+      if (in_array($alias, array('top', 'wrapper', 'header', 'container', 'main', 'left', 'right', 'footer'), true))
+      {
+        return true;
+      }
+
+      return $this->Database->prepare("SELECT id FROM tl_jvh_db_puzzel_plaat WHERE ".$field."=? AND id!=?")->execute($alias, $dc->id)->numRows > 0;
+    };
+
+    // Generate an alias if there is none
+    if (!$varValue)
+    {
+      $varValue = System::getContainer()->get('contao.slug')->generate($name, [], $aliasExists);
+    }
+    elseif (preg_match('/^[1-9]\d*$/', $varValue))
+    {
+      throw new \Exception(sprintf($GLOBALS['TL_LANG']['ERR']['aliasNumeric'], $varValue));
+    }
+    elseif ($aliasExists($varValue))
+    {
+      throw new \Exception(sprintf($GLOBALS['TL_LANG']['ERR']['aliasExists'], $varValue));
+    }
+
+    return $varValue;
   }
 
 }

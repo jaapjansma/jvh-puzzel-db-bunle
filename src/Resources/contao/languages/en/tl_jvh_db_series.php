@@ -18,3 +18,4 @@
 
 $GLOBALS['TL_LANG']['tl_jvh_db_series']['deleteConfirm'] = 'Weet u zeker dat u deze serie wilt verwijderen?';
 $GLOBALS['TL_LANG']['tl_jvh_db_series']['label'] = ['Etiket', ''];
+$GLOBALS['TL_LANG']['tl_jvh_db_series']['tl_jvh_db_puzzel_product'] = ['Terug', 'Puzzel Producten'];

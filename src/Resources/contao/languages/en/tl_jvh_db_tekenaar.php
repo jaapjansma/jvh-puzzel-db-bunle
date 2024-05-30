@@ -23,3 +23,4 @@ $GLOBALS['TL_LANG']['tl_jvh_db_tekenaar']['singleSRC'] = ['Afbeelding', 'Selecte
 $GLOBALS['TL_LANG']['tl_jvh_db_tekenaar']['singleSrc_karikatuur'] = ['Karikatuur', 'Selecteer de afbeelding voor de karikatuur van deze tekenaar'];
 $GLOBALS['TL_LANG']['tl_jvh_db_tekenaar']['omschrijving'] = ['Omschrijving', ''];
 $GLOBALS['TL_LANG']['tl_jvh_db_tekenaar']['visible'] = ['Zichtbaar', ''];
+$GLOBALS['TL_LANG']['tl_jvh_db_tekenaar']['tl_jvh_db_puzzel_plaat'] = ['Terug', 'Puzzel Platen'];

@@ -50,6 +50,12 @@ $GLOBALS['TL_DCA']['tl_jvh_db_tekenaar'] = array
     ),
     'global_operations' => array
     (
+      'tl_jvh_db_puzzel_plaat' => array
+      (
+        'attributes'          => 'onclick="Backend.getScrollOffset()" accesskey="t"',
+        'icon'                => 'back.svg',
+        'href'                => 'table=tl_jvh_db_puzzel_plaat',
+      ),
       'all' => array
       (
         'href'                => 'act=select',
@@ -59,16 +65,16 @@ $GLOBALS['TL_DCA']['tl_jvh_db_tekenaar'] = array
     ),
     'operations' => array
     (
+      'edit' => array
+      (
+        'href'                => 'act=edit',
+        'icon'                => 'edit.svg',
+      ),
       'toggle' => array
       (
         'href'                => 'act=toggle&amp;field=visible',
         'icon'                => 'visible.svg',
         'button_callback'     => array('\JvH\JvHPuzzelDbBundle\DCA\Tekenaar', 'toggleIcon')
-      ),
-      'edit' => array
-      (
-        'href'                => 'act=edit',
-        'icon'                => 'edit.svg',
       ),
       'delete' => array
       (
