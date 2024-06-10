@@ -39,14 +39,14 @@ $GLOBALS['TL_DCA']['tl_jvh_db_doos'] = array
     'sorting' => array
     (
       'mode'                    => 1,
-      'fields'                  => array('label'),
+      'fields'                  => array('label_nl', 'label_en'),
       'flag'                    => 11,
       'panelLayout'             => 'sort,filter,search,limit'
     ),
     'label' => array
     (
       'showColumns'             => true,
-      'fields'                  => array('label'),
+      'fields'                  => array('label_nl', 'label_en'),
     ),
     'global_operations' => array
     (
@@ -82,7 +82,7 @@ $GLOBALS['TL_DCA']['tl_jvh_db_doos'] = array
   // Palettes
   'palettes' => array
   (
-    'default'                     => 'label'
+    'default'                     => 'label_nl,label_en'
   ),
 
   // Subpalettes
@@ -101,7 +101,14 @@ $GLOBALS['TL_DCA']['tl_jvh_db_doos'] = array
     (
       'sql'                     => "int(10) unsigned NOT NULL default 0"
     ),
-    'label' => array
+    'label_nl' => array
+    (
+      'search'                  => true,
+      'inputType'               => 'text',
+      'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
+      'sql'                     => "varchar(255) NOT NULL default ''"
+    ),
+    'label_en' => array
     (
       'search'                  => true,
       'inputType'               => 'text',

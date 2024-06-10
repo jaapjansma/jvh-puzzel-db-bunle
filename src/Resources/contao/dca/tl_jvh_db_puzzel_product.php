@@ -106,7 +106,7 @@ $GLOBALS['TL_DCA']['tl_jvh_db_puzzel_product'] = array
   // Palettes
   'palettes' => array
   (
-    'default'                     => 'naam_nl,naam_en;ean;singleSRC;puzzel_plaat;stukjes;serie;uitgever;release_date;doos;opmerkingen;opmerkingen_intern;visible'
+    'default'                     => 'naam_nl,naam_en;ean;product_id;singleSRC;puzzel_plaat;stukjes;serie;uitgever;release_date;doos;opmerkingen_nl,opmerkingen_en;opmerkingen_intern;visible'
   ),
 
   // Subpalettes
@@ -146,6 +146,15 @@ $GLOBALS['TL_DCA']['tl_jvh_db_puzzel_product'] = array
       'eval'                    => array('mandatory'=>false, 'maxlength'=>255, 'tl_class'=>'w50'),
       'sql'                     => "varchar(255) NOT NULL default ''"
     ),
+    'product_id' => array
+    (
+      'filter'                  => true,
+      'inputType'               => 'picker',
+      'eval'                    => array('multiple'=>false),
+      'relation'                => ['table' => 'tl_iso_product'],
+      'sql'                     => "int(10) unsigned NOT NULL default 0",
+      'default'                 => '0',
+    ),
     'singleSRC' => array
     (
       'exclude'                 => true,
@@ -176,7 +185,7 @@ $GLOBALS['TL_DCA']['tl_jvh_db_puzzel_product'] = array
       'filter'                  => true,
       'inputType'               => 'select',
       'eval'                    => array('includeBlankOption'=>true),
-      'foreignKey'              => 'tl_jvh_db_series.label',
+      'foreignKey'              => 'tl_jvh_db_series.label_nl',
       'sql'                     => "int(10) unsigned NOT NULL default 0",
       'default'                 => '0',
     ),
@@ -194,7 +203,7 @@ $GLOBALS['TL_DCA']['tl_jvh_db_puzzel_product'] = array
       'filter'                  => true,
       'inputType'               => 'select',
       'eval'                    => array('includeBlankOption'=>true),
-      'foreignKey'              => 'tl_jvh_db_doos.label',
+      'foreignKey'              => 'tl_jvh_db_doos.label_nl',
       'sql'                     => "int(10) unsigned NOT NULL default 0",
       'default'                 => '0',
     ),
@@ -205,7 +214,14 @@ $GLOBALS['TL_DCA']['tl_jvh_db_puzzel_product'] = array
       'eval'                    => array('rgxp'=>'date', 'datepicker'=>true, 'tl_class'=>'w50 wizard'),
       'sql'                     => "varchar(10) COLLATE ascii_bin NOT NULL default ''"
     ),
-    'opmerkingen' => array
+    'opmerkingen_nl' => array
+    (
+      'search'                  => true,
+      'inputType'               => 'textarea',
+      'eval'                    => array('rte'=>'tinyMCE'),
+      'sql'                     => "mediumtext NULL"
+    ),
+    'opmerkingen_en' => array
     (
       'search'                  => true,
       'inputType'               => 'textarea',

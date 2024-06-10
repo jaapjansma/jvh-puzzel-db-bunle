@@ -88,7 +88,7 @@ $GLOBALS['TL_DCA']['tl_jvh_db_puzzel_plaat'] = array
   // Palettes
   'palettes' => array
   (
-    'default'                     => 'naam_nl,naam_en;alias_nl,alias_en;tekenaar;singleSRC;jaar_uitgifte;opmerkingen;opmerkingen_intern;visible'
+    'default'                     => 'naam_nl,naam_en;alias_nl,alias_en;tekenaar;singleSRC;jaar_uitgifte;opmerkingen_nl,opmerkingen_en;opmerkingen_intern;visible'
   ),
 
   // Subpalettes
@@ -166,7 +166,14 @@ $GLOBALS['TL_DCA']['tl_jvh_db_puzzel_plaat'] = array
       'sql'                     => "int(10) unsigned NOT NULL default 0",
       'default'                 => '0',
     ),
-    'opmerkingen' => array
+    'opmerkingen_nl' => array
+    (
+      'search'                  => true,
+      'inputType'               => 'textarea',
+      'eval'                    => array('rte'=>'tinyMCE'),
+      'sql'                     => "mediumtext NULL"
+    ),
+    'opmerkingen_en' => array
     (
       'search'                  => true,
       'inputType'               => 'textarea',

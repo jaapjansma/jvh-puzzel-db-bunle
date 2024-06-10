@@ -17,5 +17,6 @@
  */
 
 $GLOBALS['TL_LANG']['tl_jvh_db_doos']['deleteConfirm'] = 'Weet u zeker dat u deze doos wilt verwijderen?';
-$GLOBALS['TL_LANG']['tl_jvh_db_doos']['label'] = ['Etiket', ''];
+$GLOBALS['TL_LANG']['tl_jvh_db_doos']['label_nl'] = ['Etiket (Nederlands)', ''];
+$GLOBALS['TL_LANG']['tl_jvh_db_doos']['label_en'] = ['Etiket (Engels)', ''];
 $GLOBALS['TL_LANG']['tl_jvh_db_doos']['tl_jvh_db_puzzel_product'] = ['Terug', 'Puzzel Producten'];
