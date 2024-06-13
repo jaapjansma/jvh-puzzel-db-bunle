@@ -24,6 +24,7 @@ $GLOBALS['TL_LANG']['tl_jvh_db_puzzel_product']['tl_jvh_db_uitgever'] = ['Uitgev
 $GLOBALS['TL_LANG']['tl_jvh_db_puzzel_product']['naam_nl'] = ['Naam (Nederlands)', ''];
 $GLOBALS['TL_LANG']['tl_jvh_db_puzzel_product']['naam_en'] = ['Naam (Engels)', ''];
 $GLOBALS['TL_LANG']['tl_jvh_db_puzzel_product']['ean'] = ['EAN', ''];
+$GLOBALS['TL_LANG']['tl_jvh_db_puzzel_product']['product_number'] = ['Artikelnummer', ''];
 $GLOBALS['TL_LANG']['tl_jvh_db_puzzel_product']['product_id'] = ['Product', 'Koppeling met webshop product'];
 $GLOBALS['TL_LANG']['tl_jvh_db_puzzel_product']['singleSRC'] = ['Afbeelding', ''];
 $GLOBALS['TL_LANG']['tl_jvh_db_puzzel_product']['puzzel_plaat'] = ['Puzzel Plaat', 'Selecteer één of meerdere puzzel platen'];

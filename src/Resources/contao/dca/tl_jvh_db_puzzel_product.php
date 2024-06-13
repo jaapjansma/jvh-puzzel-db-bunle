@@ -106,7 +106,7 @@ $GLOBALS['TL_DCA']['tl_jvh_db_puzzel_product'] = array
   // Palettes
   'palettes' => array
   (
-    'default'                     => 'naam_nl,naam_en;ean;product_id;singleSRC;puzzel_plaat;stukjes;serie;uitgever;release_date;doos;opmerkingen_nl,opmerkingen_en;opmerkingen_intern;visible'
+    'default'                     => 'naam_nl,naam_en;ean,product_number;product_id;singleSRC;puzzel_plaat;stukjes;serie;uitgever;release_date;doos;opmerkingen_nl,opmerkingen_en;opmerkingen_intern;visible'
   ),
 
   // Subpalettes
@@ -140,6 +140,13 @@ $GLOBALS['TL_DCA']['tl_jvh_db_puzzel_product'] = array
       'sql'                     => "varchar(255) NOT NULL default ''"
     ),
     'ean' => array
+    (
+      'search'                  => true,
+      'inputType'               => 'text',
+      'eval'                    => array('mandatory'=>false, 'maxlength'=>255, 'tl_class'=>'w50'),
+      'sql'                     => "varchar(255) NOT NULL default ''"
+    ),
+    'product_number' => array
     (
       'search'                  => true,
       'inputType'               => 'text',
