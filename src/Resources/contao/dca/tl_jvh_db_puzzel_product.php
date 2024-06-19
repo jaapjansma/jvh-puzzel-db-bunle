@@ -166,8 +166,13 @@ $GLOBALS['TL_DCA']['tl_jvh_db_puzzel_product'] = array
     (
       'exclude'                 => true,
       'inputType'               => 'fileTree',
-      'eval'                    => array('filesOnly'=>true, 'fieldType'=>'radio', 'mandatory'=>false, 'tl_class'=>'clr'),
-      'sql'                     => "binary(16) NULL"
+      'eval'                    => array('multiple'=>true, 'fieldType'=>'checkbox', 'orderField'=>'orderSRC', 'files'=>true, 'isGallery' => true, 'extensions' => '%contao.image.valid_extensions%'),
+      'sql'                     => "blob NULL",
+    ),
+    'orderSRC' => array
+    (
+      'label'                   => &$GLOBALS['TL_LANG']['MSC']['sortOrder'],
+      'sql'                     => "blob NULL"
     ),
     'puzzel_plaat' => array
     (
