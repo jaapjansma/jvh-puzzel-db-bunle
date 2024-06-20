@@ -16,21 +16,4 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-if (!isset($GLOBALS['BE_MOD']['jvh_puzzel_db']) || !\is_array($GLOBALS['BE_MOD']['jvh_puzzel_db']))
-{
-  \Contao\ArrayUtil::arrayInsert($GLOBALS['BE_MOD'], 2, array('jvh_puzzel_db' => array()));
-}
-
-\Contao\ArrayUtil::arrayInsert($GLOBALS['BE_MOD']['jvh_puzzel_db'], 0, array
-(
-  'tl_jvh_db_puzzel_plaat' => array
-  (
-    'tables'            => array('tl_jvh_db_puzzel_plaat', 'tl_jvh_db_tekenaar'),
-  ),
-  'tl_jvh_db_puzzel_product' => array
-  (
-    'tables'            => array('tl_jvh_db_puzzel_product', 'tl_jvh_db_doos', 'tl_jvh_db_series', 'tl_jvh_db_stukjes', 'tl_jvh_db_uitgever'),
-  ),
-));
-
-$GLOBALS['FE_MOD']['application']['jvh_db_puzzel_plaat_lijst'] = \JvH\JvHPuzzelDbBundle\Frontend\PuzzelPlaatLijst::class;
+$GLOBALS['TL_DCA']['tl_module']['palettes']['jvh_db_puzzel_plaat_lijst'] = '{title_legend},name,headline,type;{redirect_legend:hide},jumpTo;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID';

@@ -19,3 +19,4 @@
 $GLOBALS['TL_LANG']['MOD']['jvh_puzzel_db'] = 'JvH Puzzel Database';
 $GLOBALS['TL_LANG']['MOD']['tl_jvh_db_puzzel_product'] = ['Puzzel Producten', 'Puzzel Producten'];
 $GLOBALS['TL_LANG']['MOD']['tl_jvh_db_puzzel_plaat'] = ['Puzzel Platen', 'Puzzel Platen'];
+$GLOBALS['TL_LANG']['FMD']['jvh_db_puzzel_plaat_lijst'] = 'JvH Puzzel plaat lijst';

@@ -19,6 +19,7 @@
 $GLOBALS['TL_LANG']['tl_jvh_db_puzzel_plaat']['deleteConfirm'] = 'Weet u zeker dat u deze puzzel plaat wilt verwijderen?';
 $GLOBALS['TL_LANG']['tl_jvh_db_puzzel_plaat']['tl_jvh_db_tekenaars'] = ['Tekenaars', 'Overzicht van alle tekenaars'];
 
+$GLOBALS['TL_LANG']['tl_jvh_db_puzzel_plaat']['id'] = ['Nr.', ''];
 $GLOBALS['TL_LANG']['tl_jvh_db_puzzel_plaat']['alias_nl'] = ['Alias (Nederlands)', ''];
 $GLOBALS['TL_LANG']['tl_jvh_db_puzzel_plaat']['alias_en'] = ['Alias (Engels)', ''];
 $GLOBALS['TL_LANG']['tl_jvh_db_puzzel_plaat']['naam_nl'] = ['Naam (Nederlands)', ''];

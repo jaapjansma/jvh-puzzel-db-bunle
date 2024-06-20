@@ -1,0 +1,44 @@
+<?php $this->block('content'); ?>
+
+  <form method="get">
+    <div class="formbody">
+      <div class="widget widget-text">
+        <label for="ctrl_keywords_<?= $this->uniqueId ?>" class="invisible"><?= $this->keywordLabel ?></label>
+        <input type="search" name="keywords" id="ctrl_keywords_<?= $this->uniqueId ?>" class="text" value="<?= $this->keyword ?>">
+      </div>
+      <div class="widget widget-submit">
+        <button type="submit" id="ctrl_submit_<?= $this->uniqueId ?>" class="submit"><?= $this->search ?></button>
+      </div>
+    </div>
+  </form>
+
+<?php if ($this->count == 0): ?>
+  <p class="no-results">Geen resultaten gevonden.,</p>
+<?php else: ?>
+    <table class="jvh-puzzel-db-puzzel-plaat">
+        <thead>
+            <tr>
+                <td><?=$GLOBALS['TL_LANG']['tl_jvh_db_puzzel_plaat']['id'][0]; ?></td>
+                <td><?=$GLOBALS['TL_LANG']['tl_jvh_db_puzzel_plaat']['naam_nl'][0]; ?></td>
+                <td><?=$GLOBALS['TL_LANG']['tl_jvh_db_puzzel_plaat']['naam_en'][0]; ?></td>
+                <td><?=$GLOBALS['TL_LANG']['tl_jvh_db_puzzel_plaat']['tekenaar'][0]; ?></td>
+                <td><?=$GLOBALS['TL_LANG']['tl_jvh_db_puzzel_plaat']['jaar_uitgifte'][0]; ?></td>
+                <td>&nbsp;</td>
+            </tr>
+            <?php foreach($this->results as $result): ?>
+                <tr>
+                    <td><?=$result['id'] ?></td>
+                    <td><?=$result['naam_nl'] ?></td>
+                    <td><?=$result['naam_en'] ?></td>
+                    <td><?=$result['voornaam'] ?> <?=$result['achternaam'] ?></td>
+                    <td><?=$result['jaar_uitgifte'] ?></td>
+                    <td>
+                        <a href="<?php if ($this->action): ?><?= $this->action ?>/<?php endif; ?><?= $result['alias_'.$GLOBALS['TL_LANGUAGE']]; ?>"><?= $result['naam_'.$GLOBALS['TL_LANGUAGE']]; ?></a>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        </thead>
+    </table>
+<?php endif; ?>
+
+<?php $this->endblock(); ?>
