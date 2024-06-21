@@ -32,6 +32,7 @@ use Contao\PageModel;
 use Contao\Search;
 use Contao\StringUtil;
 use Contao\System;
+use Haste\Model\Relations;
 use Isotope\Frontend;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Product;
