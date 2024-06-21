@@ -142,8 +142,8 @@ class PuzzelPlaatReader extends Module {
         $productData['stukjes'] = StukjesModel::getLabel($productData['stukjes']);
         $productData['uitgever'] = UitgeverModel::getNaam($productData['uitgever']);
 
-        $multiSrc = array_map('\Contao\StringUtil::binToUuid', StringUtil::deserialize($objProducts->multiSRC));
-        $orderSrc = array_map('\Contao\StringUtil::binToUuid', StringUtil::deserialize($objProducts->orderSRC));
+        $multiSrc = array_map('\Contao\StringUtil::binToUuid', StringUtil::deserialize($objProducts->multiSRC, true));
+        $orderSrc = array_map('\Contao\StringUtil::binToUuid', StringUtil::deserialize($objProducts->orderSRC, true));
         $figures = [];
         if (is_array($multiSrc) && count($multiSrc)) {
           $images = array();
