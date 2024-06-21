@@ -33,7 +33,7 @@
                     <td><?=$result['voornaam'] ?> <?=$result['achternaam'] ?></td>
                     <td><?=$result['jaar_uitgifte'] ?></td>
                     <td>
-                        <a href="<?php if ($this->action): ?><?= $this->action ?>/<?php endif; ?><?= $result['alias_'.$GLOBALS['TL_LANGUAGE']]; ?>"><?= $result['naam_'.$GLOBALS['TL_LANGUAGE']]; ?></a>
+                        <a href="<?= $result['link']; ?>"><?= $result['naam_'.$GLOBALS['TL_LANGUAGE']]; ?></a>
                     </td>
                 </tr>
             <?php endforeach; ?>

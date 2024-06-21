@@ -16,8 +16,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-$GLOBALS['TL_LANG']['MOD']['jvh_puzzel_db'] = 'JvH Puzzel Database';
-$GLOBALS['TL_LANG']['MOD']['tl_jvh_db_puzzel_product'] = ['Puzzel Producten', 'Puzzel Producten'];
-$GLOBALS['TL_LANG']['MOD']['tl_jvh_db_puzzel_plaat'] = ['Puzzel Platen', 'Puzzel Platen'];
-$GLOBALS['TL_LANG']['FMD']['jvh_db_puzzel_plaat_lijst'] = 'JvH Puzzel plaat lijst';
-$GLOBALS['TL_LANG']['FMD']['jvh_db_puzzel_plaat_reader'] = 'JvH Puzzel plaat Item';
+namespace JvH\JvHPuzzelDbBundle\Model;
+
+use Contao\Model;
+
+class PuzzelPlaatModel extends Model {
+
+  protected static $strTable = 'tl_jvh_db_puzzel_plaat';
+
+  public static function findByAlias(string $alias): PuzzelPlaatModel {
+    $field = 'alias_'.$GLOBALS['TL_LANGUAGE'];
+    return self::findOneBy($field, $alias);
+  }
+
+}

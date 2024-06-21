@@ -27,6 +27,7 @@ $GLOBALS['TL_LANG']['tl_jvh_db_puzzel_plaat']['naam_en'] = ['Naam (Engels)', '']
 $GLOBALS['TL_LANG']['tl_jvh_db_puzzel_plaat']['tekenaar'] = ['Tekenaar', ''];
 $GLOBALS['TL_LANG']['tl_jvh_db_puzzel_plaat']['singleSRC'] = ['Afbeelding', ''];
 $GLOBALS['TL_LANG']['tl_jvh_db_puzzel_plaat']['jaar_uitgifte'] = ['Jaar van Uitgifte', ''];
+$GLOBALS['TL_LANG']['tl_jvh_db_puzzel_plaat']['opmerkingen'] = ['Opmerkingen', ''];
 $GLOBALS['TL_LANG']['tl_jvh_db_puzzel_plaat']['opmerkingen_nl'] = ['Opmerkingen (Publiek, Nederlands)', ''];
 $GLOBALS['TL_LANG']['tl_jvh_db_puzzel_plaat']['opmerkingen_en'] = ['Opmerkingen (Publiek, Engels)', ''];
 $GLOBALS['TL_LANG']['tl_jvh_db_puzzel_plaat']['opmerkingen_intern'] = ['Opmerkingen (Intern)', ''];

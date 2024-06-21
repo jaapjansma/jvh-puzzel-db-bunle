@@ -54,6 +54,7 @@ class PuzzelPlaatLijst extends Module {
    */
   protected function compile()
   {
+    global $objPage;
     System::loadLanguageFile('tl_jvh_db_puzzel_plaat');
     if (\is_array(Input::get('keywords')))
     {
@@ -65,13 +66,14 @@ class PuzzelPlaatLijst extends Module {
     $this->Template->keywordLabel = $GLOBALS['TL_LANG']['MSC']['keywords'];
     $this->Template->search = StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['searchLabel']);
 
-    // Redirect page
-    if (($objTarget = $this->objModel->getRelated('jumpTo')) instanceof PageModel)
-    {
-      /** @var PageModel $objTarget */
-      $this->Template->action = $objTarget->getFrontendUrl();
+    $objTarget = $this->objModel->getRelated('jumpTo');
+    if (empty($objTarget)) {
+      $objTarget = $objPage;
     }
     $arrResult = $this->search($strKeywords, 3);
+    foreach($arrResult as $index => $item) {
+      $arrResult[$index]['link'] = $objTarget->getFrontendUrl('/'.$item['alias_'.$GLOBALS['TL_LANGUAGE']]);
+    }
     $count = count($arrResult);
     $this->Template->count = $count;
     $this->Template->keywords = $strKeywords;
