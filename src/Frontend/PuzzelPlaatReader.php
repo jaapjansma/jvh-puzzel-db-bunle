@@ -124,10 +124,13 @@ class PuzzelPlaatReader extends Module {
     global $objPage;
     System::loadLanguageFile('tl_jvh_db_puzzel_product');
     $projectDir = System::getContainer()->getParameter('kernel.project_dir');
-    $objProducts = PuzzelProductModel::findBy('visible', '1');
+    $objProducts = PuzzelProductModel::findAll();
     $strProducten = '';
     if ($objProducts) {
       while ($objProducts->next()) {
+        if (empty($objProducts->visible)) {
+          continue;
+        }
         $puzzelPlaten = StringUtil::deserialize($objProducts->puzzel_plaat);
         if (!is_array($puzzelPlaten) || !in_array($puzzelPlaatId, $puzzelPlaten)) {
           continue;
