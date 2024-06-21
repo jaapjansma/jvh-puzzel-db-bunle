@@ -33,6 +33,7 @@ $GLOBALS['TL_LANG']['tl_jvh_db_puzzel_product']['serie'] = ['Serie', ''];
 $GLOBALS['TL_LANG']['tl_jvh_db_puzzel_product']['uitgever'] = ['Uitgever', ''];
 $GLOBALS['TL_LANG']['tl_jvh_db_puzzel_product']['release_date'] = ['Release Datum', ''];
 $GLOBALS['TL_LANG']['tl_jvh_db_puzzel_product']['doos'] = ['Type doos', ''];
+$GLOBALS['TL_LANG']['tl_jvh_db_puzzel_product']['opmerkingen'] = ['Opmerkingen', ''];
 $GLOBALS['TL_LANG']['tl_jvh_db_puzzel_product']['opmerkingen_nl'] = ['Opmerkingen (Publiek, Nederlands)', ''];
 $GLOBALS['TL_LANG']['tl_jvh_db_puzzel_product']['opmerkingen_en'] = ['Opmerkingen (Publiek, Engels)', ''];
 $GLOBALS['TL_LANG']['tl_jvh_db_puzzel_product']['opmerkingen_intern'] = ['Opmerkingen (Intern)', ''];
