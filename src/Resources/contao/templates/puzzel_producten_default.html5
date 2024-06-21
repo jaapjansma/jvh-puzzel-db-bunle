@@ -22,8 +22,8 @@
     </div>
 
     <div class="ean">
-        <p class="label"><?= $GLOBALS['TL_LANG']['tl_jvh_db_puzzel_product']['ean'][0]; ?></p>
-        <p class="waarde"><?= $this->item['ean']; ?></p>
+        <p class="label"><?= $GLOBALS['TL_LANG']['tl_jvh_db_puzzel_product']['product_number'][0]; ?></p>
+        <p class="waarde"><?= $this->item['product_number']; ?></p>
     </div>
 
     <div class="serie">
