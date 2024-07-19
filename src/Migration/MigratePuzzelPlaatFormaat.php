@@ -32,6 +32,7 @@ class MigratePuzzelPlaatFormaat extends AbstractMigration {
 
   public function shouldRun(): bool
   {
+    return true;
     $schemaManager = $this->connection->createSchemaManager();
 
     // If the database table itself does not exist we should do nothing
@@ -59,29 +60,40 @@ class MigratePuzzelPlaatFormaat extends AbstractMigration {
     $this->connection->executeQuery("ALTER TABLE `tl_jvh_db_puzzel_product` ADD COLUMN `puzzel_formaat` blob DEFAULT NULL");
 
     $alreadyInsertedCombination = [];
-    $producten = $this->connection->executeQuery("SELECT `p`.`id`, `p`.`puzzel_plaat`, `p`.`stukjes`, `p`.`visible` FROM `tl_jvh_db_puzzel_product` `p`");
+    $producten = $this->connection->fetchAllAssociative("SELECT `p`.`id`, `p`.`puzzel_plaat`, `p`.`stukjes`, `p`.`visible` FROM `tl_jvh_db_puzzel_product` `p` ORDER BY `id`");
     $id = 1;
-    foreach($producten->fetchAllAssociative() as $row) {
-      $puzzel_plaat = StringUtil::deserialize($row['puzzel_plaat']);
-      $puzzel_plaat_id = reset($puzzel_plaat);
-      if (!isset($alreadyInsertedCombination[$row['stukjes'][$puzzel_plaat_id]])) {
+    $insertCount = 0;
+    $updateCount = 0;
+    foreach($producten as $row) {
+      $puzzel_plaat_id = StringUtil::deserialize($row['puzzel_plaat']);
+      if (is_array($puzzel_plaat_id)) {
+        $puzzel_plaat_id = reset($puzzel_plaat_id);
+      }
+      if (empty($puzzel_plaat_id)) {
+        continue;
+      }
+      if (!isset($alreadyInsertedCombination[$row['stukjes']][$puzzel_plaat_id])) {
         try {
           $insertStatement = $this->connection->prepare("INSERT INTO `tl_jvh_db_puzzel_formaat` (`id`, `tstamp`, `puzzel_plaat`, `stukjes`, `visible`) VALUES (?, ?, ?, ?, ?)");
           $insertStatement->executeQuery([$id, time(), $puzzel_plaat_id, $row['stukjes'], $row['visible']]);
-          $alreadyInsertedCombination[$row['stukjes'][$puzzel_plaat_id]] = $id;
+          $alreadyInsertedCombination[$row['stukjes']][$puzzel_plaat_id] = $id;
+          $insertCount ++;
         } catch (Exception $e) {
+          return $this->createResult(false, $e->getMessage());
         }
       }
       try {
-        $formaat[0] = $alreadyInsertedCombination[$row['stukjes'][$puzzel_plaat_id]];
+        $formaat[0] = $alreadyInsertedCombination[$row['stukjes']][$puzzel_plaat_id];
         $updateStatement = $this->connection->prepare("UPDATE `tl_jvh_db_puzzel_product` SET `puzzel_formaat` = ? WHERE `id` = ?");
         $updateStatement->executeQuery([serialize($formaat), $row['id']]);
+        $updateCount ++;
       } catch (Exception $e) {
+        return $this->createResult(false, $e->getMessage());
       }
       $id ++;
     }
 
-    return $this->createResult(true, 'Migrated puzzel producten naar puzzel formaat.');
+    return $this->createResult(true, 'Migrated puzzel producten naar puzzel formaat. Inserted: ' . $insertCount . '. Updated: '.$updateCount);
   }
 
 
