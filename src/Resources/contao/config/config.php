@@ -29,7 +29,7 @@ if (!isset($GLOBALS['BE_MOD']['jvh_puzzel_db']) || !\is_array($GLOBALS['BE_MOD']
   ),
   'tl_jvh_db_puzzel_product' => array
   (
-    'tables'            => array('tl_jvh_db_puzzel_product', 'tl_jvh_db_doos', 'tl_jvh_db_series', 'tl_jvh_db_stukjes', 'tl_jvh_db_uitgever'),
+    'tables'            => array('tl_jvh_db_puzzel_product', 'tl_jvh_db_puzzel_formaat', 'tl_jvh_db_doos', 'tl_jvh_db_series', 'tl_jvh_db_stukjes', 'tl_jvh_db_uitgever'),
   ),
 ));
 
@@ -42,3 +42,4 @@ $GLOBALS['TL_MODELS']['tl_jvh_db_puzzel_product'] = \JvH\JvHPuzzelDbBundle\Model
 $GLOBALS['TL_MODELS']['tl_jvh_db_series'] = \JvH\JvHPuzzelDbBundle\Model\SerieModel::class;
 $GLOBALS['TL_MODELS']['tl_jvh_db_stukjes'] = \JvH\JvHPuzzelDbBundle\Model\StukjesModel::class;
 $GLOBALS['TL_MODELS']['tl_jvh_db_uitgever'] = \JvH\JvHPuzzelDbBundle\Model\UitgeverModel::class;
+$GLOBALS['TL_MODELS']['tl_jvh_db_puzzel_formaat'] = \JvH\JvHPuzzelDbBundle\Model\PuzzelFormaatModel::class;

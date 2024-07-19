@@ -16,6 +16,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-$GLOBALS['TL_LANG']['tl_jvh_db_stukjes']['deleteConfirm'] = 'Weet u zeker dat u deze categorie wilt verwijderen?';
-$GLOBALS['TL_LANG']['tl_jvh_db_stukjes']['label'] = ['Stukjes', ''];
-$GLOBALS['TL_LANG']['tl_jvh_db_stukjes']['tl_jvh_db_puzzel_formaat'] = ['Terug', 'Puzzel Formaat'];
+namespace JvH\JvHPuzzelDbBundle\Model;
+
+use Contao\Model;
+
+class PuzzelFormaatModel extends Model {
+
+  protected static $strTable = 'tl_jvh_db_puzzel_formaat';
+
+}

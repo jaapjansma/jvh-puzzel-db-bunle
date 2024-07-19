@@ -17,7 +17,7 @@
     </div>
 
     <div class="stukjes">
-        <p class="label"><?= $GLOBALS['TL_LANG']['tl_jvh_db_puzzel_product']['stukjes'][0]; ?></p>
+        <p class="label"><?= $GLOBALS['TL_LANG']['tl_jvh_db_puzzel_formaat']['stukjes'][0]; ?></p>
         <p class="waarde"><?= $this->item['stukjes']; ?></p>
     </div>
 

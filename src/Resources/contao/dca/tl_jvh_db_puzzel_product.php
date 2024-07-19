@@ -46,15 +46,15 @@ $GLOBALS['TL_DCA']['tl_jvh_db_puzzel_product'] = array
     'label' => array
     (
       'showColumns'             => true,
-      'fields'                  => array('ean', 'naam_nl', 'naam_en', 'stukjes', 'serie', 'doos', 'uitgever'),
+      'fields'                  => array('ean', 'naam_nl', 'naam_en', 'serie', 'doos', 'uitgever'),
     ),
     'global_operations' => array
     (
-      'tl_jvh_db_stukjes' => array
+      'tl_jvh_db_puzzel_formaat' => array
       (
         'attributes'          => 'onclick="Backend.getScrollOffset()" accesskey="t"',
-        'icon'                => 'featured.svg',
-        'href'                => 'table=tl_jvh_db_stukjes',
+        'icon'                => 'db.svg',
+        'href'                => 'table=tl_jvh_db_puzzel_formaat',
       ),
       'tl_jvh_db_uitgever' => array
       (
@@ -106,7 +106,7 @@ $GLOBALS['TL_DCA']['tl_jvh_db_puzzel_product'] = array
   // Palettes
   'palettes' => array
   (
-    'default'                     => 'naam_nl,naam_en;ean,product_number;product_id;multiSRC;puzzel_plaat;stukjes;serie;uitgever;release_date;doos;opmerkingen_nl,opmerkingen_en;opmerkingen_intern;visible'
+    'default'                     => 'naam_nl,naam_en;ean,product_number;product_id;multiSRC;puzzel_formaat;serie;uitgever;release_date;doos;opmerkingen_nl,opmerkingen_en;opmerkingen_intern;visible'
   ),
 
   // Subpalettes
@@ -174,22 +174,13 @@ $GLOBALS['TL_DCA']['tl_jvh_db_puzzel_product'] = array
       'label'                   => &$GLOBALS['TL_LANG']['MSC']['sortOrder'],
       'sql'                     => "blob NULL"
     ),
-    'puzzel_plaat' => array
+    'puzzel_formaat' => array
     (
       'filter'                  => true,
       'inputType'               => 'picker',
       'eval'                    => array('multiple'=>true),
-      'relation'                => ['table' => 'tl_jvh_db_puzzel_plaat', 'type' => 'belongsToMany'],
+      'relation'                => ['table' => 'tl_jvh_db_puzzel_formaat', 'type' => 'belongsToMany'],
       'sql'                     => "blob NULL",
-      'default'                 => '0',
-    ),
-    'stukjes' => array
-    (
-      'filter'                  => true,
-      'inputType'               => 'select',
-      'eval'                    => array('includeBlankOption'=>true),
-      'foreignKey'              => 'tl_jvh_db_stukjes.label',
-      'sql'                     => "int(10) unsigned NOT NULL default 0",
       'default'                 => '0',
     ),
     'serie' => array
