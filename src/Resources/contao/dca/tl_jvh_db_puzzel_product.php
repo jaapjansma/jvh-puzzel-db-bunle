@@ -53,7 +53,7 @@ $GLOBALS['TL_DCA']['tl_jvh_db_puzzel_product'] = array
       'tl_jvh_db_puzzel_formaat' => array
       (
         'attributes'          => 'onclick="Backend.getScrollOffset()" accesskey="t"',
-        'icon'                => 'db.svg',
+        'icon'                => 'sizes.svg',
         'href'                => 'table=tl_jvh_db_puzzel_formaat',
       ),
       'tl_jvh_db_uitgever' => array
