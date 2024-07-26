@@ -128,18 +128,17 @@ class PuzzelPlaatReader extends Module {
           continue;
         }
         $productData = $objProducts->row();
+        $productData['release_date'] = Date::parse($objPage->dateFormat, $productData['release_date']);
+        $productData['serie'] = SerieModel::getLabel($productData['serie']);
+        $productData['uitgever'] = UitgeverModel::getNaam($productData['uitgever']);
+        $figures = [];
+        if ($objProducts->multiSRC !== null && $objProducts->orderSRC !== null) {
+          $figures = PuzzelProductModel::generateFigureElements($objProducts->multiSRC, $objProducts->orderSRC, $objProducts->id, $this->imgSize, (bool)$this->fullsize);
+        }
         $arrPuzzelFormaatIds = StringUtil::deserialize($objProducts->puzzel_formaat);
         $objPuzzelFormaten = PuzzelFormaatModel::findBy(['id', 'puzzel_plaat'], [$arrPuzzelFormaatIds, $puzzelPlaatId]);
         while ($objPuzzelFormaten->next()) {
-          $productData['release_date'] = Date::parse($objPage->dateFormat, $productData['release_date']);
-          $productData['serie'] = SerieModel::getLabel($productData['serie']);
           $productData['stukjes'] = StukjesModel::getLabel($objPuzzelFormaten->stukjes);
-          $productData['uitgever'] = UitgeverModel::getNaam($productData['uitgever']);
-          $figures = [];
-          if ($objProducts->multiSRC !== null && $objProducts->orderSRC !== null) {
-            $figures = PuzzelProductModel::generateFigureElements($objProducts->multiSRC, $objProducts->orderSRC, $objProducts->id, $this->imgSize, (bool)$this->fullsize);
-          }
-
           $objTemplate = new FrontendTemplate($this->galleryTpl ?: 'puzzel_producten_default');
           $objTemplate->item = $productData;
           $objTemplate->figures = $figures;
@@ -150,14 +149,14 @@ class PuzzelPlaatReader extends Module {
             $objTemplate->opmerkingen_field = 'opmerkingen_en';
           }
           if (!empty($productData['product_id'])) {
-            $objProducts = Product::findAvailableByIds([$productData['product_id']]);
-            if ($objProducts) {
-              $productModels = $objProducts->getModels();
-              if ($productModels) {
-                $objProduct = reset($productModels);
-                if ($objProduct) {
-                  $productJumpTo = $this->findJumpToPage($objProduct);
-                  $objTemplate->webshop_product_url = $objProduct->generateUrl($productJumpTo, true);
+            $objIsoProducts = Product::findAvailableByIds([$productData['product_id']]);
+            if ($objIsoProducts) {
+              $IsoProductModels = $objIsoProducts->getModels();
+              if ($IsoProductModels) {
+                $objIsoProduct = reset($IsoProductModels);
+                if ($objIsoProduct) {
+                  $productJumpTo = $this->findJumpToPage($objIsoProduct);
+                  $objTemplate->webshop_product_url = $objIsoProduct->generateUrl($productJumpTo, true);
                 }
               }
             }

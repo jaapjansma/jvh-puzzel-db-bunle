@@ -18,7 +18,7 @@
 
 $GLOBALS['TL_LANG']['tl_jvh_db_puzzel_product']['deleteConfirm'] = 'Weet u zeker dat u deze puzzel wilt verwijderen?';
 $GLOBALS['TL_LANG']['tl_jvh_db_puzzel_product']['tl_jvh_db_doos'] = ['Doostypes', 'Overzicht van alle type dozen'];
-$GLOBALS['TL_LANG']['tl_jvh_db_puzzel_product']['tl_jvh_db_series'] = ['Opdrachtgevers', 'Overzicht van alle opdrachtgevers'];
+$GLOBALS['TL_LANG']['tl_jvh_db_puzzel_product']['tl_jvh_db_series'] = ['Series', 'Overzicht van alle series'];
 $GLOBALS['TL_LANG']['tl_jvh_db_puzzel_product']['tl_jvh_db_stukjes'] = ['Stukjes', 'Overzicht van alle categorieën'];
 $GLOBALS['TL_LANG']['tl_jvh_db_puzzel_product']['tl_jvh_db_puzzel_formaat'] = ['Puzeel Plaat Formaten', 'Overzicht van alle formaten. Koppeling tussen puzzel plaat en stukjes'];
 $GLOBALS['TL_LANG']['tl_jvh_db_puzzel_product']['tl_jvh_db_uitgever'] = ['Uitgevers', 'Overzicht van alle uitgevers'];
@@ -29,10 +29,10 @@ $GLOBALS['TL_LANG']['tl_jvh_db_puzzel_product']['product_number'] = ['Artikelnum
 $GLOBALS['TL_LANG']['tl_jvh_db_puzzel_product']['product_id'] = ['Product', 'Koppeling met webshop product'];
 $GLOBALS['TL_LANG']['tl_jvh_db_puzzel_product']['multiSRC'] = ['Afbeeldingen', ''];
 $GLOBALS['TL_LANG']['tl_jvh_db_puzzel_product']['puzzel_formaat'] = ['Puzzel Formaat', 'Selecteer één of meerdere puzzel formaten'];
-$GLOBALS['TL_LANG']['tl_jvh_db_puzzel_product']['serie'] = ['Opdrachtgever', ''];
+$GLOBALS['TL_LANG']['tl_jvh_db_puzzel_product']['serie'] = ['Serie', ''];
 $GLOBALS['TL_LANG']['tl_jvh_db_puzzel_product']['uitgever'] = ['Uitgever', ''];
 $GLOBALS['TL_LANG']['tl_jvh_db_puzzel_product']['release_date'] = ['Release Datum', ''];
-$GLOBALS['TL_LANG']['tl_jvh_db_puzzel_product']['doos'] = ['Type doos', ''];
+$GLOBALS['TL_LANG']['tl_jvh_db_puzzel_product']['doos'] = ['Opdrachtgever', ''];
 $GLOBALS['TL_LANG']['tl_jvh_db_puzzel_product']['opmerkingen'] = ['Opmerkingen', ''];
 $GLOBALS['TL_LANG']['tl_jvh_db_puzzel_product']['opmerkingen_nl'] = ['Opmerkingen (Publiek, Nederlands)', ''];
 $GLOBALS['TL_LANG']['tl_jvh_db_puzzel_product']['opmerkingen_en'] = ['Opmerkingen (Publiek, Engels)', ''];
