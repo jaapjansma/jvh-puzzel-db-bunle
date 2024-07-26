@@ -17,7 +17,7 @@
  */
 
 $GLOBALS['TL_LANG']['tl_jvh_db_puzzel_product']['deleteConfirm'] = 'Weet u zeker dat u deze puzzel wilt verwijderen?';
-$GLOBALS['TL_LANG']['tl_jvh_db_puzzel_product']['tl_jvh_db_doos'] = ['Doostypes', 'Overzicht van alle type dozen'];
+$GLOBALS['TL_LANG']['tl_jvh_db_puzzel_product']['tl_jvh_db_doos'] = ['Opdrachtgevers', 'Overzicht van alle Opdrachtgevers'];
 $GLOBALS['TL_LANG']['tl_jvh_db_puzzel_product']['tl_jvh_db_series'] = ['Series', 'Overzicht van alle series'];
 $GLOBALS['TL_LANG']['tl_jvh_db_puzzel_product']['tl_jvh_db_stukjes'] = ['Stukjes', 'Overzicht van alle categorieën'];
 $GLOBALS['TL_LANG']['tl_jvh_db_puzzel_product']['tl_jvh_db_puzzel_formaat'] = ['Puzeel Plaat Formaten', 'Overzicht van alle formaten. Koppeling tussen puzzel plaat en stukjes'];

@@ -148,17 +148,12 @@ class PuzzelPlaatReader extends Module {
             $objTemplate->naam_field = 'naam_en';
             $objTemplate->opmerkingen_field = 'opmerkingen_en';
           }
+          $objTemplate->webshop_product_url = '';
           if (!empty($productData['product_id'])) {
-            $objIsoProducts = Product::findAvailableByIds([$productData['product_id']]);
-            if ($objIsoProducts) {
-              $IsoProductModels = $objIsoProducts->getModels();
-              if ($IsoProductModels) {
-                $objIsoProduct = reset($IsoProductModels);
-                if ($objIsoProduct) {
-                  $productJumpTo = $this->findJumpToPage($objIsoProduct);
-                  $objTemplate->webshop_product_url = $objIsoProduct->generateUrl($productJumpTo, true);
-                }
-              }
+            $objIsoProduct = Product::findAvailableByIdOrAlias($productData['product_id']);
+            if ($objIsoProduct) {
+              $productJumpTo = $this->findJumpToPage($objIsoProduct);
+              $objTemplate->webshop_product_url = $objIsoProduct->generateUrl($productJumpTo, true);
             }
           }
           $strProducten .= $objTemplate->parse();
