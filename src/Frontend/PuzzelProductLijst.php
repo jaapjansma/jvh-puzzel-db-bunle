@@ -84,7 +84,10 @@ class PuzzelProductLijst extends Module
       $arrResult[$index]['release_date'] = Date::parse($objPage->dateFormat, $arrResult[$index]['release_date']);
       $arrResult[$index]['stukjes'] = PuzzelProductModel::getStukjes($arrResult[$index]['puzzel_formaat']);
 
-      $arrResult[$index]['figures'] = PuzzelProductModel::generateFigureElements($item['multiSRC'], $item['orderSRC'], $item['id'], $this->imgSize, (bool)$this->fullsize);
+      $arrResult[$index]['figures'] = [];
+      if (isset($item['multiSRC']) && isset($item['orderSRC'])) {
+        $arrResult[$index]['figures'] = PuzzelProductModel::generateFigureElements($item['multiSRC'], $item['orderSRC'], $item['id'], $this->imgSize, (bool)$this->fullsize);
+      }
 
     }
     $count = count($arrResult);

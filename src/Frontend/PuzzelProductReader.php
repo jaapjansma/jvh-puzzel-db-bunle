@@ -101,7 +101,9 @@ class PuzzelProductReader extends Module
       $productData['serie'] = SerieModel::getLabel($productData['serie']);
       $productData['uitgever'] = UitgeverModel::getNaam($productData['uitgever']);
       $productData['stukjes'] = PuzzelProductModel::getStukjes($productData['puzzel_formaat']);
-      $figures = PuzzelProductModel::generateFigureElements($objProduct->multiSRC, $objProduct->orderSRC, $objProduct->id, $this->imgSize, (bool)$this->fullsize);
+      if ($objProduct->multiSRC !== null && $objProduct->orderSRC !== null) {
+        $figures = PuzzelProductModel::generateFigureElements($objProduct->multiSRC, $objProduct->orderSRC, $objProduct->id, $this->imgSize, (bool)$this->fullsize);
+      }
 
       $objTemplate = new FrontendTemplate($this->galleryTpl ?: 'puzzel_product_default');
       $objTemplate->item = $productData;

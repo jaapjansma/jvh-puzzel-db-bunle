@@ -135,7 +135,10 @@ class PuzzelPlaatReader extends Module {
           $productData['serie'] = SerieModel::getLabel($productData['serie']);
           $productData['stukjes'] = StukjesModel::getLabel($objPuzzelFormaten->stukjes);
           $productData['uitgever'] = UitgeverModel::getNaam($productData['uitgever']);
-          $figures = PuzzelProductModel::generateFigureElements($objProducts->multiSRC, $objProducts->orderSRC, $objProducts->id, $this->imgSize, (bool)$this->fullsize);
+          $figures = [];
+          if ($objProducts->multiSRC !== null && $objProducts->orderSRC !== null) {
+            $figures = PuzzelProductModel::generateFigureElements($objProducts->multiSRC, $objProducts->orderSRC, $objProducts->id, $this->imgSize, (bool)$this->fullsize);
+          }
 
           $objTemplate = new FrontendTemplate($this->galleryTpl ?: 'puzzel_producten_default');
           $objTemplate->item = $productData;
