@@ -19,5 +19,7 @@
 $GLOBALS['TL_LANG']['MOD']['jvh_puzzel_db'] = 'JvH Puzzel Database';
 $GLOBALS['TL_LANG']['MOD']['tl_jvh_db_puzzel_product'] = ['Puzzel Producten', 'Puzzel Producten'];
 $GLOBALS['TL_LANG']['MOD']['tl_jvh_db_puzzel_plaat'] = ['Puzzel Platen', 'Puzzel Platen'];
-$GLOBALS['TL_LANG']['FMD']['jvh_db_puzzel_plaat_lijst'] = 'JvH Puzzel plaat lijst';
-$GLOBALS['TL_LANG']['FMD']['jvh_db_puzzel_plaat_reader'] = 'JvH Puzzel plaat Item';
+$GLOBALS['TL_LANG']['FMD']['jvh_db_puzzel_plaat_lijst'] = 'JvH Puzzel Plaat lijst';
+$GLOBALS['TL_LANG']['FMD']['jvh_db_puzzel_plaat_reader'] = 'JvH Puzzel Plaat Item';
+$GLOBALS['TL_LANG']['FMD']['jvh_db_puzzel_product_lijst'] = 'JvH Puzzel Product lijst';
+$GLOBALS['TL_LANG']['FMD']['jvh_db_puzzel_product_reader'] = 'JvH Puzzel Product Item';

@@ -1,0 +1,58 @@
+<?php $this->block('content'); ?>
+
+  <form method="get">
+    <div class="formbody">
+      <div class="widget widget-text">
+        <label for="ctrl_keywords_<?= $this->uniqueId ?>" class="invisible"><?= $this->keywordLabel ?></label>
+        <input type="search" name="keywords" id="ctrl_keywords_<?= $this->uniqueId ?>" class="text" value="<?= $this->keyword ?>">
+      </div>
+      <div class="widget widget-submit">
+        <button type="submit" id="ctrl_submit_<?= $this->uniqueId ?>" class="submit"><?= $this->search ?></button>
+      </div>
+    </div>
+  </form>
+
+<?php if ($this->count == 0): ?>
+  <p class="no-results">Geen resultaten gevonden.,</p>
+<?php else: ?>
+    <table class="jvh-puzzel-db-puzzel-product">
+        <thead>
+            <tr>
+                <td></td>
+                <td><?=$GLOBALS['TL_LANG']['tl_jvh_db_puzzel_product']['id'][0]; ?></td>
+                <td><?=$GLOBALS['TL_LANG']['tl_jvh_db_puzzel_product']['product_number'][0]; ?></td>
+                <td><?=$GLOBALS['TL_LANG']['tl_jvh_db_puzzel_product']['naam_nl'][0]; ?></td>
+                <td><?=$GLOBALS['TL_LANG']['tl_jvh_db_puzzel_product']['naam_en'][0]; ?></td>
+                <td><?=$GLOBALS['TL_LANG']['tl_jvh_db_puzzel_product']['release_date'][0]; ?></td>
+                <td><?=$GLOBALS['TL_LANG']['tl_jvh_db_puzzel_product']['uitgever'][0]; ?></td>
+                <td><?=$GLOBALS['TL_LANG']['tl_jvh_db_puzzel_product']['doos'][0]; ?></td>
+                <td><?=$GLOBALS['TL_LANG']['tl_jvh_db_puzzel_product']['serie'][0]; ?></td>
+                <td><?=$GLOBALS['TL_LANG']['tl_jvh_db_puzzel_formaat']['stukjes'][0]; ?></td>
+                <td>&nbsp;</td>
+            </tr>
+            <?php foreach($this->results as $result): ?>
+                <tr>
+                    <td>
+                        <?php if (isset($result['figures']) && isset($result['figures'][0])): ?>
+                            <?php $this->insert('image', $result['figures'][0]); ?>
+                        <?php endif; ?>
+                    </td>
+                    <td><?=$result['id'] ?></td>
+                    <td><?=$result['product_number'] ?></td>
+                    <td><?=$result['naam_nl'] ?></td>
+                    <td><?=$result['naam_en'] ?></td>
+                    <td><?=$result['release_date'] ?></td>
+                    <td><?=$result['uitgever'] ?></td>
+                    <td><?=$result['doos'] ?></td>
+                    <td><?=$result['serie'] ?></td>
+                    <td><?=$result['stukjes'] ?></td>
+                    <td>
+                        <a href="<?= $result['link']; ?>"><?= $result['naam_'.$GLOBALS['TL_LANGUAGE']]; ?></a>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        </thead>
+    </table>
+<?php endif; ?>
+
+<?php $this->endblock(); ?>

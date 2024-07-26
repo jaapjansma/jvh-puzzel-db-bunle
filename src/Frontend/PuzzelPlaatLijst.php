@@ -22,7 +22,6 @@ use Contao\BackendTemplate;
 use Contao\Database;
 use Contao\Input;
 use Contao\Module;
-use Contao\PageModel;
 use Contao\Search;
 use Contao\StringUtil;
 use Contao\System;

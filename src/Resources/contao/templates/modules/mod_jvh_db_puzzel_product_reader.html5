@@ -1,0 +1,7 @@
+<?php $this->block('content'); ?>
+
+<div class="product"><?= $this->product; ?></div>
+
+<div class="platen"><?= $this->platen; ?></div>
+
+<?php $this->endblock(); ?>

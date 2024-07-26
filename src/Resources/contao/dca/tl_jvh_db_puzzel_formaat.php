@@ -41,7 +41,7 @@ $GLOBALS['TL_DCA']['tl_jvh_db_puzzel_formaat'] = array
       'mode'                    => 1,
       'fields'                  => array('stukjes'),
       'flag'                    => 11,
-      'panelLayout'             => 'search,limit'
+      'panelLayout'             => 'filter,search,limit'
     ),
     'label' => array
     (
@@ -116,6 +116,7 @@ $GLOBALS['TL_DCA']['tl_jvh_db_puzzel_formaat'] = array
     'puzzel_plaat' => array
     (
       'filter'                  => true,
+      'search'                  => true,
       'inputType'               => 'select',
       'eval'                    => array('includeBlankOption'=>true),
       'relation'                => ['table' => 'tl_jvh_db_puzzel_plaat', 'type' => 'belongsToMany'],
@@ -126,6 +127,7 @@ $GLOBALS['TL_DCA']['tl_jvh_db_puzzel_formaat'] = array
     'stukjes' => array
     (
       'filter'                  => true,
+      'search'                  => true,
       'inputType'               => 'select',
       'eval'                    => array('includeBlankOption'=>true),
       'foreignKey'              => 'tl_jvh_db_stukjes.label',

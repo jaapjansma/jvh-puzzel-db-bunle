@@ -18,9 +18,7 @@
 
 namespace JvH\JvHPuzzelDbBundle\Frontend;
 
-use Contao\ArrayUtil;
 use Contao\BackendTemplate;
-use Contao\Database;
 use Contao\Date;
 use Contao\File;
 use Contao\FilesModel;
@@ -29,10 +27,8 @@ use Contao\FrontendUser;
 use Contao\Input;
 use Contao\Module;
 use Contao\PageModel;
-use Contao\Search;
 use Contao\StringUtil;
 use Contao\System;
-use Haste\Model\Relations;
 use Isotope\Frontend;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Product;
@@ -44,8 +40,6 @@ use JvH\JvHPuzzelDbBundle\Model\SerieModel;
 use JvH\JvHPuzzelDbBundle\Model\StukjesModel;
 use JvH\JvHPuzzelDbBundle\Model\TekenaarModel;
 use JvH\JvHPuzzelDbBundle\Model\UitgeverModel;
-use Symfony\Component\Filesystem\Path;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class PuzzelPlaatReader extends Module {
 
@@ -57,7 +51,7 @@ class PuzzelPlaatReader extends Module {
     if ($request && System::getContainer()->get('contao.routing.scope_matcher')->isBackendRequest($request))
     {
       $objTemplate = new BackendTemplate('be_wildcard');
-      $objTemplate->wildcard = '### ' . $GLOBALS['TL_LANG']['FMD']['jvh_db_puzzel_plaat_lijst'][0] . ' ###';
+      $objTemplate->wildcard = '### ' . $GLOBALS['TL_LANG']['FMD']['jvh_db_puzzel_plaat_reader'][0] . ' ###';
       $objTemplate->title = $this->headline;
       $objTemplate->id = $this->id;
       $objTemplate->link = $this->name;
@@ -126,7 +120,6 @@ class PuzzelPlaatReader extends Module {
     global $objPage;
     System::loadLanguageFile('tl_jvh_db_puzzel_product');
     System::loadLanguageFile('tl_jvh_db_puzzel_formaat');
-    $projectDir = System::getContainer()->getParameter('kernel.project_dir');
     $objProducts = PuzzelProductModel::findAll();
     $strProducten = '';
     if ($objProducts) {
@@ -142,82 +135,7 @@ class PuzzelPlaatReader extends Module {
           $productData['serie'] = SerieModel::getLabel($productData['serie']);
           $productData['stukjes'] = StukjesModel::getLabel($objPuzzelFormaten->stukjes);
           $productData['uitgever'] = UitgeverModel::getNaam($productData['uitgever']);
-
-          $multiSrc = array_map('\Contao\StringUtil::binToUuid', StringUtil::deserialize($objProducts->multiSRC, true));
-          $orderSrc = array_map('\Contao\StringUtil::binToUuid', StringUtil::deserialize($objProducts->orderSRC, true));
-          $figures = [];
-          if (is_array($multiSrc) && count($multiSrc)) {
-            $images = array();
-            $objFiles = FilesModel::findMultipleByUuids($multiSrc);
-            // Get all images
-            if ($objFiles) {
-              while ($objFiles->next()) {
-                // Continue if the files has been processed or does not exist
-                if (isset($images[$objFiles->path]) || !file_exists(Path::join($projectDir, $objFiles->path))) {
-                  continue;
-                }
-
-                // Single files
-                if ($objFiles->type == 'file') {
-                  $objFile = new File($objFiles->path);
-
-                  if (!$objFile->isImage) {
-                    continue;
-                  }
-
-                  $row = $objFiles->row();
-                  $row['mtime'] = $objFile->mtime;
-
-                  // Add the image
-                  $images[$objFiles->path] = $row;
-                } // Folders
-                else {
-                  $objSubfiles = FilesModel::findByPid($objFiles->uuid, array('order' => 'name'));
-
-                  if ($objSubfiles === null) {
-                    continue;
-                  }
-
-                  while ($objSubfiles->next()) {
-                    // Skip subfolders and files that do not exist
-                    if ($objSubfiles->type == 'folder' || !file_exists(Path::join($projectDir, $objSubfiles->path))) {
-                      continue;
-                    }
-
-                    $objFile = new File($objSubfiles->path);
-
-                    if (!$objFile->isImage) {
-                      continue;
-                    }
-
-                    $row = $objSubfiles->row();
-                    $row['mtime'] = $objFile->mtime;
-
-                    // Add the image
-                    $images[$objSubfiles->path] = $row;
-                  }
-                }
-              }
-              $images = ArrayUtil::sortByOrderField($images, $orderSrc);
-              $images = array_values($images);
-              $figureBuilder = System::getContainer()
-                ->get('contao.image.studio')
-                ->createFigureBuilder()
-                ->setSize($this->imgSize)
-                ->enableLightbox((bool)$this->fullsize)
-                ->setLightboxGroupIdentifier('lb' . $objProducts->id);
-
-              // Rows
-              for ($i = 0; $i < count($images); $i++) {
-                $figure = $figureBuilder
-                  ->fromId($images[$i]['id'])
-                  ->build();
-                $cellData = $figure->getLegacyTemplateData();
-                $cellData['figure'] = $figure;
-                $figures[$i] = $cellData;
-              }
-            }
-          }
+          $figures = PuzzelProductModel::generateFigureElements($objProducts->multiSRC, $objProducts->orderSRC, $objProducts->id, $this->imgSize, (bool)$this->fullsize);
 
           $objTemplate = new FrontendTemplate($this->galleryTpl ?: 'puzzel_producten_default');
           $objTemplate->item = $productData;

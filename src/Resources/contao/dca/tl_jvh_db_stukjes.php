@@ -50,10 +50,16 @@ $GLOBALS['TL_DCA']['tl_jvh_db_stukjes'] = array
     ),
     'global_operations' => array
     (
-      'tl_jvh_db_puzzel_formaat' => array
+      'tl_jvh_db_puzzel_product' => array
       (
         'attributes'          => 'onclick="Backend.getScrollOffset()" accesskey="t"',
         'icon'                => 'back.svg',
+        'href'                => 'table=tl_jvh_db_puzzel_product',
+      ),
+      'tl_jvh_db_puzzel_formaat' => array
+      (
+        'attributes'          => 'onclick="Backend.getScrollOffset()" accesskey="t"',
+        'icon'                => 'sizes.svg',
         'href'                => 'table=tl_jvh_db_puzzel_formaat',
       ),
       'all' => array

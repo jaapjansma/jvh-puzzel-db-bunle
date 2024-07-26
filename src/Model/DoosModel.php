@@ -16,7 +16,26 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-$GLOBALS['TL_LANG']['tl_jvh_db_stukjes']['deleteConfirm'] = 'Weet u zeker dat u deze categorie wilt verwijderen?';
-$GLOBALS['TL_LANG']['tl_jvh_db_stukjes']['label'] = ['Stukjes', ''];
-$GLOBALS['TL_LANG']['tl_jvh_db_stukjes']['tl_jvh_db_puzzel_formaat'] = ['Puzzel Formaten', 'Puzzel Formaat'];
-$GLOBALS['TL_LANG']['tl_jvh_db_stukjes']['tl_jvh_db_puzzel_product'] = ['Terug', 'Puzzel Producten'];
+namespace JvH\JvHPuzzelDbBundle\Model;
+
+use Contao\Model;
+
+class DoosModel extends Model {
+
+  protected static $strTable = 'tl_jvh_db_doos';
+
+  public static function getLabel(int $id = null): string {
+    if (empty($id)) {
+      return '';
+    }
+    $objModel = DoosModel::findByPk($id);
+    if (empty($objModel)) {
+      return '';
+    }
+    if ($GLOBALS['TL_LANGUAGE'] == 'en') {
+      return $objModel->label_en;
+    }
+    return $objModel->label_nl;
+  }
+
+}

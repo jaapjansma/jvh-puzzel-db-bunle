@@ -18,3 +18,5 @@
 
 $GLOBALS['TL_DCA']['tl_module']['palettes']['jvh_db_puzzel_plaat_lijst'] = '{title_legend},name,headline,type;{redirect_legend:hide},jumpTo;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['jvh_db_puzzel_plaat_reader'] = '{title_legend},name,headline,type;{source_legend},imgSize,fullsize;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['jvh_db_puzzel_product_lijst'] = '{title_legend},name,headline,type;{source_legend},imgSize,fullsize;{redirect_legend:hide},jumpTo;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['jvh_db_puzzel_product_reader'] = '{title_legend},name,headline,type;{source_legend},imgSize,fullsize;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID';
