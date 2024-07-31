@@ -19,16 +19,39 @@
 namespace JvH\JvHPuzzelDbBundle\Model;
 
 use Contao\ArrayUtil;
+use Contao\Database;
 use Contao\File;
 use Contao\FilesModel;
 use Contao\Model;
 use Contao\StringUtil;
 use Contao\System;
+use Model\Collection;
 use Symfony\Component\Filesystem\Path;
 
 class PuzzelProductModel extends Model {
 
   protected static $strTable = 'tl_jvh_db_puzzel_product';
+
+  public static function findByFormaatId(int $formaatId):? Collection {
+    $strQuery = "SELECT `id` FROM `tl_jvh_db_puzzel_product` WHERE 1 ";
+    $arrAllKeywords[] = "`puzzel_formaat` LIKE ?";
+    $arrValues[] = '%;i:' . $formaatId . ';}%';
+    $arrAllKeywords[] = "`puzzel_formaat` LIKE ?";
+    $arrValues[] = '%;i:' . $formaatId . ';i%';
+    if (count($arrAllKeywords)) {
+      $strQuery .= "AND (" . implode(" OR ", $arrAllKeywords) . ")";
+    }
+    $objResultStmt = Database::getInstance()->prepare($strQuery);
+    $objResult = $objResultStmt->execute(...$arrValues);
+    $ids =[];
+    while ($objResult->next()) {
+      $ids[] = $objResult->id;
+    }
+    if (count($ids)) {
+      return static::findMultipleByIds($ids);
+    }
+    return null;
+  }
 
   public static function getStukjes(string $puzzel_formaat): string {
     $arrPuzzelFormaatIds = StringUtil::deserialize($puzzel_formaat, true);

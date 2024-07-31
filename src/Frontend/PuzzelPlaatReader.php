@@ -120,24 +120,23 @@ class PuzzelPlaatReader extends Module {
     global $objPage;
     System::loadLanguageFile('tl_jvh_db_puzzel_product');
     System::loadLanguageFile('tl_jvh_db_puzzel_formaat');
-    $objProducts = PuzzelProductModel::findAll();
     $strProducten = '';
-    if ($objProducts) {
-      while ($objProducts->next()) {
-        if (empty($objProducts->visible)) {
-          continue;
-        }
-        $productData = $objProducts->row();
-        $productData['release_date'] = Date::parse($objPage->dateFormat, $productData['release_date']);
-        $productData['serie'] = SerieModel::getLabel($productData['serie']);
-        $productData['uitgever'] = UitgeverModel::getNaam($productData['uitgever']);
-        $figures = [];
-        if ($objProducts->multiSRC !== null && $objProducts->orderSRC !== null) {
-          $figures = PuzzelProductModel::generateFigureElements($objProducts->multiSRC, $objProducts->orderSRC, $objProducts->id, $this->imgSize, (bool)$this->fullsize);
-        }
-        $arrPuzzelFormaatIds = StringUtil::deserialize($objProducts->puzzel_formaat);
-        $objPuzzelFormaten = PuzzelFormaatModel::findBy(['id', 'puzzel_plaat'], [$arrPuzzelFormaatIds, $puzzelPlaatId]);
-        while ($objPuzzelFormaten->next()) {
+    $objPuzzelFormaten = PuzzelFormaatModel::findBy('puzzel_plaat', $puzzelPlaatId);
+    if ($objPuzzelFormaten) {
+      while ($objPuzzelFormaten->next()) {
+        $objProducts = PuzzelProductModel::findByFormaatId($objPuzzelFormaten->id);
+        while($objProducts->next()) {
+          if (empty($objProducts->visible)) {
+            continue;
+          }
+          $productData = $objProducts->row();
+          $productData['release_date'] = Date::parse($objPage->dateFormat, $productData['release_date']);
+          $productData['serie'] = SerieModel::getLabel($productData['serie']);
+          $productData['uitgever'] = UitgeverModel::getNaam($productData['uitgever']);
+          $figures = [];
+          if ($objProducts->multiSRC !== null && $objProducts->orderSRC !== null) {
+            $figures = PuzzelProductModel::generateFigureElements($objProducts->multiSRC, $objProducts->orderSRC, $objProducts->id, $this->imgSize, (bool)$this->fullsize);
+          }
           $productData['stukjes'] = StukjesModel::getLabel($objPuzzelFormaten->stukjes);
           $objTemplate = new FrontendTemplate($this->galleryTpl ?: 'puzzel_producten_default');
           $objTemplate->item = $productData;
