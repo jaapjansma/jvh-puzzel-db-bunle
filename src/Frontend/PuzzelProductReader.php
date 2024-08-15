@@ -138,16 +138,9 @@ class PuzzelProductReader extends Module
     $arrPuzzelFormaatIds = array_filter($arrPuzzelFormaatIds, function($v) {
       return !empty($v);
     });
-    if (count($arrPuzzelFormaatIds)) {
-      $objPuzzelFormaten = PuzzelFormaatModel::findAll([
-        'column' => 'id',
-        'value'  => $arrPuzzelFormaatIds,
-        'return' => 'Collection'
-      ]);
-      while ($objPuzzelFormaten->next()) {
-        if (!$objPuzzelFormaten->visible) {
-          continue;
-        }
+    foreach($arrPuzzelFormaatIds as $puzzelFormaatId) {
+      $objPuzzelFormaten = PuzzelFormaatModel::findByPk($puzzelFormaatId);
+      if ($objPuzzelFormaten && $objPuzzelFormaten->visible) {
         $objTemplate = new FrontendTemplate($this->galleryTpl ?: 'puzzel_plaat_default');
         $puzzelPlaat = PuzzelPlaatModel::findByPk($objPuzzelFormaten->puzzel_plaat);
         $data = $puzzelPlaat->row();
