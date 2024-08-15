@@ -61,6 +61,7 @@ class PuzzelProductLijst extends Module
     global $objPage;
     System::loadLanguageFile('tl_jvh_db_puzzel_product');
     System::loadLanguageFile('tl_jvh_db_puzzel_formaat');
+    System::loadLanguageFile('tl_jvh_db_puzzel_plaat');
     if (\is_array(Input::get('keywords')))
     {
       throw new BadRequestHttpException('Expected string, got array');
@@ -83,6 +84,7 @@ class PuzzelProductLijst extends Module
       $arrResult[$index]['uitgever'] = UitgeverModel::getNaam($arrResult[$index]['uitgever']);
       $arrResult[$index]['release_date'] = Date::parse($objPage->dateFormat, $arrResult[$index]['release_date']);
       $arrResult[$index]['stukjes'] = PuzzelProductModel::getStukjes($arrResult[$index]['puzzel_formaat']);
+      $arrResult[$index]['tekenaar'] = PuzzelProductModel::getTekenaars($arrResult[$index]['puzzel_formaat']);
 
       $arrResult[$index]['figures'] = [];
       if (isset($item['multiSRC']) && isset($item['orderSRC'])) {
@@ -159,9 +161,9 @@ class PuzzelProductLijst extends Module
     $strQuery .= "`tl_jvh_db_puzzel_product`.`uitgever`,";
     $strQuery .= "`tl_jvh_db_puzzel_product`.`puzzel_formaat`";
     $strQuery .= " FROM `tl_jvh_db_puzzel_product`";
-    $strQuery .= " INNER JOIN `tl_jvh_db_series` ON `tl_jvh_db_series`.`id` = `tl_jvh_db_puzzel_product`.`serie`";
-    $strQuery .= " INNER JOIN `tl_jvh_db_uitgever` ON `tl_jvh_db_uitgever`.`id` = `tl_jvh_db_puzzel_product`.`uitgever`";
-    $strQuery .= " INNER JOIN `tl_jvh_db_doos` ON `tl_jvh_db_doos`.`id` = `tl_jvh_db_puzzel_product`.`doos`";
+    $strQuery .= " LEFT JOIN `tl_jvh_db_series` ON `tl_jvh_db_series`.`id` = `tl_jvh_db_puzzel_product`.`serie`";
+    $strQuery .= " LEFT JOIN `tl_jvh_db_uitgever` ON `tl_jvh_db_uitgever`.`id` = `tl_jvh_db_puzzel_product`.`uitgever`";
+    $strQuery .= " LEFT JOIN `tl_jvh_db_doos` ON `tl_jvh_db_doos`.`id` = `tl_jvh_db_puzzel_product`.`doos`";
     $strQuery .= " WHERE `tl_jvh_db_puzzel_product`.`visible` = '1'";
 
     $arrValues = array();
@@ -211,9 +213,11 @@ class PuzzelProductLijst extends Module
     $formaatIds = $this->searchPuzzelFormaten($arrWildcards, $arrKeywords, $arrPhrases);
     foreach($formaatIds as $formaatId) {
       $arrAllKeywords[] = "`puzzel_formaat` LIKE ?";
-      $arrValues[] = '%;i:' . $formaatId . ';}%';
+      $arrValues[] = '%;i:' . $formaatId . ';%';
       $arrAllKeywords[] = "`puzzel_formaat` LIKE ?";
-      $arrValues[] = '%;i:' . $formaatId . ';i%';
+      $arrValues[] = '%;i:' . $formaatId . ';%';
+      $arrAllKeywords[] = "`puzzel_formaat` LIKE ?";
+      $arrValues[] = '%;s:' . strlen($formaatId) . ':"' . $formaatId . '";%';
     }
 
     if (count($arrAllKeywords)) {

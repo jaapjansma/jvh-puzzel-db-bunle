@@ -60,7 +60,9 @@ class PuzzelProductModel extends Model {
     });
     $return = [];
     $arrStukjes = [];
-    if (count($arrPuzzelFormaatIds)) {
+    if (count($arrPuzzelFormaatIds) > 1) {
+      return $GLOBALS['TL_LANG']['tl_jvh_db_puzzel_product']['combidoos'];
+    } elseif (count($arrPuzzelFormaatIds)) {
       $objPuzzelFormaten = PuzzelFormaatModel::findAll([
         'column' => 'id',
         'value'  => $arrPuzzelFormaatIds,
@@ -73,6 +75,37 @@ class PuzzelProductModel extends Model {
         }
       }
     }
+    return implode(", ", $return);
+  }
+
+  public static function getTekenaars(string $puzzel_formaat): string {
+    $arrPuzzelFormaatIds = StringUtil::deserialize($puzzel_formaat, true);
+    $arrPuzzelFormaatIds = array_filter($arrPuzzelFormaatIds, function($v) {
+      return !empty($v);
+    });
+    $return = [];
+    $arrTekenaars = [];
+    if (count($arrPuzzelFormaatIds)) {
+      $objPuzzelFormaten = PuzzelFormaatModel::findAll([
+        'column' => 'id',
+        'value'  => $arrPuzzelFormaatIds,
+        'return' => 'Collection'
+      ]);
+      while ($objPuzzelFormaten->next()) {
+        if (!$objPuzzelFormaten->puzzel_plaat) {
+          continue;
+        }
+        $objPuzzelPlaat = PuzzelPlaatModel::findByPk($objPuzzelFormaten->puzzel_plaat);
+        if (!$objPuzzelPlaat) {
+          continue;
+        }
+        if (!in_array($objPuzzelPlaat->tekenaar, $arrTekenaars)) {
+          $arrTekenaars[] = $objPuzzelPlaat->tekenaar;
+          $return[] = TekenaarModel::getNaam($objPuzzelPlaat->tekenaar);
+        }
+      }
+    }
+    asort($return);
     return implode(", ", $return);
   }
 

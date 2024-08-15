@@ -24,4 +24,15 @@ class TekenaarModel extends Model {
 
   protected static $strTable = 'tl_jvh_db_tekenaar';
 
+  public static function getNaam(int $id = null): string {
+    if (empty($id)) {
+      return '';
+    }
+    $objModel = TekenaarModel::findByPk($id);
+    if (empty($objModel)) {
+      return '';
+    }
+    return implode(" ", [$objModel->voornaam, $objModel->achternaam]);
+  }
+
 }

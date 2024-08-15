@@ -39,3 +39,4 @@ $GLOBALS['TL_LANG']['tl_jvh_db_puzzel_product']['opmerkingen_en'] = ['Opmerkinge
 $GLOBALS['TL_LANG']['tl_jvh_db_puzzel_product']['opmerkingen_intern'] = ['Opmerkingen (Intern)', ''];
 $GLOBALS['TL_LANG']['tl_jvh_db_puzzel_product']['visible'] = ['Zichtbaar', ''];
 $GLOBALS['TL_LANG']['tl_jvh_db_puzzel_product']['view_webshop_product'] = 'Bekijk in webshop';
+$GLOBALS['TL_LANG']['tl_jvh_db_puzzel_product']['combidoos'] = 'Combidoos';
