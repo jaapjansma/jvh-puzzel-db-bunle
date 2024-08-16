@@ -1,6 +1,58 @@
 <?php $this->block('content'); ?>
 
-<div class="product"><?= $this->product; ?></div>
+<div class="product">
+
+<ul class="puzzel_product_images">
+  <?php foreach ($this->figures as $image): ?>
+      <?php if (!empty($image['addImage'])): ?>
+        <li>
+          <?php $this->insert('image', $image); ?>
+        </li>
+      <?php endif; ?>
+  <?php endforeach; ?>
+</ul>
+
+<div class="info">
+    <h2><?= $this->item[$this->naam_field]; ?></h2>
+
+    <div class="release_date">
+        <p class="label"><?= $GLOBALS['TL_LANG']['tl_jvh_db_puzzel_product']['release_date'][0]; ?></p>
+        <p class="waarde"><?= $this->item['release_date']; ?></p>
+    </div>
+
+    <div class="stukjes">
+        <p class="label"><?= $GLOBALS['TL_LANG']['tl_jvh_db_puzzel_formaat']['stukjes'][0]; ?></p>
+        <p class="waarde"><?= $this->item['stukjes']; ?></p>
+    </div>
+
+    <div class="ean">
+        <p class="label"><?= $GLOBALS['TL_LANG']['tl_jvh_db_puzzel_product']['product_number'][0]; ?></p>
+        <p class="waarde"><?= $this->item['product_number']; ?></p>
+    </div>
+
+    <div class="serie">
+        <p class="label"><?= $GLOBALS['TL_LANG']['tl_jvh_db_puzzel_product']['serie'][0]; ?></p>
+        <p class="waarde"><?= $this->item['serie']; ?></p>
+    </div>
+
+    <div class="uitgever">
+        <p class="label"><?= $GLOBALS['TL_LANG']['tl_jvh_db_puzzel_product']['uitgever'][0]; ?></p>
+        <p class="waarde"><?= $this->item['uitgever']; ?></p>
+    </div>
+</div>
+
+<div class="opmerkingen">
+    <p class="label"><?= $GLOBALS['TL_LANG']['tl_jvh_db_puzzel_product']['opmerkingen'][0]; ?></p>
+    <p class="waarde"><?= $this->item[$this->opmerkingen_field]; ?></p>
+</div>
+
+<div class="actions">
+<?php if (!empty($this->webshop_product_url)): ?>
+    <div class="webshop_product"><a href="<?= $this->webshop_product_url; ?>"><?= $GLOBALS['TL_LANG']['tl_jvh_db_puzzel_product']['view_webshop_product']; ?></a></div>
+<?php endif; ?>
+</div>
+
+</div>
 
 <div class="platen"><?= $this->platen; ?></div>
 

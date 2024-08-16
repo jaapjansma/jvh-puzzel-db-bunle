@@ -6,3 +6,6 @@ services:
   JvH\JvHPuzzelDbBundle\Migration\MigratePuzzelPlaatFormaat:
     tags:
       - { name: contao.migration, priority: 0 }
+  JvH\JvHPuzzelDbBundle\Migration\MigratePuzzelProductAlias:
+    tags:
+      - { name: contao.migration, priority: 0 }

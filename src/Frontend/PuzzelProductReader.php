@@ -76,8 +76,7 @@ class PuzzelProductReader extends Module
     System::loadLanguageFile('tl_jvh_db_puzzel_product');
     System::loadLanguageFile('tl_jvh_db_puzzel_plaat');
     System::loadLanguageFile('tl_jvh_db_puzzel_formaat');
-    $puzzelProductId = Input::get('auto_item');
-    $objProduct = PuzzelProductModel::findByPk($puzzelProductId);
+    $objProduct = PuzzelProductModel::findByAlias(Input::get('auto_item'));
     $data = $objProduct->row();
     $templateData['item'] = $data;
     $this->Template->setData($templateData);
@@ -85,16 +84,15 @@ class PuzzelProductReader extends Module
     if ($GLOBALS['TL_LANGUAGE'] == 'en') {
       $this->Template->naam_field = 'naam_en';
     }
-    $this->Template->product = $this->getProduct($objProduct);
+    $this->loadProductIntoTemplate($objProduct);
     $this->Template->platen = $this->getPuzzelPlaten($objProduct->puzzel_formaat);
     $objPage->pageTitle = $data[$this->Template->naam_field];
   }
 
-  protected function getProduct($objProduct): string {
+  protected function loadProductIntoTemplate($objProduct) {
     global $objPage;
     System::loadLanguageFile('tl_jvh_db_puzzel_product');
     System::loadLanguageFile('tl_jvh_db_puzzel_formaat');
-    $strProducten = '';
     if ($objProduct && !empty($objProduct->visible)) {
       $productData = $objProduct->row();
       $productData['release_date'] = Date::parse($objPage->dateFormat, $productData['release_date']);
@@ -105,14 +103,13 @@ class PuzzelProductReader extends Module
         $figures = PuzzelProductModel::generateFigureElements($objProduct->multiSRC, $objProduct->orderSRC, $objProduct->id, $this->imgSize, (bool)$this->fullsize);
       }
 
-      $objTemplate = new FrontendTemplate($this->galleryTpl ?: 'puzzel_product_default');
-      $objTemplate->item = $productData;
-      $objTemplate->figures = $figures;
-      $objTemplate->naam_field = 'naam_nl';
-      $objTemplate->opmerkingen_field = 'opmerkingen_nl';
+      $this->Template->item = $productData;
+      $this->Template->figures = $figures;
+      $this->Template->naam_field = 'naam_nl';
+      $this->Template->opmerkingen_field = 'opmerkingen_nl';
       if ($GLOBALS['TL_LANGUAGE'] == 'en') {
-        $objTemplate->naam_field = 'naam_en';
-        $objTemplate->opmerkingen_field = 'opmerkingen_en';
+        $this->Template->naam_field = 'naam_en';
+        $this->Template->opmerkingen_field = 'opmerkingen_en';
       }
       if (!empty($productData['product_id'])) {
         $objIsoProducts = Product::findAvailableByIds([$productData['product_id']]);
@@ -122,14 +119,12 @@ class PuzzelProductReader extends Module
             $objIsoProduct = reset($productIsoModels);
             if ($objIsoProduct) {
               $productJumpTo = $this->findJumpToPage($objIsoProduct);
-              $objTemplate->webshop_product_url = $objIsoProduct->generateUrl($productJumpTo, true);
+              $this->Template->webshop_product_url = $objIsoProduct->generateUrl($productJumpTo, true);
             }
           }
         }
       }
-      $strProducten .= $objTemplate->parse();
     }
-    return $strProducten;
   }
 
   protected function getPuzzelPlaten(string $puzzel_formaat): string {

@@ -32,6 +32,11 @@ class PuzzelProductModel extends Model {
 
   protected static $strTable = 'tl_jvh_db_puzzel_product';
 
+  public static function findByAlias(string $alias): PuzzelProductModel {
+    $field = 'alias_'.$GLOBALS['TL_LANGUAGE'];
+    return self::findOneBy($field, $alias);
+  }
+
   public static function findByFormaatId(int $formaatId):? Collection {
     $strQuery = "SELECT `id` FROM `tl_jvh_db_puzzel_product` WHERE 1 ";
     $arrAllKeywords[] = "`puzzel_formaat` LIKE ?";

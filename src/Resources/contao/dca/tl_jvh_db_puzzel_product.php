@@ -112,7 +112,7 @@ $GLOBALS['TL_DCA']['tl_jvh_db_puzzel_product'] = array
   // Palettes
   'palettes' => array
   (
-    'default'                     => 'naam_nl,naam_en;ean,product_number;product_id;multiSRC;puzzel_formaat;serie;uitgever;release_date;doos;opmerkingen_nl,opmerkingen_en;opmerkingen_intern;visible'
+    'default'                     => 'naam_nl,naam_en;alias_nl,alias_en;ean,product_number;product_id;multiSRC;puzzel_formaat;serie;uitgever;release_date;doos;opmerkingen_nl,opmerkingen_en;opmerkingen_intern;visible'
   ),
 
   // Subpalettes
@@ -143,6 +143,28 @@ $GLOBALS['TL_DCA']['tl_jvh_db_puzzel_product'] = array
       'search'                  => true,
       'inputType'               => 'text',
       'eval'                    => array('mandatory'=>false, 'maxlength'=>255, 'tl_class'=>'w50'),
+      'sql'                     => "varchar(255) NOT NULL default ''"
+    ),
+    'alias_nl' => array
+    (
+      'search'                  => true,
+      'inputType'               => 'text',
+      'eval'                    => array('rgxp'=>'alias', 'doNotCopy'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
+      'save_callback' => array
+      (
+        array('\JvH\JvHPuzzelDbBundle\DCA\PuzzelProduct', 'generateAliasNL')
+      ),
+      'sql'                     => "varchar(255) NOT NULL default ''"
+    ),
+    'alias_en' => array
+    (
+      'search'                  => true,
+      'inputType'               => 'text',
+      'eval'                    => array('rgxp'=>'alias', 'doNotCopy'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
+      'save_callback' => array
+      (
+        array('\JvH\JvHPuzzelDbBundle\DCA\PuzzelProduct', 'generateAliasEN')
+      ),
       'sql'                     => "varchar(255) NOT NULL default ''"
     ),
     'ean' => array

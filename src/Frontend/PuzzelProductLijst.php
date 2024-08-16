@@ -19,6 +19,7 @@
 namespace JvH\JvHPuzzelDbBundle\Frontend;
 
 use Contao\BackendTemplate;
+use Contao\CoreBundle\Exception\RouteParametersException;
 use Contao\Database;
 use Contao\Date;
 use Contao\Input;
@@ -78,7 +79,11 @@ class PuzzelProductLijst extends Module
     }
     $arrResult = $this->search($strKeywords, 3);
     foreach($arrResult as $index => $item) {
-      $arrResult[$index]['link'] = $objTarget->getFrontendUrl('/'.$item['id']);
+      try {
+        $arrResult[$index]['link'] = $objTarget->getFrontendUrl('/' . $item['alias_' . $GLOBALS['TL_LANGUAGE']]);
+      } catch (RouteParametersException $e) {
+        $arrResult[$index]['link'] = '';
+      }
       $arrResult[$index]['serie'] = SerieModel::getLabel($arrResult[$index]['serie']);
       $arrResult[$index]['doos'] = DoosModel::getLabel($arrResult[$index]['doos']);
       $arrResult[$index]['uitgever'] = UitgeverModel::getNaam($arrResult[$index]['uitgever']);
@@ -155,7 +160,7 @@ class PuzzelProductLijst extends Module
       }
     }
 
-    $strQuery = "SELECT `tl_jvh_db_puzzel_product`.`id`, `tl_jvh_db_puzzel_product`.`naam_nl`, `tl_jvh_db_puzzel_product`.`naam_en`, `tl_jvh_db_puzzel_product`.`product_number`, `tl_jvh_db_puzzel_product`.`product_id`, `tl_jvh_db_puzzel_product`.`multiSRC`, `tl_jvh_db_puzzel_product`.`orderSRC`, `tl_jvh_db_puzzel_product`.`release_date`,";
+    $strQuery = "SELECT `tl_jvh_db_puzzel_product`.`id`, `tl_jvh_db_puzzel_product`.`naam_nl`, `tl_jvh_db_puzzel_product`.`naam_en`, `tl_jvh_db_puzzel_product`.`alias_nl`, `tl_jvh_db_puzzel_product`.`alias_en`, `tl_jvh_db_puzzel_product`.`product_number`, `tl_jvh_db_puzzel_product`.`product_id`, `tl_jvh_db_puzzel_product`.`multiSRC`, `tl_jvh_db_puzzel_product`.`orderSRC`, `tl_jvh_db_puzzel_product`.`release_date`,";
     $strQuery .= "`tl_jvh_db_puzzel_product`.`serie`,";
     $strQuery .= "`tl_jvh_db_puzzel_product`.`doos`,";
     $strQuery .= "`tl_jvh_db_puzzel_product`.`uitgever`,";
