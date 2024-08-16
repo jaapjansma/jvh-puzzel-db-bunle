@@ -32,6 +32,7 @@ use Isotope\Frontend;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Product;
 use Isotope\Model\Product\AbstractProduct;
+use JvH\JvHPuzzelDbBundle\Model\DoosModel;
 use JvH\JvHPuzzelDbBundle\Model\PuzzelFormaatModel;
 use JvH\JvHPuzzelDbBundle\Model\PuzzelPlaatModel;
 use JvH\JvHPuzzelDbBundle\Model\PuzzelProductModel;
@@ -99,6 +100,7 @@ class PuzzelProductReader extends Module
       $productData['serie'] = SerieModel::getLabel($productData['serie']);
       $productData['uitgever'] = UitgeverModel::getNaam($productData['uitgever']);
       $productData['stukjes'] = PuzzelProductModel::getStukjes($productData['puzzel_formaat']);
+      $productData['doos'] = DoosModel::getLabel($productData['doos']);
       if ($objProduct->multiSRC !== null && $objProduct->orderSRC !== null) {
         $figures = PuzzelProductModel::generateFigureElements($objProduct->multiSRC, $objProduct->orderSRC, $objProduct->id, $this->imgSize, (bool)$this->fullsize);
       }

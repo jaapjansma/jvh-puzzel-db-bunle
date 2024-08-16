@@ -33,6 +33,7 @@ use Isotope\Frontend;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Product;
 use Isotope\Model\Product\AbstractProduct;
+use JvH\JvHPuzzelDbBundle\Model\DoosModel;
 use JvH\JvHPuzzelDbBundle\Model\PuzzelFormaatModel;
 use JvH\JvHPuzzelDbBundle\Model\PuzzelPlaatModel;
 use JvH\JvHPuzzelDbBundle\Model\PuzzelProductModel;
@@ -133,6 +134,7 @@ class PuzzelPlaatReader extends Module {
           $productData['release_date'] = Date::parse($objPage->dateFormat, $productData['release_date']);
           $productData['serie'] = SerieModel::getLabel($productData['serie']);
           $productData['uitgever'] = UitgeverModel::getNaam($productData['uitgever']);
+          $productData['doos'] = DoosModel::getLabel($productData['doos']);
           $figures = [];
           if ($objProducts->multiSRC !== null && $objProducts->orderSRC !== null) {
             $figures = PuzzelProductModel::generateFigureElements($objProducts->multiSRC, $objProducts->orderSRC, $objProducts->id, $this->imgSize, (bool)$this->fullsize);
