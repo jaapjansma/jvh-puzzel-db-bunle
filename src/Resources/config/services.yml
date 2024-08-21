@@ -9,3 +9,6 @@ services:
   JvH\JvHPuzzelDbBundle\Migration\MigratePuzzelProductAlias:
     tags:
       - { name: contao.migration, priority: 0 }
+  JvH\JvHPuzzelDbBundle\Migration\MigratePuzzelProductAlias2:
+    tags:
+      - { name: contao.migration, priority: 0 }

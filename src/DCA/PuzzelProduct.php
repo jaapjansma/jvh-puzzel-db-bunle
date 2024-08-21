@@ -24,6 +24,7 @@ use Contao\DataContainer;
 use Contao\Image;
 use Contao\StringUtil;
 use Contao\System;
+use JvH\JvHPuzzelDbBundle\Model\PuzzelProductModel;
 
 class PuzzelProduct extends Backend {
 
@@ -106,6 +107,21 @@ class PuzzelProduct extends Backend {
     }
 
     return $varValue;
+  }
+
+  public function loadStukjes($value, DataContainer $dc) {
+    $objProduct = PuzzelProductModel::findByPk($dc->id);
+    if ($objProduct) {
+      return PuzzelProductModel::getStukjes($objProduct->puzzel_formaat);
+    }
+    return '';
+  }
+
+  public function labelCallback(array $row, string $label, DataContainer $dc, array $labels) {
+    $fields = $GLOBALS['TL_DCA'][$dc->table]['list']['label']['fields'];
+    $stukjesKey = array_search('stukjes', $fields, true);
+    $labels[$stukjesKey] = PuzzelProductModel::getStukjes($row['puzzel_formaat']);
+    return $labels;
   }
 
 }

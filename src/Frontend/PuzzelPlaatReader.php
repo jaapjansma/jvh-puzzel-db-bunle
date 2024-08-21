@@ -123,6 +123,7 @@ class PuzzelPlaatReader extends Module {
     System::loadLanguageFile('tl_jvh_db_puzzel_formaat');
     $strProducten = '';
     $objPuzzelFormaten = PuzzelFormaatModel::findBy('puzzel_plaat', $puzzelPlaatId);
+    $arrProducten = [];
     if ($objPuzzelFormaten) {
       while ($objPuzzelFormaten->next()) {
         $objProducts = PuzzelProductModel::findByFormaatId($objPuzzelFormaten->id);
@@ -157,8 +158,16 @@ class PuzzelPlaatReader extends Module {
               $objTemplate->webshop_product_url = $objIsoProduct->generateUrl($productJumpTo, true);
             }
           }
-          $strProducten .= $objTemplate->parse();
+          $arrProducten[$productData['release_date']][$productData['stukjes']] = $objTemplate->parse();
         }
+      }
+    }
+    $strProducten = '';
+    krsort($arrProducten);
+    foreach ($arrProducten as $productByDate) {
+      ksort($productByDate);
+      foreach ($productByDate as $product) {
+        $strProducten .= $product;
       }
     }
     return $strProducten;
