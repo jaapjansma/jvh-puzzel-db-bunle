@@ -43,6 +43,8 @@ class PuzzelProductModel extends Model {
     $arrValues[] = '%;i:' . $formaatId . ';}%';
     $arrAllKeywords[] = "`puzzel_formaat` LIKE ?";
     $arrValues[] = '%;i:' . $formaatId . ';i%';
+    $arrAllKeywords[] = "`puzzel_formaat` LIKE ?";
+    $arrValues[] = '%;s:' . strlen($formaatId) . ':"' . $formaatId . '";%';
     if (count($arrAllKeywords)) {
       $strQuery .= "AND (" . implode(" OR ", $arrAllKeywords) . ")";
     }
