@@ -46,7 +46,7 @@ $GLOBALS['TL_DCA']['tl_jvh_db_puzzel_product'] = array
     'label' => array
     (
       'showColumns'             => true,
-      'fields'                  => array('ean', 'naam_nl', 'naam_en', 'serie', 'doos', 'uitgever', 'stukjes'),
+      'fields'                  => array('product_number', 'naam_nl', 'naam_en', 'serie', 'doos', 'uitgever', 'stukjes'),
       'label_callback'         => array(\JvH\JvHPuzzelDbBundle\DCA\PuzzelProduct::class, 'labelCallback'),
     ),
     'global_operations' => array
