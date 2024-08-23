@@ -120,7 +120,9 @@ class PuzzelProduct extends Backend {
   public function labelCallback(array $row, string $label, DataContainer $dc, array $labels) {
     $fields = $GLOBALS['TL_DCA'][$dc->table]['list']['label']['fields'];
     $stukjesKey = array_search('stukjes', $fields, true);
-    $labels[$stukjesKey] = PuzzelProductModel::getStukjes($row['puzzel_formaat']);
+    if (!empty($row['puzzel_formaat'])) {
+      $labels[$stukjesKey] = PuzzelProductModel::getStukjes($row['puzzel_formaat']);
+    }
     return $labels;
   }
 
