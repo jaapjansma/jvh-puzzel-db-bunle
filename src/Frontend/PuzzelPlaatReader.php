@@ -94,7 +94,8 @@ class PuzzelPlaatReader extends Module {
             ->createFigureBuilder()
             ->fromFilesModel($fileModel)
             ->setSize($this->imgSize)
-            ->enableLightbox((bool) $this->fullsize)
+            ->enableLightbox((bool) true)
+            ->setLightboxGroupIdentifier('puzzel_plaat_reader')
             ->build();
 
           $templateData = $figure->getLegacyTemplateData();
@@ -138,7 +139,7 @@ class PuzzelPlaatReader extends Module {
           $productData['doos'] = DoosModel::getLabel($productData['doos']);
           $figures = [];
           if ($objProducts->multiSRC !== null && $objProducts->orderSRC !== null) {
-            $figures = PuzzelProductModel::generateFigureElements($objProducts->multiSRC, $objProducts->orderSRC, $objProducts->id, $this->imgSize, (bool)$this->fullsize);
+            $figures = PuzzelProductModel::generateFigureElements($objProducts->multiSRC, $objProducts->orderSRC, $objProducts->id, $this->imgSize, (bool)true, 'puzzel_plaat_reader');
           }
           $productData['stukjes'] = StukjesModel::getLabel($objPuzzelFormaten->stukjes);
           $objTemplate = new FrontendTemplate($this->galleryTpl ?: 'puzzel_producten_default');

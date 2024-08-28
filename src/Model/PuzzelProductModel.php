@@ -116,7 +116,7 @@ class PuzzelProductModel extends Model {
     return implode(", ", $return);
   }
 
-  public static function generateFigureElements(string $strMultiSrc, string $strOrderSrc, int $id, string $imgSize, bool $enableLightBox): array {
+  public static function generateFigureElements(string $strMultiSrc, string $strOrderSrc, int $id, string $imgSize, bool $enableLightBox, string $lightbox_id='lb-puzzel-product'): array {
     $multiSrc = array_map('\Contao\StringUtil::binToUuid', StringUtil::deserialize($strMultiSrc, true));
     $orderSrc = array_map('\Contao\StringUtil::binToUuid', StringUtil::deserialize($strOrderSrc, true));
     $projectDir = System::getContainer()->getParameter('kernel.project_dir');
@@ -179,7 +179,7 @@ class PuzzelProductModel extends Model {
         ->createFigureBuilder()
         ->setSize($imgSize)
         ->enableLightbox($enableLightBox)
-        ->setLightboxGroupIdentifier('lb' . $id);
+        ->setLightboxGroupIdentifier($lightbox_id);
 
       // Rows
       for ($i = 0; $i < count($images); $i++) {

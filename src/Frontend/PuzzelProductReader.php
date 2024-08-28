@@ -102,7 +102,7 @@ class PuzzelProductReader extends Module
       $productData['stukjes'] = PuzzelProductModel::getStukjes($productData['puzzel_formaat']);
       $productData['doos'] = DoosModel::getLabel($productData['doos']);
       if ($objProduct->multiSRC !== null && $objProduct->orderSRC !== null) {
-        $figures = PuzzelProductModel::generateFigureElements($objProduct->multiSRC, $objProduct->orderSRC, $objProduct->id, $this->imgSize, (bool)$this->fullsize);
+        $figures = PuzzelProductModel::generateFigureElements($objProduct->multiSRC, $objProduct->orderSRC, $objProduct->id, $this->imgSize, (bool)true, 'puzzel_product_reader');
       }
 
       $this->Template->item = $productData;
@@ -157,7 +157,8 @@ class PuzzelProductReader extends Module
                 ->createFigureBuilder()
                 ->fromFilesModel($fileModel)
                 ->setSize($this->imgSize)
-                ->enableLightbox((bool) $this->fullsize)
+                ->enableLightbox((bool) true)
+                ->setLightboxGroupIdentifier('puzzel_product_reader')
                 ->build();
 
               $templateData = $figure->getLegacyTemplateData();
