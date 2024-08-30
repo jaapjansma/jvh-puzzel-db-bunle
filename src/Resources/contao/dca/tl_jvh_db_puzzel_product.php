@@ -242,7 +242,7 @@ $GLOBALS['TL_DCA']['tl_jvh_db_puzzel_product'] = array
     'stukjes' => array
     (
       'inputType'               => 'text',
-      'default'                 => '',
+      'default'                 => '0',
     ),
     'release_date' => array
     (
