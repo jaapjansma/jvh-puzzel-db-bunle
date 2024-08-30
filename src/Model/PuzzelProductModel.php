@@ -75,10 +75,12 @@ class PuzzelProductModel extends Model {
         'value'  => $arrPuzzelFormaatIds,
         'return' => 'Collection'
       ]);
-      while ($objPuzzelFormaten->next()) {
-        if (!in_array($objPuzzelFormaten->stukjes, $arrStukjes)) {
-          $arrStukjes[] = $objPuzzelFormaten->stukjes;
-          $return[] = StukjesModel::getLabel($objPuzzelFormaten->stukjes);
+      if ($objPuzzelFormaten) {
+        while ($objPuzzelFormaten->next()) {
+          if (!in_array($objPuzzelFormaten->stukjes, $arrStukjes)) {
+            $arrStukjes[] = $objPuzzelFormaten->stukjes;
+            $return[] = StukjesModel::getLabel($objPuzzelFormaten->stukjes);
+          }
         }
       }
     }
