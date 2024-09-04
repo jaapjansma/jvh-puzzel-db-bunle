@@ -128,38 +128,40 @@ class PuzzelPlaatReader extends Module {
     if ($objPuzzelFormaten) {
       while ($objPuzzelFormaten->next()) {
         $objProducts = PuzzelProductModel::findByFormaatId($objPuzzelFormaten->id);
-        while($objProducts->next()) {
-          if (empty($objProducts->visible)) {
-            continue;
-          }
-          $productData = $objProducts->row();
-          $productData['release_date'] = Date::parse($objPage->dateFormat, $productData['release_date']);
-          $productData['serie'] = SerieModel::getLabel($productData['serie']);
-          $productData['uitgever'] = UitgeverModel::getNaam($productData['uitgever']);
-          $productData['doos'] = DoosModel::getLabel($productData['doos']);
-          $figures = [];
-          if ($objProducts->multiSRC !== null && $objProducts->orderSRC !== null) {
-            $figures = PuzzelProductModel::generateFigureElements($objProducts->multiSRC, $objProducts->orderSRC, $objProducts->id, $this->imgSize, (bool)true, 'puzzel_plaat_reader');
-          }
-          $productData['stukjes'] = StukjesModel::getLabel($objPuzzelFormaten->stukjes);
-          $objTemplate = new FrontendTemplate($this->galleryTpl ?: 'puzzel_producten_default');
-          $objTemplate->item = $productData;
-          $objTemplate->figures = $figures;
-          $objTemplate->naam_field = 'naam_nl';
-          $objTemplate->opmerkingen_field = 'opmerkingen_nl';
-          if ($GLOBALS['TL_LANGUAGE'] == 'en') {
-            $objTemplate->naam_field = 'naam_en';
-            $objTemplate->opmerkingen_field = 'opmerkingen_en';
-          }
-          $objTemplate->webshop_product_url = '';
-          if (!empty($productData['product_id'])) {
-            $objIsoProduct = Product::findAvailableByIdOrAlias($productData['product_id']);
-            if ($objIsoProduct) {
-              $productJumpTo = $this->findJumpToPage($objIsoProduct);
-              $objTemplate->webshop_product_url = $objIsoProduct->generateUrl($productJumpTo, true);
+        if ($objProducts) {
+          while ($objProducts->next()) {
+            if (empty($objProducts->visible)) {
+              continue;
             }
+            $productData = $objProducts->row();
+            $productData['release_date'] = Date::parse($objPage->dateFormat, $productData['release_date']);
+            $productData['serie'] = SerieModel::getLabel($productData['serie']);
+            $productData['uitgever'] = UitgeverModel::getNaam($productData['uitgever']);
+            $productData['doos'] = DoosModel::getLabel($productData['doos']);
+            $figures = [];
+            if ($objProducts->multiSRC !== null && $objProducts->orderSRC !== null) {
+              $figures = PuzzelProductModel::generateFigureElements($objProducts->multiSRC, $objProducts->orderSRC, $objProducts->id, $this->imgSize, (bool)true, 'puzzel_plaat_reader');
+            }
+            $productData['stukjes'] = StukjesModel::getLabel($objPuzzelFormaten->stukjes);
+            $objTemplate = new FrontendTemplate($this->galleryTpl ?: 'puzzel_producten_default');
+            $objTemplate->item = $productData;
+            $objTemplate->figures = $figures;
+            $objTemplate->naam_field = 'naam_nl';
+            $objTemplate->opmerkingen_field = 'opmerkingen_nl';
+            if ($GLOBALS['TL_LANGUAGE'] == 'en') {
+              $objTemplate->naam_field = 'naam_en';
+              $objTemplate->opmerkingen_field = 'opmerkingen_en';
+            }
+            $objTemplate->webshop_product_url = '';
+            if (!empty($productData['product_id'])) {
+              $objIsoProduct = Product::findAvailableByIdOrAlias($productData['product_id']);
+              if ($objIsoProduct) {
+                $productJumpTo = $this->findJumpToPage($objIsoProduct);
+                $objTemplate->webshop_product_url = $objIsoProduct->generateUrl($productJumpTo, true);
+              }
+            }
+            $arrProducten[$productData['release_date']][$productData['stukjes']] = $objTemplate->parse();
           }
-          $arrProducten[$productData['release_date']][$productData['stukjes']] = $objTemplate->parse();
         }
       }
     }
