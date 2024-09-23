@@ -160,7 +160,7 @@ class PuzzelPlaatReader extends Module {
                 $objTemplate->webshop_product_url = $objIsoProduct->generateUrl($productJumpTo, true);
               }
             }
-            $arrProducten[$productData['release_date']][$productData['stukjes']] = $objTemplate->parse();
+            $arrProducten[$productData['release_date']][$productData['stukjes']][] = $objTemplate->parse();
           }
         }
       }
@@ -169,8 +169,10 @@ class PuzzelPlaatReader extends Module {
     krsort($arrProducten);
     foreach ($arrProducten as $productByDate) {
       ksort($productByDate);
-      foreach ($productByDate as $product) {
-        $strProducten .= $product;
+      foreach ($productByDate as $products) {
+        foreach($products as $product) {
+          $strProducten .= $product;
+        }
       }
     }
     return $strProducten;
