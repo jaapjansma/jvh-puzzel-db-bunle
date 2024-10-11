@@ -41,7 +41,7 @@ $GLOBALS['TL_DCA']['tl_jvh_db_puzzel_product'] = array
       'mode'                    => 1,
       'fields'                  => array('ean', 'naam_nl', 'naam_en'),
       'flag'                    => 11,
-      'panelLayout'             => 'ean,naam_nl,naam_en,search,limit',
+      'panelLayout'             => 'search,limit,filter',
     ),
     'label' => array
     (
@@ -184,7 +184,6 @@ $GLOBALS['TL_DCA']['tl_jvh_db_puzzel_product'] = array
     ),
     'product_id' => array
     (
-      'filter'                  => true,
       'inputType'               => 'picker',
       'eval'                    => array('multiple'=>false),
       'relation'                => ['table' => 'tl_iso_product', 'type' => 'belongsTo'],
@@ -205,7 +204,6 @@ $GLOBALS['TL_DCA']['tl_jvh_db_puzzel_product'] = array
     ),
     'puzzel_formaat' => array
     (
-      'filter'                  => true,
       'inputType'               => 'picker',
       'eval'                    => array('multiple'=>true),
       'relation'                => ['table' => 'tl_jvh_db_puzzel_formaat', 'type' => 'belongsToMany'],
