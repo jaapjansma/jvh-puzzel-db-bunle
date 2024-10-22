@@ -49,6 +49,7 @@
                     <td><?=$result['stukjes'] ?></td>
                     <td><?=$result['tekenaar'] ?></td>
                     <td>
+                        <?= $result['collection_links']; ?>
                         <a href="<?= $result['link']; ?>"><?= $result['naam_'.$GLOBALS['TL_LANGUAGE']]; ?></a>
                     </td>
                 </tr>

@@ -37,6 +37,7 @@ $GLOBALS['FE_MOD']['application']['jvh_db_puzzel_plaat_lijst'] = \JvH\JvHPuzzelD
 $GLOBALS['FE_MOD']['application']['jvh_db_puzzel_plaat_reader'] = \JvH\JvHPuzzelDbBundle\Frontend\PuzzelPlaatReader::class;
 $GLOBALS['FE_MOD']['application']['jvh_db_puzzel_product_lijst'] = \JvH\JvHPuzzelDbBundle\Frontend\PuzzelProductLijst::class;
 $GLOBALS['FE_MOD']['application']['jvh_db_puzzel_product_reader'] = \JvH\JvHPuzzelDbBundle\Frontend\PuzzelProductReader::class;
+$GLOBALS['FE_MOD']['application']['jvh_db_mijn_collectie_lijst'] = \JvH\JvHPuzzelDbBundle\Frontend\MijnCollectieLijst::class;
 
 $GLOBALS['TL_MODELS']['tl_jvh_db_puzzel_plaat'] = \JvH\JvHPuzzelDbBundle\Model\PuzzelPlaatModel::class;
 $GLOBALS['TL_MODELS']['tl_jvh_db_tekenaar'] = \JvH\JvHPuzzelDbBundle\Model\TekenaarModel::class;
@@ -46,3 +47,5 @@ $GLOBALS['TL_MODELS']['tl_jvh_db_doos'] = \JvH\JvHPuzzelDbBundle\Model\DoosModel
 $GLOBALS['TL_MODELS']['tl_jvh_db_stukjes'] = \JvH\JvHPuzzelDbBundle\Model\StukjesModel::class;
 $GLOBALS['TL_MODELS']['tl_jvh_db_uitgever'] = \JvH\JvHPuzzelDbBundle\Model\UitgeverModel::class;
 $GLOBALS['TL_MODELS']['tl_jvh_db_puzzel_formaat'] = \JvH\JvHPuzzelDbBundle\Model\PuzzelFormaatModel::class;
+$GLOBALS['TL_MODELS']['tl_jvh_db_collection'] = \JvH\JvHPuzzelDbBundle\Model\CollectionModel::class;
+$GLOBALS['TL_MODELS']['tl_jvh_db_collection_status_log'] = \JvH\JvHPuzzelDbBundle\Model\CollectionStatusLogModel::class;

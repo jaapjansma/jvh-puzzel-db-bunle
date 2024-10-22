@@ -16,11 +16,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-$GLOBALS['TL_LANG']['MOD']['jvh_puzzel_db'] = 'JvH Puzzel Database';
-$GLOBALS['TL_LANG']['MOD']['tl_jvh_db_puzzel_product'] = ['Puzzel Producten', 'Puzzel Producten'];
-$GLOBALS['TL_LANG']['MOD']['tl_jvh_db_puzzel_plaat'] = ['Puzzel Platen', 'Puzzel Platen'];
-$GLOBALS['TL_LANG']['FMD']['jvh_db_puzzel_plaat_lijst'] = 'JvH Puzzel Plaat lijst';
-$GLOBALS['TL_LANG']['FMD']['jvh_db_puzzel_plaat_reader'] = 'JvH Puzzel Plaat Item';
-$GLOBALS['TL_LANG']['FMD']['jvh_db_puzzel_product_lijst'] = 'JvH Puzzel Product lijst';
-$GLOBALS['TL_LANG']['FMD']['jvh_db_puzzel_product_reader'] = 'JvH Puzzel Product Item';
-$GLOBALS['TL_LANG']['FMD']['jvh_db_mijn_collectie_lijst'] = 'JvH Mijn Collectie lijst';
+namespace JvH\JvHPuzzelDbBundle\Model;
+
+use Contao\Model;
+
+class CollectionStatusLogModel extends Model {
+
+  const COLLECTION = 1;
+  const WISHLIST = 2;
+
+  protected static $strTable = 'tl_jvh_db_collection_status_log';
+
+}

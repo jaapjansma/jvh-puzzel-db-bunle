@@ -23,7 +23,6 @@ use Contao\CoreBundle\Exception\RouteParametersException;
 use Contao\Database;
 use Contao\Date;
 use Contao\Input;
-use Contao\Module;
 use Contao\Search;
 use Contao\StringUtil;
 use Contao\System;
@@ -33,7 +32,7 @@ use JvH\JvHPuzzelDbBundle\Model\SerieModel;
 use JvH\JvHPuzzelDbBundle\Model\UitgeverModel;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
-class PuzzelProductLijst extends Module
+class PuzzelProductLijst extends AbstractModule
 {
 
   protected $strTemplate = 'mod_jvh_db_puzzel_product_lijst';
@@ -90,6 +89,7 @@ class PuzzelProductLijst extends Module
       $arrResult[$index]['release_date'] = Date::parse($objPage->dateFormat, $arrResult[$index]['release_date']);
       $arrResult[$index]['stukjes'] = PuzzelProductModel::getStukjes($arrResult[$index]['puzzel_formaat']);
       $arrResult[$index]['tekenaar'] = PuzzelProductModel::getTekenaars($arrResult[$index]['puzzel_formaat']);
+      $arrResult[$index]['collection_links'] = $this->generateCollectionLinks($item['id']);
 
       $arrResult[$index]['figures'] = [];
       if (isset($item['multiSRC']) && isset($item['orderSRC'])) {

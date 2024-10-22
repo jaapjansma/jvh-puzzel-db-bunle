@@ -41,7 +41,7 @@ use JvH\JvHPuzzelDbBundle\Model\StukjesModel;
 use JvH\JvHPuzzelDbBundle\Model\TekenaarModel;
 use JvH\JvHPuzzelDbBundle\Model\UitgeverModel;
 
-class PuzzelProductReader extends Module
+class PuzzelProductReader extends AbstractModule
 {
 
   protected $strTemplate = 'mod_jvh_db_puzzel_product_reader';
@@ -104,6 +104,7 @@ class PuzzelProductReader extends Module
       if ($objProduct->multiSRC !== null && $objProduct->orderSRC !== null) {
         $figures = PuzzelProductModel::generateFigureElements($objProduct->multiSRC, $objProduct->orderSRC, $objProduct->id, $this->imgSize, (bool)true, 'puzzel_product_reader');
       }
+      $productData['collection_links'] = $this->generateCollectionLinks($productData['id']);
 
       $this->Template->item = $productData;
       $this->Template->figures = $figures;

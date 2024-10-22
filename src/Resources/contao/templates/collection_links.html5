@@ -1,0 +1,7 @@
+
+<div class="add-to-collection <?php if ($this->collection_exists): ?>disabled<?php endif; ?>"><a href="<?= $this->collection_url; ?>">
+<?= $GLOBALS['TL_LANG']['tl_jvh_db_puzzel_product']['add_to_collection']; ?>
+</a></div>
+<div class="add-to-wishlist <?php if ($this->wishlist_exists): ?>disabled<?php endif; ?>"><a href="<?= $this->wishlist_url; ?>">
+<?= $GLOBALS['TL_LANG']['tl_jvh_db_puzzel_product']['add_to_wishlist']; ?>
+</a></div>

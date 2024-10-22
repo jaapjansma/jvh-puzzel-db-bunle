@@ -25,7 +25,6 @@ use Contao\FilesModel;
 use Contao\FrontendTemplate;
 use Contao\FrontendUser;
 use Contao\Input;
-use Contao\Module;
 use Contao\PageModel;
 use Contao\StringUtil;
 use Contao\System;
@@ -42,7 +41,7 @@ use JvH\JvHPuzzelDbBundle\Model\StukjesModel;
 use JvH\JvHPuzzelDbBundle\Model\TekenaarModel;
 use JvH\JvHPuzzelDbBundle\Model\UitgeverModel;
 
-class PuzzelPlaatReader extends Module {
+class PuzzelPlaatReader extends AbstractModule {
 
   protected $strTemplate = 'mod_jvh_db_puzzel_plaat_reader';
 
@@ -66,7 +65,6 @@ class PuzzelPlaatReader extends Module {
     {
       return '';
     }
-
     return parent::generate();
   }
 
@@ -160,6 +158,7 @@ class PuzzelPlaatReader extends Module {
                 $objTemplate->webshop_product_url = $objIsoProduct->generateUrl($productJumpTo, true);
               }
             }
+            $objTemplate->collection_links = $this->generateCollectionLinks($objProducts->id);
             $arrProducten[$productData['release_date']][$productData['stukjes']][] = $objTemplate->parse();
           }
         }

@@ -50,6 +50,7 @@
 <?php if (!empty($this->webshop_product_url)): ?>
     <div class="webshop_product"><a href="<?= $this->webshop_product_url; ?>"><?= $GLOBALS['TL_LANG']['tl_jvh_db_puzzel_product']['view_webshop_product']; ?></a></div>
 <?php endif; ?>
+<?= $this->item['collection_links']; ?>
 </div>
 
 </div>
