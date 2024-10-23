@@ -1,7 +1,17 @@
 
-<div class="add-to-collection <?php if ($this->collection_exists): ?>disabled<?php endif; ?>"><a href="<?= $this->collection_url; ?>">
+<div class="add-to-collection <?php if ($this->collection_exists): ?>disabled<?php endif; ?>"><a class="add-to-collection" data-href="<?= $this->collection_url; ?>" onclick="addToCollection(this, event); return false;">
 <?= $GLOBALS['TL_LANG']['tl_jvh_db_puzzel_product']['add_to_collection']; ?>
 </a></div>
-<div class="add-to-wishlist <?php if ($this->wishlist_exists): ?>disabled<?php endif; ?>"><a href="<?= $this->wishlist_url; ?>">
+<div class="add-to-wishlist <?php if ($this->wishlist_exists): ?>disabled<?php endif; ?>"><a class="add-to-wishlist" data-href="<?= $this->wishlist_url; ?>" onclick="addToCollection(this, event); return false;">
 <?= $GLOBALS['TL_LANG']['tl_jvh_db_puzzel_product']['add_to_wishlist']; ?>
 </a></div>
+
+<script>
+  function addToCollection(element, event) {
+    event.preventDefault();
+    var search = window.location.search;
+    search = search.substring(1);
+    location.href = $(element).data('href') + '&' + search;
+    return false;
+  }
+</script>

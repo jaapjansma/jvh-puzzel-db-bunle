@@ -50,11 +50,8 @@ abstract class AbstractModule extends \Contao\Module {
       $collectionModel->save();
       $statusLog = new CollectionStatusLogModel();
       $statusLog->pid = $collectionModel->id;
-      $statusLog->status = 2;
+      $statusLog->status = 1;
       $statusLog->tstamp = time();
-      if ($collection == CollectionModel::WISHLIST) {
-        $statusLog->status = 50;
-      }
       $statusLog->save();
     }
     $auto_item = \Contao\Input::get('auto_item');
@@ -64,6 +61,14 @@ abstract class AbstractModule extends \Contao\Module {
       $auto_item = null;
     }
     $url = $objPage->getFrontendUrl($auto_item);
+    $queryParams = [];
+    foreach($_GET as $key => $value) {
+      if (in_array($key, ['collection', 'wishlist'])) {
+        continue;
+      }
+      $queryParams[$key] = $value;
+    }
+    $url .= '?' . http_build_query($queryParams);
     $this->redirect($url);
   }
 

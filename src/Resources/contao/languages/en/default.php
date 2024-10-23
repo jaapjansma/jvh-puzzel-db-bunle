@@ -24,3 +24,4 @@ $GLOBALS['TL_LANG']['FMD']['jvh_db_puzzel_plaat_reader'] = 'JvH Puzzel Plaat Ite
 $GLOBALS['TL_LANG']['FMD']['jvh_db_puzzel_product_lijst'] = 'JvH Puzzel Product lijst';
 $GLOBALS['TL_LANG']['FMD']['jvh_db_puzzel_product_reader'] = 'JvH Puzzel Product Item';
 $GLOBALS['TL_LANG']['FMD']['jvh_db_mijn_collectie_lijst'] = 'JvH Mijn Collectie lijst';
+$GLOBALS['TL_LANG']['FMD']['jvh_db_mijn_collectie_reader'] = 'JvH Mijn Collectie Item';

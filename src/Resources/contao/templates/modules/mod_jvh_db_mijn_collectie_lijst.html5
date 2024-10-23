@@ -75,6 +75,7 @@
                     <td><?=$result['serie'] ?></td>
                     <td>
                         <?= $result['collection_links']; ?>
+                        <a href="<?= $result['edit_link']; ?>" class="delete"><?= $GLOBALS['TL_LANG']['tl_jvh_db_collection']['edit']; ?></a>
                         <a href="<?= $result['delete_link']; ?>" class="delete"><?= $GLOBALS['TL_LANG']['tl_jvh_db_collection']['delete']; ?></a>
                     </td>
                 </tr>

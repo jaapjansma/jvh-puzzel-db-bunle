@@ -1,0 +1,72 @@
+<?php $this->block('content'); ?>
+
+<form id="<?= $this->formId ?>" method="post" enctype="application/x-www-form-urlencoded">
+  <div class="formbody">
+    <input type="hidden" name="FORM_SUBMIT" value="<?= $this->formId ?>">
+    <input type="hidden" name="REQUEST_TOKEN" value="<?= $this->requestToken ?>">
+
+    <h2><?=$this->item['titel'] ?> - <?=$this->item['uitgever'] ?> <?=$this->item['product_number'] ?></h2>
+    <p class="titel_engels"><?= $this->item['naam_en']; ?></p>
+
+    <?php if (isset($this->item['figures']) && isset($this->item['figures'][0])): ?>
+        <?php $this->insert('image', $this->item['figures'][0]); ?>
+    <?php endif; ?>
+
+    <div class="collection sectie">
+      <p class="sectie-titel"><?= $GLOBALS['TL_LANG']['tl_jvh_db_collection']['fe']['collection_type']; ?>
+      <input type="radio" id="collection-1" name="collection" value="1" <?php if ($this->item['collection_id'] == 1): ?>checked="checked"<?php endif; ?>><label for="collection-1"><?= $GLOBALS['TL_LANG']['tl_jvh_db_collection']['collection_options'][1]; ?></label>
+      <input type="radio" id="collection-2" name="collection" value="2" <?php if ($this->item['collection_id'] == 2): ?>checked="checked"<?php endif; ?>><label for="collection-2"><?= $GLOBALS['TL_LANG']['tl_jvh_db_collection']['collection_options'][2]; ?></label>
+    </div>
+
+    <div class="comment sectie">
+      <p class="sectie-titel"><?= $GLOBALS['TL_LANG']['tl_jvh_db_collection']['fe']['comment']; ?>
+      <textarea name="comment"><?= $this->item['comment']; ?></textarea>
+    </div>
+
+    <div class="status-log-container">
+      <p class="sectie-titel"><?= $GLOBALS['TL_LANG']['tl_jvh_db_collection']['fe']['status_header']; ?>
+      <p class="sectie-titel"><?= $GLOBALS['TL_LANG']['tl_jvh_db_collection']['fe']['status']; ?>
+      <select name="status" onchange="if (this.value != '<?= $this->item['status_id']; ?>') { document.getElementById('status_comment_section').style.display = ''; } else { document.getElementById('status_comment_section').style.display = 'none'; } " >
+        <?php foreach($GLOBALS['TL_LANG']['tl_jvh_db_collection_status_log']['collection_status'] as $status_id => $status_label): ?>
+          <option value="<?= $status_id; ?>" <?php if ($this->item['status_id'] == $status_id): ?>selected="selected"<?php endif; ?>><?= $status_label; ?></option>
+        <?php endforeach; ?>
+      </select>
+      <div id="status_comment_section" style="display: none;">
+      <p class="sectie-titel"><?= $GLOBALS['TL_LANG']['tl_jvh_db_collection']['fe']['status_comment']; ?>
+      <textarea name="status_comment"></textarea>
+      </div>
+
+      <div class="status-log"><table>
+      <?php $i = 0; ?>
+      <?php foreach($this->statusLogs as $statusLog): ?>
+        <?php if ($i == 0): ?>
+          <tr class="current-header">
+          <th class="status"><?=$GLOBALS['TL_LANG']['tl_jvh_db_collection']['current_status']; ?></th>
+          <th class="tstamp"><?=$GLOBALS['TL_LANG']['tl_jvh_db_collection_status_log']['tstamp'][0]; ?></th>
+          <th class="tstamp"><?=$GLOBALS['TL_LANG']['tl_jvh_db_collection_status_log']['comment'][0]; ?></th>
+          </tr>
+        <?php elseif ($i == 1): ?>
+          <tr class="pevious-header">
+          <th class="status"><?=$GLOBALS['TL_LANG']['tl_jvh_db_collection']['previous_status']; ?></th>
+          <th class="tstamp"><?=$GLOBALS['TL_LANG']['tl_jvh_db_collection_status_log']['tstamp'][0]; ?></th>
+          <th class="tstamp"><?=$GLOBALS['TL_LANG']['tl_jvh_db_collection_status_log']['comment'][0]; ?></th>
+          </tr>
+        <?php endif; ?>
+          <tr class="">
+          <td class="status"><?=$statusLog['status']; ?></th>
+          <td class="tstamp"><?=$statusLog['tstamp']; ?></th>
+          <td class="tstamp"><?=$statusLog['comment']; ?></th>
+          </tr>
+        <?php $i++; ?>
+      <?php endforeach; ?>
+      </table></div>
+    </div>
+
+    <div class="widget widget-submit">
+      <button type="submit" class="submit"><?= $GLOBALS['TL_LANG']['tl_jvh_db_collection']['fe']['save']; ?></button>
+    </div>
+
+</div>
+</form>
+
+<?php $this->endblock(); ?>
