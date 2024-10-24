@@ -128,6 +128,17 @@ $GLOBALS['TL_DCA']['tl_jvh_db_collection'] = array
       'sql'                     => "int(10) unsigned NOT NULL default 0",
       'default'                 => '0',
     ),
+    'condition' => array
+    (
+      'filter'                  => true,
+      'search'                  => true,
+      'inputType'               => 'select',
+      'eval'                    => array('includeBlankOption'=>true),
+      'options'                 => [],
+      'reference'               => &$GLOBALS['TL_LANG']['tl_jvh_db_collection']['condition_options'],
+      'sql'                     => "int(10) unsigned NOT NULL default 0",
+      'default'                 => '0',
+    ),
     'comment' => array
     (
       'exclude'                 => true,

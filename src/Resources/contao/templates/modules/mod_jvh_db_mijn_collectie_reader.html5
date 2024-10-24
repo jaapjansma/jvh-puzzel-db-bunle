@@ -18,6 +18,15 @@
       <input type="radio" id="collection-2" name="collection" value="2" <?php if ($this->item['collection_id'] == 2): ?>checked="checked"<?php endif; ?>><label for="collection-2"><?= $GLOBALS['TL_LANG']['tl_jvh_db_collection']['collection_options'][2]; ?></label>
     </div>
 
+    <div class="condition sectie" id="condition_section">
+      <p class="sectie-titel"><?= $GLOBALS['TL_LANG']['tl_jvh_db_collection']['fe']['condition']; ?>
+      <select name="condition">
+        <?php foreach($GLOBALS['TL_LANG']['tl_jvh_db_collection']['condition_options'] as $condition_id => $condition_label): ?>
+          <option value="<?= $condition_id; ?>" <?php if ($this->item['condition_id'] == $condition_id): ?>selected="selected"<?php endif; ?>><?= $condition_label; ?></option>
+        <?php endforeach; ?>
+      </select>
+    </div>
+
     <div class="comment sectie">
       <p class="sectie-titel"><?= $GLOBALS['TL_LANG']['tl_jvh_db_collection']['fe']['comment']; ?>
       <textarea name="comment"><?= $this->item['comment']; ?></textarea>
@@ -68,5 +77,20 @@
 
 </div>
 </form>
+
+<script>
+$(document).ready(function() {
+  $('input[type=radio][name=collection]').change(function() {
+    $('#condition_section').hide();
+    if ($(this).val() == 1) {
+      $('#condition_section').show();
+    }
+  });
+  $('#condition_section').hide();
+  if ($('input[type=radio][name=collection]').val() == 1) {
+    $('#condition_section').show();
+  }
+});
+</script>
 
 <?php $this->endblock(); ?>

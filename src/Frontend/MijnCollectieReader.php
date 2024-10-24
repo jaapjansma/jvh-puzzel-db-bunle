@@ -98,6 +98,11 @@ class MijnCollectieReader extends AbstractModule
         $item['class'][] = 'wishlist';
         break;
     }
+    $item['condition_id'] = $item['condition'];
+    $item['condition'] = '';
+    if (isset($GLOBALS['TL_LANG']['tl_jvh_db_collection']['condition_options'][$item['condition']])) {
+      $item['condition'] = $GLOBALS['TL_LANG']['tl_jvh_db_collection']['condition_options'][$item['condition']];
+    }
     $item['collection_id'] = $item['collection'];
     $item['collection'] = '';
     if (isset($GLOBALS['TL_LANG']['tl_jvh_db_collection']['collection_options'][$item['collection']])) {
@@ -133,6 +138,9 @@ class MijnCollectieReader extends AbstractModule
       $objCollectionModel = CollectionModel::findByPk($item['id']);
       $objCollectionModel->collection = Input::post('collection');
       $objCollectionModel->comment = Input::post('comment');
+      if ($objCollectionModel->collection == 1) {
+        $objCollectionModel->condition = Input::post('condition');
+      }
       $objCollectionModel->save();
       if (Input::post('status') != $item['status_id']) {
         // A new status is submitted
@@ -159,7 +167,7 @@ class MijnCollectieReader extends AbstractModule
     $strQuery .= "`tl_jvh_db_puzzel_product`.`doos`,";
     $strQuery .= "`tl_jvh_db_puzzel_product`.`uitgever`,";
     $strQuery .= "`tl_jvh_db_puzzel_product`.`puzzel_formaat`,";
-    $strQuery .= "`tl_jvh_db_collection`.`collection`, `tl_jvh_db_collection`.`id`, `tl_jvh_db_collection`.`tstamp`, `tl_jvh_db_collection`.`comment`,";
+    $strQuery .= "`tl_jvh_db_collection`.`collection`, `tl_jvh_db_collection`.`id`, `tl_jvh_db_collection`.`tstamp`, `tl_jvh_db_collection`.`comment`, `tl_jvh_db_collection`.`condition`,";
     $strQuery .= "`tl_jvh_db_collection_status_log`.`status`";
     $strQuery .= " FROM `tl_jvh_db_collection`";
     $strQuery .= " LEFT JOIN (SELECT    MAX(`id`) `max_id`, `pid` FROM `tl_jvh_db_collection_status_log` GROUP BY  `pid`) `recent_status` ON (`recent_status`.`pid` = `tl_jvh_db_collection`.`id`)";
