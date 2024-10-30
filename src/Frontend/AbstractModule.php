@@ -63,12 +63,15 @@ abstract class AbstractModule extends \Contao\Module {
     $url = $objPage->getFrontendUrl($auto_item);
     $queryParams = [];
     foreach($_GET as $key => $value) {
-      if (in_array($key, ['collection', 'wishlist'])) {
+      if (in_array($key, ['collection', 'wishlist', 'auto_item'])) {
         continue;
       }
       $queryParams[$key] = $value;
     }
-    $url .= '?' . http_build_query($queryParams);
+    $query = http_build_query($queryParams);
+    if (strlen($query)) {
+      $url .= '?' . $query;
+    }
     $this->redirect($url);
   }
 
