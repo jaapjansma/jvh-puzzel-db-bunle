@@ -91,7 +91,7 @@ class PuzzelProductLijst extends AbstractModule
       }
       if ($type && is_array($ids) && count($ids)) {
         foreach ($ids as $id) {
-          $this->saveProductInCollection($id, $type);
+          $this->saveProductInCollection($id, $type, false);
         }
       }
       $url = $objPage->getFrontendUrl();

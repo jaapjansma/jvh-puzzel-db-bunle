@@ -39,7 +39,7 @@ abstract class AbstractModule extends \Contao\Module {
     return parent::generate();
   }
 
-  protected function saveProductInCollection(int $product_id, int $collection) {
+  protected function saveProductInCollection(int $product_id, int $collection, bool $redirect=true) {
     global $objPage;
     if (!CollectionModel::existsInCollection($product_id, $this->User->id, $collection)) {
       $collectionModel = new CollectionModel();
@@ -54,25 +54,27 @@ abstract class AbstractModule extends \Contao\Module {
       $statusLog->tstamp = time();
       $statusLog->save();
     }
-    $auto_item = \Contao\Input::get('auto_item');
-    if (is_string($auto_item) && strlen($auto_item)) {
-      $auto_item = '/' . $auto_item;
-    } else {
-      $auto_item = null;
-    }
-    $url = $objPage->getFrontendUrl($auto_item);
-    $queryParams = [];
-    foreach($_GET as $key => $value) {
-      if (in_array($key, ['collection', 'wishlist', 'auto_item'])) {
-        continue;
+    if ($redirect) {
+      $auto_item = \Contao\Input::get('auto_item');
+      if (is_string($auto_item) && strlen($auto_item)) {
+        $auto_item = '/' . $auto_item;
+      } else {
+        $auto_item = null;
       }
-      $queryParams[$key] = $value;
+      $url = $objPage->getFrontendUrl($auto_item);
+      $queryParams = [];
+      foreach ($_GET as $key => $value) {
+        if (in_array($key, ['collection', 'wishlist', 'auto_item'])) {
+          continue;
+        }
+        $queryParams[$key] = $value;
+      }
+      $query = http_build_query($queryParams);
+      if (strlen($query)) {
+        $url .= '?' . $query;
+      }
+      $this->redirect($url);
     }
-    $query = http_build_query($queryParams);
-    if (strlen($query)) {
-      $url .= '?' . $query;
-    }
-    $this->redirect($url);
   }
 
   protected function generateCollectionLinks(int $product_id): string {
