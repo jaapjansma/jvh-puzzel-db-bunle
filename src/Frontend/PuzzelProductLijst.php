@@ -76,6 +76,30 @@ class PuzzelProductLijst extends AbstractModule
     if (empty($objTarget)) {
       $objTarget = $objPage;
     }
+
+    if (Input::post('FORM_SUBMIT') == $this->id) {
+      $ids = Input::post('puzzel_id');
+      $type = Input::post('type');
+      if (is_array($ids) && count($ids)) {
+        foreach ($ids as $id) {
+          $this->saveProductInCollection($id, $type);
+        }
+      }
+      $url = $objPage->getFrontendUrl();
+      $queryParams = [];
+      foreach($_GET as $key => $value) {
+        if (in_array($key, ['type', 'puzzel_id', 'auto_item'])) {
+          continue;
+        }
+        $queryParams[$key] = $value;
+      }
+      $query = http_build_query($queryParams);
+      if (strlen($query)) {
+        $url .= '?' . $query;
+      }
+      $this->redirect($url);
+    }
+
     $arrResult = $this->search($strKeywords, 3);
     foreach($arrResult as $index => $item) {
       try {
@@ -101,6 +125,8 @@ class PuzzelProductLijst extends AbstractModule
     $this->Template->count = $count;
     $this->Template->keywords = $strKeywords;
     $this->Template->results = $arrResult;
+    $this->Template->formId = $this->id;
+    $this->Template->requestToken = System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue();
   }
 
   protected function search(string $strKeywords, int $intMinlength): array

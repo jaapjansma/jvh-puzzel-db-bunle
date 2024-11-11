@@ -83,6 +83,32 @@ class MijnCollectieLijst extends AbstractModule
     if (empty($objTarget)) {
       $objTarget = $objPage;
     }
+
+    if (Input::post('FORM_SUBMIT') == $this->id) {
+      $ids = Input::post('collection_item');
+      if (is_array($ids) && count($ids)) {
+        $strQuery = "DELETE FROM `tl_jvh_db_collection_status_log` WHERE `pid` IN (" . implode(",", $ids) . ")";
+        Database::getInstance()->prepare($strQuery)->execute();
+        $strQuery = "DELETE FROM `tl_jvh_db_collection` WHERE `id` IN (" . implode(",", $ids) . ")";
+        Database::getInstance()->prepare($strQuery)->execute();
+      }
+
+      $url = $objPage->getFrontendUrl();
+      $queryParams = [];
+      foreach($_GET as $key => $value) {
+        if (in_array($key, ['collection_item', 'auto_item'])) {
+          continue;
+        }
+        $queryParams[$key] = $value;
+      }
+      $query = http_build_query($queryParams);
+      if (strlen($query)) {
+        $url .= '?' . $query;
+      }
+      $this->redirect($url);
+
+    }
+
     $arrResult = $this->getProducts();
     $ids = [];
     foreach($arrResult as $index => $item) {
@@ -130,6 +156,8 @@ class MijnCollectieLijst extends AbstractModule
     $count = count($arrResult);
     $this->Template->count = $count;
     $this->Template->results = $arrResult;
+    $this->Template->formId = $this->id;
+    $this->Template->requestToken = System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue();
   }
 
   protected function getProducts(): array
@@ -167,7 +195,7 @@ class MijnCollectieLijst extends AbstractModule
     }
     /** @var Connection $connections */
     $connection = System::getContainer()->get('database_connection');
-    $objResult = $connection->executeQuery("SELECT * FROM `tl_jvh_db_collection_status_log` WHERE `pid` IN (?) ORDER BY `pid`, `tstamp` DESC", [$ids], [ArrayParameterType::INTEGER]);
+    $objResult = $connection->executeQuery("SELECT * FROM `tl_jvh_db_collection_status_log` WHERE `pid` IN (?) ORDER BY `pid`, `tstamp` DESC LIMIT 0, 3", [$ids], [ArrayParameterType::INTEGER]);
     $return = [];
     foreach ($objResult->fetchAllAssociative() as $row) {
       if (isset($GLOBALS['TL_LANG']['tl_jvh_db_collection_status_log']['collection_status'][$row['status']])) {
