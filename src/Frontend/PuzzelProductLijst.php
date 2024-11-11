@@ -26,6 +26,7 @@ use Contao\Input;
 use Contao\Search;
 use Contao\StringUtil;
 use Contao\System;
+use JvH\JvHPuzzelDbBundle\Model\CollectionModel;
 use JvH\JvHPuzzelDbBundle\Model\DoosModel;
 use JvH\JvHPuzzelDbBundle\Model\PuzzelProductModel;
 use JvH\JvHPuzzelDbBundle\Model\SerieModel;
@@ -79,8 +80,16 @@ class PuzzelProductLijst extends AbstractModule
 
     if (Input::post('FORM_SUBMIT') == $this->id) {
       $ids = Input::post('puzzel_id');
-      $type = Input::post('type');
-      if (is_array($ids) && count($ids)) {
+      $type = null;
+      switch (Input::post('type')) {
+        case 'collection':
+          $type = CollectionModel::COLLECTION;
+          break;
+        case 'wishlist':
+          $type = CollectionModel::WISHLIST;
+          break;
+      }
+      if ($type && is_array($ids) && count($ids)) {
         foreach ($ids as $id) {
           $this->saveProductInCollection($id, $type);
         }
