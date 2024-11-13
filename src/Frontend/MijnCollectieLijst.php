@@ -195,16 +195,21 @@ class MijnCollectieLijst extends AbstractModule
     }
     /** @var Connection $connections */
     $connection = System::getContainer()->get('database_connection');
-    $objResult = $connection->executeQuery("SELECT * FROM `tl_jvh_db_collection_status_log` WHERE `pid` IN (?) ORDER BY `pid`, `tstamp` DESC LIMIT 0, 3", [$ids], [ArrayParameterType::INTEGER]);
+    $objResult = $connection->executeQuery("SELECT * FROM `tl_jvh_db_collection_status_log` WHERE `pid` IN (?) ORDER BY `pid`, `tstamp` DESC", [$ids], [ArrayParameterType::INTEGER]);
     $return = [];
     foreach ($objResult->fetchAllAssociative() as $row) {
+      if (!isset($return[$row['pid']])) {
+        $return[$row['pid']] = [];
+      }
       if (isset($GLOBALS['TL_LANG']['tl_jvh_db_collection_status_log']['collection_status'][$row['status']])) {
         $row['status'] = $GLOBALS['TL_LANG']['tl_jvh_db_collection_status_log']['collection_status'][$row['status']];
       } else {
         $row['status'] = $GLOBALS['TL_LANG']['tl_jvh_db_collection_status_log']['collection_status'][0];
       }
       $row['tstamp'] = date('d-m-Y', $row['tstamp']);
-      $return[$row['pid']][] = $row;
+      if (count($return[$row['pid']]) < 3) {
+        $return[$row['pid']][] = $row;
+      }
     }
     return $return;
   }
