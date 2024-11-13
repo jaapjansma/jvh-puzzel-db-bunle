@@ -70,7 +70,7 @@ $GLOBALS['TL_DCA']['tl_jvh_db_collection_status_log'] = array
       (
         'href'                => 'act=delete',
         'icon'                => 'delete.svg',
-        'attributes'          => 'onclick="if(!confirm(\'' . $GLOBALS['TL_LANG']['tl_jvh_db_collection']['deleteConfirm'] . '\'))return false;Backend.getScrollOffset()"',
+        'attributes'          => 'onclick="if(!confirm(\'' . $GLOBALS['TL_LANG']['tl_jvh_db_collection_status_log']['deleteConfirm'] . '\'))return false;Backend.getScrollOffset()"',
       ),
     )
   ),

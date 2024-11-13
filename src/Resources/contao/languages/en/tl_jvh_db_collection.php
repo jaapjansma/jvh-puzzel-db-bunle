@@ -2,6 +2,7 @@
 
 $GLOBALS['TL_LANG']['tl_jvh_db_collection']['edit'] = 'Bewerken';
 $GLOBALS['TL_LANG']['tl_jvh_db_collection']['delete'] = 'Verwijderen';
+$GLOBALS['TL_LANG']['tl_jvh_db_collection']['deleteConfirm'] = 'Weet u zeker dat u deze wilt verwijderen?';
 $GLOBALS['TL_LANG']['tl_jvh_db_collection']['titel'] = ['Titel', ''];
 $GLOBALS['TL_LANG']['tl_jvh_db_collection']['tstamp'] = ['Datum toegevoegd', ''];
 $GLOBALS['TL_LANG']['tl_jvh_db_collection']['status'] = ['Status', 'Bekijk vorige statussen'];
