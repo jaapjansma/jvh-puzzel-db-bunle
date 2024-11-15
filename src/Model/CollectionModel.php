@@ -35,6 +35,11 @@ class CollectionModel extends Model {
     return false;
   }
 
+  public static function countInCollection(int $product_id, int $member_id, int $collection): int {
+    $result = Database::getInstance()->prepare("SELECT COUNT(*) as `count` FROM `tl_jvh_db_collection` WHERE `puzzel_product` = ? AND `member` = ?  AND `collection` = ?")->execute($product_id, $member_id, $collection)->fetchAssoc();
+    return (int) $result['count'];
+  }
+
   /**
    * Delete the current record and return the number of affected rows
    *

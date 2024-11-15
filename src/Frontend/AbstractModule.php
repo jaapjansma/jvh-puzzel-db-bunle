@@ -41,7 +41,7 @@ abstract class AbstractModule extends \Contao\Module {
 
   protected function saveProductInCollection(int $product_id, int $collection, bool $redirect=true) {
     global $objPage;
-    if (!CollectionModel::existsInCollection($product_id, $this->User->id, $collection)) {
+    if ($collection == CollectionModel::COLLECTION || !CollectionModel::existsInCollection($product_id, $this->User->id, $collection)) {
       $collectionModel = new CollectionModel();
       $collectionModel->puzzel_product = $product_id;
       $collectionModel->collection = $collection;
@@ -89,8 +89,8 @@ abstract class AbstractModule extends \Contao\Module {
       $objTemplate = new FrontendTemplate('collection_links');
       $objTemplate->collection_url = $objPage->getFrontendUrl($auto_item) . '?collection='.$product_id;
       $objTemplate->wishlist_url = $objPage->getFrontendUrl($auto_item) . '?wishlist='.$product_id;
-      $objTemplate->collection_exists = CollectionModel::existsInCollection($product_id, $this->User->id, CollectionModel::COLLECTION);
-      $objTemplate->wishlist_exists = CollectionModel::existsInCollection($product_id, $this->User->id, CollectionModel::WISHLIST);
+      $objTemplate->collection_exists = CollectionModel::countInCollection($product_id, $this->User->id, CollectionModel::COLLECTION);
+      $objTemplate->wishlist_exists = CollectionModel::countInCollection($product_id, $this->User->id, CollectionModel::WISHLIST);
       return $objTemplate->parse();
     }
     return '';
