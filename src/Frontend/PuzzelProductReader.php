@@ -182,28 +182,4 @@ class PuzzelProductReader extends AbstractModule
     }
     return $strPlaten;
   }
-
-  protected function findJumpToPage(IsotopeProduct $objProduct)
-  {
-    global $objPage;
-    global $objIsotopeListPage;
-
-    $arrCategories = $objProduct instanceof AbstractProduct ? $objProduct->getCategories(true) : [];
-    $arrCategories = Frontend::getPagesInCurrentRoot($arrCategories, FrontendUser::getInstance());
-    if (!empty($arrCategories)
-      && ($objCategories = PageModel::findMultipleByIds($arrCategories)) !== null
-    ) {
-      $blnMoreThanOne = $objCategories->count() > 1;
-      foreach ($objCategories as $objCategory) {
-
-        if ('index' === $objCategory->alias && $blnMoreThanOne) {
-          continue;
-        }
-
-        return $objCategory;
-      }
-    }
-
-    return $objIsotopeListPage ? : $objPage;
-  }
 }

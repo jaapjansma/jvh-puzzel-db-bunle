@@ -21,6 +21,10 @@ namespace JvH\JvHPuzzelDbBundle\Frontend;
 use Contao\FrontendTemplate;
 use Contao\FrontendUser;
 use Contao\Input;
+use Contao\PageModel;
+use Isotope\Frontend;
+use Isotope\Interfaces\IsotopeProduct;
+use Isotope\Model\Product\AbstractProduct;
 use JvH\JvHPuzzelDbBundle\Model\CollectionModel;
 use JvH\JvHPuzzelDbBundle\Model\CollectionStatusLogModel;
 
@@ -94,6 +98,30 @@ abstract class AbstractModule extends \Contao\Module {
       return $objTemplate->parse();
     }
     return '';
+  }
+
+  protected function findJumpToPage(IsotopeProduct $objProduct)
+  {
+    global $objPage;
+    global $objIsotopeListPage;
+
+    $arrCategories = $objProduct instanceof AbstractProduct ? $objProduct->getCategories(true) : [];
+    $arrCategories = Frontend::getPagesInCurrentRoot($arrCategories, FrontendUser::getInstance());
+    if (!empty($arrCategories)
+      && ($objCategories = PageModel::findMultipleByIds($arrCategories)) !== null
+    ) {
+      $blnMoreThanOne = $objCategories->count() > 1;
+      foreach ($objCategories as $objCategory) {
+
+        if ('index' === $objCategory->alias && $blnMoreThanOne) {
+          continue;
+        }
+
+        return $objCategory;
+      }
+    }
+
+    return $objIsotopeListPage ? : $objPage;
   }
 
 }

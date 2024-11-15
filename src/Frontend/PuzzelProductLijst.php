@@ -26,6 +26,7 @@ use Contao\Input;
 use Contao\Search;
 use Contao\StringUtil;
 use Contao\System;
+use Isotope\Model\Product;
 use JvH\JvHPuzzelDbBundle\Model\CollectionModel;
 use JvH\JvHPuzzelDbBundle\Model\DoosModel;
 use JvH\JvHPuzzelDbBundle\Model\PuzzelProductModel;
@@ -127,6 +128,21 @@ class PuzzelProductLijst extends AbstractModule
       $arrResult[$index]['figures'] = [];
       if (isset($item['multiSRC']) && isset($item['orderSRC'])) {
         $arrResult[$index]['figures'] = PuzzelProductModel::generateFigureElements($item['multiSRC'], $item['orderSRC'], $item['id'], $this->imgSize, (bool)$this->fullsize);
+      }
+
+      $arrResult[$index]['webshop_product_url'] = '';
+      if (!empty($item['product_id'])) {
+        $objIsoProducts = Product::findAvailableByIds([$item['product_id']]);
+        if ($objIsoProducts) {
+          $productIsoModels = $objIsoProducts->getModels();
+          if ($productIsoModels) {
+            $objIsoProduct = reset($productIsoModels);
+            if ($objIsoProduct) {
+              $productJumpTo = $this->findJumpToPage($objIsoProduct);
+              $arrResult[$index]['webshop_product_url'] = $objIsoProduct->generateUrl($productJumpTo, true);
+            }
+          }
+        }
       }
 
     }
