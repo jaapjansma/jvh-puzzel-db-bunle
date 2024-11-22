@@ -57,6 +57,8 @@ abstract class AbstractModule extends \Contao\Module {
       $statusLog->status = 1;
       $statusLog->tstamp = time();
       $statusLog->save();
+    } elseif ($collection == CollectionModel::WISHLIST) {
+      CollectionModel::removeFromWishlist($product_id, $this->User->id);
     }
     if ($redirect) {
       $auto_item = \Contao\Input::get('auto_item');
@@ -77,6 +79,7 @@ abstract class AbstractModule extends \Contao\Module {
       if (strlen($query)) {
         $url .= '?' . $query;
       }
+      $url .= '#product-'.$product_id;
       $this->redirect($url);
     }
   }

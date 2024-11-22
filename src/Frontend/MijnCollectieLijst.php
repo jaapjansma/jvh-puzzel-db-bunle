@@ -171,7 +171,7 @@ class MijnCollectieLijst extends AbstractModule
     $strQuery .= "`tl_jvh_db_puzzel_product`.`doos`,";
     $strQuery .= "`tl_jvh_db_puzzel_product`.`uitgever`,";
     $strQuery .= "`tl_jvh_db_puzzel_product`.`puzzel_formaat`,";
-    $strQuery .= "`tl_jvh_db_collection`.`collection`, `tl_jvh_db_collection`.`id`, `tl_jvh_db_collection`.`tstamp`, ";
+    $strQuery .= "`tl_jvh_db_collection`.`collection`, `tl_jvh_db_collection`.`id`, `tl_jvh_db_collection`.`tstamp`, `tl_jvh_db_collection`.`comment`,";
     $strQuery .= "`tl_jvh_db_collection_status_log`.`status`";
     $strQuery .= " FROM `tl_jvh_db_collection`";
     $strQuery .= " LEFT JOIN (SELECT    MAX(`id`) `max_id`, `pid` FROM `tl_jvh_db_collection_status_log` GROUP BY  `pid`) `recent_status` ON (`recent_status`.`pid` = `tl_jvh_db_collection`.`id`)";

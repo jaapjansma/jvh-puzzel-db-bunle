@@ -279,6 +279,7 @@ class PuzzelProductLijst extends AbstractModule
     if (count($arrAllKeywords)) {
       $strQuery .= "AND (" . implode(" OR ", $arrAllKeywords) . ")";
     }
+    $strQuery .= " ORDER BY `release_date` DESC";
 
     $objResultStmt = Database::getInstance()->prepare($strQuery);
     $objResult = $objResultStmt->execute(...$arrValues);
@@ -330,6 +331,7 @@ class PuzzelProductLijst extends AbstractModule
     if (count($arrAllKeywords)) {
       $strQuery .= "AND (" . implode(" OR ", $arrAllKeywords) . ")";
     }
+
 
     $objResultStmt = Database::getInstance()->prepare($strQuery);
     $objResult = $objResultStmt->execute(...$arrValues);
