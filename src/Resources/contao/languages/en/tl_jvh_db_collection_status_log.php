@@ -15,4 +15,4 @@ $GLOBALS['TL_LANG']['tl_jvh_db_collection_status_log']['collection_status'][5] =
 $GLOBALS['TL_LANG']['tl_jvh_db_collection_status_log']['collection_status'][6] = 'Terug van uitgeleend';
 $GLOBALS['TL_LANG']['tl_jvh_db_collection_status_log']['collection_status'][7] = 'Te koop';
 $GLOBALS['TL_LANG']['tl_jvh_db_collection_status_log']['collection_status'][8] = 'Verkocht';
-$GLOBALS['TL_LANG']['tl_jvh_db_collection_status_log']['collection_status'][9] = 'Niet in bezet, wel al eens gemaakt';
+$GLOBALS['TL_LANG']['tl_jvh_db_collection_status_log']['collection_status'][9] = 'Niet in bezit, wel al eens gemaakt';
