@@ -118,7 +118,7 @@ class PuzzelProductModel extends Model {
     return implode(", ", $return);
   }
 
-  public static function generateFigureElements(string $strMultiSrc, string $strOrderSrc, int $id, string $imgSize, bool $enableLightBox, string $lightbox_id='lb-puzzel-product'): array {
+  public static function generateFigureElements(string $strMultiSrc, string $strOrderSrc, int $id, string $imgSize, bool $enableLightBox, string $lightbox_id='lb-puzzel-product', bool $addFavoriteLink = false, string $currentUrl=''): array {
     $multiSrc = array_map('\Contao\StringUtil::binToUuid', StringUtil::deserialize($strMultiSrc, true));
     $orderSrc = array_map('\Contao\StringUtil::binToUuid', StringUtil::deserialize($strOrderSrc, true));
     $projectDir = System::getContainer()->getParameter('kernel.project_dir');
@@ -143,6 +143,7 @@ class PuzzelProductModel extends Model {
 
           $row = $objFiles->row();
           $row['mtime'] = $objFile->mtime;
+          $row['uuid'] = StringUtil::binToUuid($objFiles->uuid);
 
           // Add the image
           $images[$objFiles->path] = $row;
@@ -168,6 +169,7 @@ class PuzzelProductModel extends Model {
 
             $row = $objSubfiles->row();
             $row['mtime'] = $objFile->mtime;
+            $row['uuid'] = StringUtil::binToUuid($objSubfiles->uuid);
 
             // Add the image
             $images[$objSubfiles->path] = $row;
@@ -190,6 +192,13 @@ class PuzzelProductModel extends Model {
           ->build();
         $cellData = $figure->getLegacyTemplateData();
         $cellData['figure'] = $figure;
+        if ($addFavoriteLink) {
+          if (strpos($currentUrl, '?')===false) {
+            $currentUrl .= '?';
+          }
+          $cellData['favorite_link'] = $currentUrl . '&orderSRC=' . StringUtil::binToUuid($images[$i]['uuid']);
+          $cellData['is_current_favorite'] = $i === 0;
+        }
         $figures[$i] = $cellData;
       }
     }

@@ -35,6 +35,7 @@ use JvH\JvHPuzzelDbBundle\Model\PuzzelProductModel;
 use JvH\JvHPuzzelDbBundle\Model\SerieModel;
 use JvH\JvHPuzzelDbBundle\Model\UitgeverModel;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 
 class MijnCollectieReader extends AbstractModule
 {
@@ -69,10 +70,30 @@ class MijnCollectieReader extends AbstractModule
     System::loadLanguageFile('tl_jvh_db_puzzel_plaat');
     System::loadLanguageFile('tl_jvh_db_collection');
     System::loadLanguageFile('tl_jvh_db_collection_status_log');
-    if (\is_array(Input::get('keywords')))
-    {
+    if (\is_array(Input::get('keywords'))) {
       throw new BadRequestHttpException('Expected string, got array');
     }
+
+    global $objPage;
+    $auto_item = \Contao\Input::get('auto_item');
+    if (is_string($auto_item) && strlen($auto_item)) {
+      $auto_item = '/' . $auto_item;
+    } else {
+      $auto_item = null;
+    }
+    $currentUrl = $objPage->getFrontendUrl($auto_item) . '?';
+    $queryParams = [];
+    foreach ($_GET as $key => $value) {
+      if (in_array($key, ['collection', 'wishlist', 'auto_item', 'orderSRC'])) {
+        continue;
+      }
+      $queryParams[$key] = $value;
+    }
+    $query = http_build_query($queryParams);
+    if (strlen($query)) {
+      $currentUrl .= $query;
+    }
+
     $this->Template->uniqueId = $this->id;
     $objTarget = $this->objModel->getRelated('jumpTo');
     if (empty($objTarget)) {
@@ -125,14 +146,37 @@ class MijnCollectieReader extends AbstractModule
     $item['delete_link'] = $objPage->getFrontendUrl() . '?delete=' . $item['id'];
 
     $item['figures'] = [];
-    if (isset($item['multiSRC']) && isset($item['orderSRC'])) {
-      $item['figures'] = PuzzelProductModel::generateFigureElements($item['multiSRC'], $item['orderSRC'], $item['id'], $this->imgSize, (bool)$this->fullsize);
+    $orderSrc = '';
+    if (isset($item['orderSRC'])) {
+      $orderSrc = $item['orderSRC'];
+    }
+    if (isset($item['collection_orderSRC'])) {
+      $orderSrc = $item['collection_orderSRC'];
+    }
+    if (isset($item['multiSRC'])) {
+      $item['figures'] = PuzzelProductModel::generateFigureElements($item['multiSRC'], $orderSrc, $item['id'], $this->imgSize, (bool)$this->fullsize, 'lb-puzzel-product', true, $currentUrl);
     }
     $this->Template->statusLogs = $this->getStatusLog($id);
-    $this->Template->item = $item;
 
     $this->Template->formId = $this->id;
     $this->Template->requestToken = System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue();
+
+    if (Input::get('orderSRC') && isset($item['orderSRC'])) {
+      $orderSrc = array_map('\Contao\StringUtil::binToUuid', StringUtil::deserialize($item['orderSRC'], true));
+      $newOrderSrc[] = StringUtil::uuidToBin(Input::get('orderSRC'));
+      foreach($orderSrc as $orderSrcItem) {
+        if ($orderSrcItem != Input::get('orderSRC')) {
+          $newOrderSrc[] = StringUtil::uuidToBin($orderSrcItem);
+        }
+      }
+      $strNewOrderSrc = serialize($newOrderSrc);
+      $objCollectionModel = CollectionModel::findByPk($item['id']);
+      $objCollectionModel->orderSRC = $strNewOrderSrc;
+      $objCollectionModel->save();
+      if (isset($item['multiSRC'])) {
+        $item['figures'] = PuzzelProductModel::generateFigureElements($item['multiSRC'], $strNewOrderSrc, $item['id'], $this->imgSize, (bool)$this->fullsize, 'lb-puzzel-product', true, $currentUrl);
+      }
+    }
 
     if (Input::post('FORM_SUBMIT') == $this->id) {
       $objCollectionModel = CollectionModel::findByPk($item['id']);
@@ -154,6 +198,7 @@ class MijnCollectieReader extends AbstractModule
       $url = $objTarget->getFrontendUrl();
       $this->redirect($url);
     }
+    $this->Template->item = $item;
   }
 
   protected function getProduct(int $id): array
@@ -167,7 +212,7 @@ class MijnCollectieReader extends AbstractModule
     $strQuery .= "`tl_jvh_db_puzzel_product`.`doos`,";
     $strQuery .= "`tl_jvh_db_puzzel_product`.`uitgever`,";
     $strQuery .= "`tl_jvh_db_puzzel_product`.`puzzel_formaat`,";
-    $strQuery .= "`tl_jvh_db_collection`.`collection`, `tl_jvh_db_collection`.`id`, `tl_jvh_db_collection`.`tstamp`, `tl_jvh_db_collection`.`comment`, `tl_jvh_db_collection`.`condition`,";
+    $strQuery .= "`tl_jvh_db_collection`.`collection`, `tl_jvh_db_collection`.`id`, `tl_jvh_db_collection`.`tstamp`, `tl_jvh_db_collection`.`comment`, `tl_jvh_db_collection`.`condition`, `tl_jvh_db_collection`.`orderSRC` AS `collection_orderSRC`, ";
     $strQuery .= "`tl_jvh_db_collection_status_log`.`status`";
     $strQuery .= " FROM `tl_jvh_db_collection`";
     $strQuery .= " LEFT JOIN (SELECT    MAX(`id`) `max_id`, `pid` FROM `tl_jvh_db_collection_status_log` GROUP BY  `pid`) `recent_status` ON (`recent_status`.`pid` = `tl_jvh_db_collection`.`id`)";

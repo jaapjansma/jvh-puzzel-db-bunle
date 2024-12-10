@@ -147,5 +147,9 @@ $GLOBALS['TL_DCA']['tl_jvh_db_collection'] = array
       'eval'                    => array(),
       'sql'                     => "text NULL"
     ),
+    'orderSRC' => array
+    (
+      'sql'                     => "blob NULL"
+    ),
   )
 );
