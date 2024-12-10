@@ -196,7 +196,7 @@ class PuzzelProductModel extends Model {
           if (strpos($currentUrl, '?')===false) {
             $currentUrl .= '?';
           }
-          $cellData['favorite_link'] = $currentUrl . '&orderSRC=' . StringUtil::binToUuid($images[$i]['uuid']);
+          $cellData['favorite_link'] = $currentUrl . '&orderSRC=' . $images[$i]['uuid'];
           $cellData['is_current_favorite'] = $i === 0;
         }
         $figures[$i] = $cellData;
