@@ -157,6 +157,10 @@ class MijnCollectieReader extends AbstractModule
       $item['figures'] = PuzzelProductModel::generateFigureElements($item['multiSRC'], $orderSrc, $item['id'], $this->imgSize, (bool)$this->fullsize, 'lb-puzzel-product', true, $currentUrl);
     }
     $this->Template->statusLogs = $this->getStatusLog($id);
+    $item['status_comment'] = '';
+    if (isset($this->Template->statusLogs[0])) {
+      $item['status_comment'] = $this->Template->statusLogs[0]['comment'];
+    }
 
     $this->Template->formId = $this->id;
     $this->Template->requestToken = System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue();
@@ -192,6 +196,10 @@ class MijnCollectieReader extends AbstractModule
         $statusLog->pid = $item['id'];
         $statusLog->tstamp = time();
         $statusLog->status = Input::post('status');
+        $statusLog->comment = Input::post('status_comment');
+        $statusLog->save();
+      } elseif (isset($this->Template->statusLogs[0])) {
+        $statusLog = CollectionStatusLogModel::findByPk($this->Template->statusLogs[0]['id']);
         $statusLog->comment = Input::post('status_comment');
         $statusLog->save();
       }
