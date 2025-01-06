@@ -28,7 +28,7 @@ class SerieModel extends Model {
     if (empty($id)) {
       return '';
     }
-    $objModel = SerieModel::findByPk($id);
+    $objModel = static::getModelFromCache($id);
     if (empty($objModel)) {
       return '';
     }
@@ -36,6 +36,21 @@ class SerieModel extends Model {
       return $objModel->label_en;
     }
     return $objModel->label_nl;
+  }
+
+  private static function getModelFromCache(int $id) {
+    static $cache = null;
+    if ($cache == null) {
+      $cache = [];
+      $objModels = static::findAll();
+      foreach ($objModels as $objModel) {
+        $cache[$objModel->id] = $objModel;
+      }
+    }
+    if (isset($cache[$id])) {
+      return $cache[$id];
+    }
+    return null;
   }
 
 }

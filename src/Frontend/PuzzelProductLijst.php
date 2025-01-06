@@ -111,6 +111,18 @@ class PuzzelProductLijst extends AbstractModule
     }
 
     $arrResult = $this->search($strKeywords, 3);
+    $arrProductIds = [];
+    foreach ($arrResult as $item) {
+      if (!empty($item['product_id'])) {
+        $arrProductIds[] = $item['product_id'];
+      }
+    }
+    $prefetchedProducts = Product::findAvailableByIds($arrProductIds);
+    $arrProducts = [];
+    while($prefetchedProducts->next()) {
+      $arrProducts[$prefetchedProducts->id] = $prefetchedProducts->getModels();
+    }
+
     foreach($arrResult as $index => $item) {
       try {
         $arrResult[$index]['link'] = $objTarget->getFrontendUrl('/' . $item['alias_' . $GLOBALS['TL_LANGUAGE']]);
@@ -124,24 +136,13 @@ class PuzzelProductLijst extends AbstractModule
       $arrResult[$index]['stukjes'] = PuzzelProductModel::getStukjes($arrResult[$index]['puzzel_formaat']);
       $arrResult[$index]['tekenaar'] = PuzzelProductModel::getTekenaars($arrResult[$index]['puzzel_formaat']);
       $arrResult[$index]['collection_links'] = $this->generateCollectionLinks($item['id']);
-
       $arrResult[$index]['figures'] = [];
-      if (isset($item['multiSRC']) && isset($item['orderSRC'])) {
-        $arrResult[$index]['figures'] = PuzzelProductModel::generateFigureElements($item['multiSRC'], $item['orderSRC'], $item['id'], $this->imgSize, (bool)$this->fullsize);
-      }
-
       $arrResult[$index]['webshop_product_url'] = '';
-      if (!empty($item['product_id'])) {
-        $objIsoProducts = Product::findAvailableByIds([$item['product_id']]);
-        if ($objIsoProducts) {
-          $productIsoModels = $objIsoProducts->getModels();
-          if ($productIsoModels) {
-            $objIsoProduct = reset($productIsoModels);
-            if ($objIsoProduct) {
-              $productJumpTo = $this->findJumpToPage($objIsoProduct);
-              $arrResult[$index]['webshop_product_url'] = $objIsoProduct->generateUrl($productJumpTo, true);
-            }
-          }
+      if (!empty($item['product_id']) && isset($arrProducts[$item['product_id']])) {
+        $objIsoProduct = reset($arrProducts[$item['product_id']]);
+        if ($objIsoProduct) {
+          $productJumpTo = $this->findJumpToPage($objIsoProduct);
+          $arrResult[$index]['webshop_product_url'] = $objIsoProduct->generateUrl($productJumpTo, true);
         }
       }
 
@@ -158,56 +159,57 @@ class PuzzelProductLijst extends AbstractModule
   {
     // Clean the keywords
     $strKeywords = StringUtil::decodeEntities($strKeywords);
-
-    // Split keywords
-    $arrChunks = array();
-    preg_match_all('/"[^"]+"|\S+/', $strKeywords, $arrChunks);
-
     $arrPhrases = array();
     $arrKeywords = array();
     $arrWildcards = array();
 
-    foreach (array_unique($arrChunks[0]) as $strKeyword) {
-      if (($strKeyword[0] === '*' || substr($strKeyword, -1) === '*') && \strlen($strKeyword) > 1) {
-        $arrWildcardWords = Search::splitIntoWords(trim($strKeyword, '*'), $GLOBALS['TL_LANGUAGE']);
+    if (strlen($strKeywords)) {
+      // Split keywords
+      $arrChunks = array();
+      preg_match_all('/"[^"]+"|\S+/', $strKeywords, $arrChunks);
 
-        foreach ($arrWildcardWords as $intIndex => $strWord) {
-          if ($intIndex === 0 && $strKeyword[0] === '*') {
-            $strWord = '%' . $strWord;
-          }
+      foreach (array_unique($arrChunks[0]) as $strKeyword) {
+        if (($strKeyword[0] === '*' || substr($strKeyword, -1) === '*') && \strlen($strKeyword) > 1) {
+          $arrWildcardWords = Search::splitIntoWords(trim($strKeyword, '*'), $GLOBALS['TL_LANGUAGE']);
 
-          if ($intIndex === \count($arrWildcardWords) - 1 && substr($strKeyword, -1) === '*') {
-            $strWord .= '%';
-          }
-
-          if ($strWord[0] === '%' || substr($strWord, -1) === '%') {
-            $arrWildcards[] = $strWord;
-          } else {
-            $arrKeywords[] = $strWord;
-          }
-        }
-
-        continue;
-      }
-
-      switch (substr($strKeyword, 0, 1)) {
-        // Phrases
-        case '"':
-          if ($strKeyword = trim(substr($strKeyword, 1, -1))) {
-            $arrPhrases[] = $strKeyword;
-          }
-          break;
-
-        // Normal keywords
-        default:
-          foreach (Search::splitIntoWords($strKeyword, $GLOBALS['TL_LANGUAGE']) as $strWord) {
-            if ($intMinlength > 0 && \strlen($strWord) < $intMinlength) {
-              continue;
+          foreach ($arrWildcardWords as $intIndex => $strWord) {
+            if ($intIndex === 0 && $strKeyword[0] === '*') {
+              $strWord = '%' . $strWord;
             }
 
-            $arrKeywords[] = '%' . $strWord . '%';
+            if ($intIndex === \count($arrWildcardWords) - 1 && substr($strKeyword, -1) === '*') {
+              $strWord .= '%';
+            }
+
+            if ($strWord[0] === '%' || substr($strWord, -1) === '%') {
+              $arrWildcards[] = $strWord;
+            } else {
+              $arrKeywords[] = $strWord;
+            }
           }
-          break;
+
+          continue;
+        }
+
+        switch (substr($strKeyword, 0, 1)) {
+          // Phrases
+          case '"':
+            if ($strKeyword = trim(substr($strKeyword, 1, -1))) {
+              $arrPhrases[] = $strKeyword;
+            }
+            break;
+
+          // Normal keywords
+          default:
+            foreach (Search::splitIntoWords($strKeyword, $GLOBALS['TL_LANGUAGE']) as $strWord) {
+              if ($intMinlength > 0 && \strlen($strWord) < $intMinlength) {
+                continue;
+              }
+
+              $arrKeywords[] = '%' . $strWord . '%';
+            }
+            break;
+        }
       }
     }
 
@@ -266,14 +268,16 @@ class PuzzelProductLijst extends AbstractModule
         }
       }
     }
-    $formaatIds = $this->searchPuzzelFormaten($arrWildcards, $arrKeywords, $arrPhrases);
-    foreach($formaatIds as $formaatId) {
-      $arrAllKeywords[] = "`puzzel_formaat` LIKE ?";
-      $arrValues[] = '%;i:' . $formaatId . ';%';
-      $arrAllKeywords[] = "`puzzel_formaat` LIKE ?";
-      $arrValues[] = '%;i:' . $formaatId . ';%';
-      $arrAllKeywords[] = "`puzzel_formaat` LIKE ?";
-      $arrValues[] = '%;s:' . strlen($formaatId) . ':"' . $formaatId . '";%';
+    if (strlen($strKeywords)) {
+      $formaatIds = $this->searchPuzzelFormaten($arrWildcards, $arrKeywords, $arrPhrases);
+      foreach ($formaatIds as $formaatId) {
+        $arrAllKeywords[] = "`puzzel_formaat` LIKE ?";
+        $arrValues[] = '%;i:' . $formaatId . ';%';
+        $arrAllKeywords[] = "`puzzel_formaat` LIKE ?";
+        $arrValues[] = '%;i:' . $formaatId . ';%';
+        $arrAllKeywords[] = "`puzzel_formaat` LIKE ?";
+        $arrValues[] = '%;s:' . strlen($formaatId) . ':"' . $formaatId . '";%';
+      }
     }
 
     if (count($arrAllKeywords)) {

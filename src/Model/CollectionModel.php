@@ -29,10 +29,11 @@ class CollectionModel extends Model {
   protected static $strTable = 'tl_jvh_db_collection';
 
   public static function existsInCollection(int $product_id, int $member_id, int $collection): bool {
-    if (CollectionModel::findBy(['puzzel_product=?', 'member=?', 'collection=?'], [$product_id, $member_id, $collection])) {
-      return true;
-    }
-    return false;
+    return (bool) self::countInCollection($product_id, $member_id, $collection) > 0;
+    //if (CollectionModel::findBy(['puzzel_product=?', 'member=?', 'collection=?'], [$product_id, $member_id, $collection])) {
+    //  return true;
+    //}
+    //return false;
   }
 
   public static function removeFromWishlist(int $product_id, int $member_id) {
@@ -44,8 +45,24 @@ class CollectionModel extends Model {
   }
 
   public static function countInCollection(int $product_id, int $member_id, int $collection): int {
-    $result = Database::getInstance()->prepare("SELECT COUNT(*) as `count` FROM `tl_jvh_db_collection` WHERE `puzzel_product` = ? AND `member` = ?  AND `collection` = ?")->execute($product_id, $member_id, $collection)->fetchAssoc();
-    return (int) $result['count'];
+    self::userCollectionProductCount($member_id);
+    if (isset(self::$collectionProductCount[$member_id][$collection][$product_id])) {
+      return self::$collectionProductCount[$member_id][$collection][$product_id];
+    }
+    return 0;
+    //$result = Database::getInstance()->prepare("SELECT COUNT(*) as `count` FROM `tl_jvh_db_collection` WHERE `puzzel_product` = ? AND `member` = ?  AND `collection` = ?")->execute($product_id, $member_id, $collection)->fetchAssoc();
+    //return (int) $result['count'];
+  }
+
+  static $collectionProductCount;
+  public static function userCollectionProductCount(int $member_id) {
+    if (!isset(self::$collectionProductCount[$member_id])) {
+      $result = Database::getInstance()->prepare("SELECT COUNT(*) as `count`, `collection`, `puzzel_product` FROM `tl_jvh_db_collection` WHERE `member` = ? GROUP BY `collection`, `puzzel_product`")->execute($member_id)->fetchAllAssoc();
+      self::$collectionProductCount[$member_id] = [];
+      foreach ($result as $item) {
+        self::$collectionProductCount[$member_id][$item['collection']][$item['puzzel_product']] = $item['count'];
+      }
+    }
   }
 
   /**

@@ -28,11 +28,26 @@ class UitgeverModel extends Model {
     if (empty($id)) {
       return '';
     }
-    $objModel = UitgeverModel::findByPk($id);
+    $objModel = static::getModelFromCache($id);
     if (empty($objModel)) {
       return '';
     }
     return $objModel->naam;
+  }
+
+  private static function getModelFromCache(int $id) {
+    static $cache = null;
+    if ($cache == null) {
+      $cache = [];
+      $objModels = static::findAll();
+      foreach ($objModels as $objModel) {
+        $cache[$objModel->id] = $objModel;
+      }
+    }
+    if (isset($cache[$id])) {
+      return $cache[$id];
+    }
+    return null;
   }
 
 }

@@ -85,17 +85,23 @@ abstract class AbstractModule extends \Contao\Module {
   }
 
   protected function generateCollectionLinks(int $product_id): string {
+    static $currentUrl;
     global $objPage;
-    if ($this->User->id) {
+
+    if ($currentUrl == null) {
       $auto_item = \Contao\Input::get('auto_item');
       if (is_string($auto_item) && strlen($auto_item)) {
         $auto_item = '/' . $auto_item;
       } else {
         $auto_item = null;
       }
+      $currentUrl = $objPage->getFrontendUrl($auto_item);
+    }
+
+    if ($this->User->id) {
       $objTemplate = new FrontendTemplate('collection_links');
-      $objTemplate->collection_url = $objPage->getFrontendUrl($auto_item) . '?collection='.$product_id;
-      $objTemplate->wishlist_url = $objPage->getFrontendUrl($auto_item) . '?wishlist='.$product_id;
+      $objTemplate->collection_url = $currentUrl . '?collection='.$product_id;
+      $objTemplate->wishlist_url = $currentUrl . '?wishlist='.$product_id;
       $objTemplate->collection_exists = CollectionModel::countInCollection($product_id, $this->User->id, CollectionModel::COLLECTION);
       $objTemplate->wishlist_exists = CollectionModel::countInCollection($product_id, $this->User->id, CollectionModel::WISHLIST);
       return $objTemplate->parse();
