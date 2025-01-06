@@ -133,8 +133,12 @@ class PuzzelProductLijst extends AbstractModule
       $arrResult[$index]['doos'] = DoosModel::getLabel($arrResult[$index]['doos']);
       $arrResult[$index]['uitgever'] = UitgeverModel::getNaam($arrResult[$index]['uitgever']);
       $arrResult[$index]['release_date'] = Date::parse($objPage->dateFormat, $arrResult[$index]['release_date']);
-      $arrResult[$index]['stukjes'] = PuzzelProductModel::getStukjes($arrResult[$index]['puzzel_formaat']);
-      $arrResult[$index]['tekenaar'] = PuzzelProductModel::getTekenaars($arrResult[$index]['puzzel_formaat']);
+      $arrResult[$index]['stukjes'] = '';
+      $arrResult[$index]['tekenaar'] = '';
+      if (!empty($arrResult[$index]['puzzel_formaat'])) {
+        $arrResult[$index]['stukjes'] = PuzzelProductModel::getStukjes($arrResult[$index]['puzzel_formaat']);
+        $arrResult[$index]['tekenaar'] = PuzzelProductModel::getTekenaars($arrResult[$index]['puzzel_formaat']);
+      }
       $arrResult[$index]['collection_links'] = $this->generateCollectionLinks($item['id']);
       $arrResult[$index]['figures'] = [];
       $arrResult[$index]['webshop_product_url'] = '';
