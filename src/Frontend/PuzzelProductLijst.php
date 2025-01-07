@@ -119,8 +119,8 @@ class PuzzelProductLijst extends AbstractModule
     }
     $prefetchedProducts = Product::findAvailableByIds($arrProductIds);
     $arrProducts = [];
-    while($prefetchedProducts->next()) {
-      $arrProducts[$prefetchedProducts->id] = $prefetchedProducts->getModels();
+    foreach($prefetchedProducts->getModels() as $objProductModel) {
+      $arrProducts[$objProductModel->id] = $objProductModel;
     }
 
     foreach($arrResult as $index => $item) {
@@ -143,11 +143,8 @@ class PuzzelProductLijst extends AbstractModule
       $arrResult[$index]['figures'] = [];
       $arrResult[$index]['webshop_product_url'] = '';
       if (!empty($item['product_id']) && isset($arrProducts[$item['product_id']])) {
-        $objIsoProduct = reset($arrProducts[$item['product_id']]);
-        if ($objIsoProduct) {
-          $productJumpTo = $this->findJumpToPage($objIsoProduct);
-          $arrResult[$index]['webshop_product_url'] = $objIsoProduct->generateUrl($productJumpTo, true);
-        }
+        $productJumpTo = $this->findJumpToPage($arrProducts[$item['product_id']]);
+        $arrResult[$index]['webshop_product_url'] = $arrProducts[$item['product_id']]->generateUrl($productJumpTo, true);
       }
 
     }
