@@ -94,6 +94,10 @@ class PuzzelProductLijst extends AbstractModule
         foreach ($ids as $id) {
           $this->saveProductInCollection($id, $type, false);
         }
+      } elseif (Input::post('cart') && is_array($ids) && count($ids)) {
+        foreach ($ids as $id) {
+          $this->addProductToCard($id, false);
+        }
       }
       $url = $objPage->getFrontendUrl();
       $queryParams = [];
@@ -145,6 +149,7 @@ class PuzzelProductLijst extends AbstractModule
       if (!empty($item['product_id']) && isset($arrProducts[$item['product_id']])) {
         $productJumpTo = $this->findJumpToPage($arrProducts[$item['product_id']]);
         $arrResult[$index]['webshop_product_url'] = $arrProducts[$item['product_id']]->generateUrl($productJumpTo, true);
+        $arrResult[$index]['webshop_cart_url'] = $this->generateCartUrl($item['id']);
       }
 
     }

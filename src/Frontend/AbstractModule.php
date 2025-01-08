@@ -20,13 +20,15 @@ namespace JvH\JvHPuzzelDbBundle\Frontend;
 
 use Contao\FrontendTemplate;
 use Contao\FrontendUser;
-use Contao\Input;
 use Contao\PageModel;
 use Isotope\Frontend;
 use Isotope\Interfaces\IsotopeProduct;
+use Isotope\Isotope;
+use Isotope\Model\Product;
 use Isotope\Model\Product\AbstractProduct;
 use JvH\JvHPuzzelDbBundle\Model\CollectionModel;
 use JvH\JvHPuzzelDbBundle\Model\CollectionStatusLogModel;
+use JvH\JvHPuzzelDbBundle\Model\PuzzelProductModel;
 
 abstract class AbstractModule extends \Contao\Module {
 
@@ -39,6 +41,12 @@ abstract class AbstractModule extends \Contao\Module {
     }
     if ($this->User->id && $id = \Contao\Input::get('wishlist')) {
       $this->saveProductInCollection($id, CollectionModel::WISHLIST);
+    }
+    if ($this->User->id && $id = \Contao\Input::get('cart')) {
+      $this->addProductToCard($id);
+    }
+    if ($this->User->id && $id = \Contao\Input::get('delete_status_log')) {
+      $this->deleteStatusLog($id);
     }
     return parent::generate();
   }
@@ -57,31 +65,63 @@ abstract class AbstractModule extends \Contao\Module {
       $statusLog->status = 1;
       $statusLog->tstamp = time();
       $statusLog->save();
-    } elseif ($collection == CollectionModel::WISHLIST) {
-      CollectionModel::removeFromWishlist($product_id, $this->User->id);
     }
     if ($redirect) {
-      $auto_item = \Contao\Input::get('auto_item');
-      if (is_string($auto_item) && strlen($auto_item)) {
-        $auto_item = '/' . $auto_item;
-      } else {
-        $auto_item = null;
-      }
-      $url = $objPage->getFrontendUrl($auto_item);
-      $queryParams = [];
-      foreach ($_GET as $key => $value) {
-        if (in_array($key, ['collection', 'wishlist', 'auto_item'])) {
-          continue;
-        }
-        $queryParams[$key] = $value;
-      }
-      $query = http_build_query($queryParams);
-      if (strlen($query)) {
-        $url .= '?' . $query;
-      }
+      $url = $this->generateCurrentUrl();
       $url .= '#product-'.$product_id;
       $this->redirect($url);
     }
+  }
+
+  protected function addProductToCard(int $product_id, bool $redirect=true) {
+    $objProduct = PuzzelProductModel::findByPk($product_id);
+    $isoTopeProducts = Product::findAvailableByIds([$objProduct->product_id]);
+    if ($isoTopeProducts) {
+      /** @var IsotopeProduct $isoTopeProduct */
+      foreach ($isoTopeProducts->getModels() as $isoTopeProduct) {
+        $arrConfig['jumpTo'] = $this->findJumpToPage($isoTopeProduct);
+        Isotope::getCart()->addProduct($isoTopeProduct, 1, $arrConfig);
+      }
+    }
+    if ($redirect) {
+      $url = $this->generateCurrentUrl();
+      $url .= '#product-'.$product_id;
+      $this->redirect($url);
+    }
+  }
+
+  protected function deleteStatusLog(int $log_id, bool $redirect=true) {
+    $objStatus = CollectionStatusLogModel::findByPk($log_id);
+    $product_id = $objStatus->pid;
+    $objStatus->delete();
+    if ($redirect) {
+      $url = $this->generateCurrentUrl();
+      $url .= '#product-'.$product_id;
+      $this->redirect($url);
+    }
+  }
+
+  protected function generateCurrentUrl(): string {
+    global $objPage;
+    $auto_item = \Contao\Input::get('auto_item');
+    if (is_string($auto_item) && strlen($auto_item)) {
+      $auto_item = '/' . $auto_item;
+    } else {
+      $auto_item = null;
+    }
+    $url = $objPage->getFrontendUrl($auto_item);
+    $queryParams = [];
+    foreach ($_GET as $key => $value) {
+      if (in_array($key, ['collection', 'wishlist', 'cart', 'delete_status_log', 'auto_item'])) {
+        continue;
+      }
+      $queryParams[$key] = $value;
+    }
+    $query = http_build_query($queryParams);
+    if (strlen($query)) {
+      $url .= '?' . $query;
+    }
+    return $url;
   }
 
   protected function generateCollectionLinks(int $product_id): string {
@@ -102,11 +142,28 @@ abstract class AbstractModule extends \Contao\Module {
       $objTemplate = new FrontendTemplate('collection_links');
       $objTemplate->collection_url = $currentUrl . '?collection='.$product_id;
       $objTemplate->wishlist_url = $currentUrl . '?wishlist='.$product_id;
+      $objTemplate->cart_url = $currentUrl . '?cart='.$product_id;
       $objTemplate->collection_exists = CollectionModel::countInCollection($product_id, $this->User->id, CollectionModel::COLLECTION);
       $objTemplate->wishlist_exists = CollectionModel::countInCollection($product_id, $this->User->id, CollectionModel::WISHLIST);
       return $objTemplate->parse();
     }
     return '';
+  }
+
+  protected function generateCartUrl(int $product_id): string {
+    static $currentUrl;
+    global $objPage;
+
+    if ($currentUrl == null) {
+      $auto_item = \Contao\Input::get('auto_item');
+      if (is_string($auto_item) && strlen($auto_item)) {
+        $auto_item = '/' . $auto_item;
+      } else {
+        $auto_item = null;
+      }
+      $currentUrl = $objPage->getFrontendUrl($auto_item);
+    }
+    return $currentUrl . '?cart='.$product_id;
   }
 
   protected function findJumpToPage(IsotopeProduct $objProduct)

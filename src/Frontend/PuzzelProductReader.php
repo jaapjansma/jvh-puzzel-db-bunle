@@ -105,6 +105,7 @@ class PuzzelProductReader extends AbstractModule
         $figures = PuzzelProductModel::generateFigureElements($objProduct->multiSRC, $objProduct->orderSRC, $objProduct->id, $this->imgSize, (bool)true, 'puzzel_product_reader');
       }
       $productData['collection_links'] = $this->generateCollectionLinks($productData['id']);
+      $productData['webshop_cart_url'] = $this->generateCartUrl($productData['id']);
 
       $this->Template->item = $productData;
       $this->Template->figures = $figures;
