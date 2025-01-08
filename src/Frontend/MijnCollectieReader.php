@@ -240,6 +240,19 @@ class MijnCollectieReader extends AbstractModule
   }
 
   protected function getStatusLog(int $id) {
+    static $currentUrl;
+    global $objPage;
+
+    if ($currentUrl == null) {
+      $auto_item = \Contao\Input::get('auto_item');
+      if (is_string($auto_item) && strlen($auto_item)) {
+        $auto_item = '/' . $auto_item;
+      } else {
+        $auto_item = null;
+      }
+      $currentUrl = $objPage->getFrontendUrl($auto_item);
+    }
+
     /** @var Connection $connections */
     $connection = System::getContainer()->get('database_connection');
     $objResult = $connection->executeQuery("SELECT * FROM `tl_jvh_db_collection_status_log` WHERE `pid` = ? ORDER BY `pid`, `tstamp` DESC", [$id]);
@@ -251,6 +264,7 @@ class MijnCollectieReader extends AbstractModule
         $row['status'] = $GLOBALS['TL_LANG']['tl_jvh_db_collection_status_log']['collection_status'][0];
       }
       $row['tstamp'] = date('d-m-Y', $row['tstamp']);
+      $row['delete_status_url'] = $currentUrl . '?delete_status_log=' . $row['id'];
       $return[] = $row;
     }
     return $return;
