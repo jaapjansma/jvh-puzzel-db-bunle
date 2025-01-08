@@ -39,6 +39,7 @@ $GLOBALS['FE_MOD']['application']['jvh_db_puzzel_product_lijst'] = \JvH\JvHPuzze
 $GLOBALS['FE_MOD']['application']['jvh_db_puzzel_product_reader'] = \JvH\JvHPuzzelDbBundle\Frontend\PuzzelProductReader::class;
 $GLOBALS['FE_MOD']['application']['jvh_db_mijn_collectie_lijst'] = \JvH\JvHPuzzelDbBundle\Frontend\MijnCollectieLijst::class;
 $GLOBALS['FE_MOD']['application']['jvh_db_mijn_collectie_reader'] = \JvH\JvHPuzzelDbBundle\Frontend\MijnCollectieReader::class;
+$GLOBALS['FE_MOD']['application']['jvh_db_isotope_product_actions'] = \JvH\JvHPuzzelDbBundle\Frontend\IsotopeProductActions::class;
 
 $GLOBALS['TL_MODELS']['tl_jvh_db_puzzel_plaat'] = \JvH\JvHPuzzelDbBundle\Model\PuzzelPlaatModel::class;
 $GLOBALS['TL_MODELS']['tl_jvh_db_tekenaar'] = \JvH\JvHPuzzelDbBundle\Model\TekenaarModel::class;

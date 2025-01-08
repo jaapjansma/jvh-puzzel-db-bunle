@@ -83,6 +83,10 @@ class MijnCollectieLijst extends AbstractModule
     if (empty($objTarget)) {
       $objTarget = $objPage;
     }
+    $objEditTarget = $this->objModel->getRelated('jvh_db_edit_jumpTo');
+    if (empty($objEditTarget)) {
+      $objEditTarget = $objPage;
+    }
 
     if (Input::post('FORM_SUBMIT') == $this->id) {
       $ids = Input::post('collection_item');
@@ -122,7 +126,7 @@ class MijnCollectieLijst extends AbstractModule
     foreach($arrResult as $index => $item) {
       $ids[] = $item['id'];
       try {
-        $arrResult[$index]['link'] = $objTarget->getFrontendUrl('/' . $item['id']);
+        $arrResult[$index]['link'] = $objTarget->getFrontendUrl('/' . $item['alias_' . $GLOBALS['TL_LANGUAGE']]);
       } catch (RouteParametersException $e) {
         $arrResult[$index]['link'] = '';
       }
@@ -153,7 +157,7 @@ class MijnCollectieLijst extends AbstractModule
       }
       $arrResult[$index]['collection_links'] = '';
       $arrResult[$index]['delete_link'] = $objPage->getFrontendUrl() . '?delete=' . $item['id'];
-      $arrResult[$index]['edit_link'] = $objTarget->getFrontendUrl() . '?id=' . $item['id'];
+      $arrResult[$index]['edit_link'] = $objEditTarget->getFrontendUrl() . '?id=' . $item['id'];
       $arrResult[$index]['webshop_cart_url'] = $this->generateCartUrl($item['puzzel_product']);
 
       $arrResult[$index]['figures'] = [];
@@ -188,6 +192,8 @@ class MijnCollectieLijst extends AbstractModule
     $strQuery .= "`tl_jvh_db_puzzel_product`.`uitgever`,";
     $strQuery .= "`tl_jvh_db_puzzel_product`.`puzzel_formaat`,";
     $strQuery .= "`tl_jvh_db_puzzel_product`.`id` as `puzzel_product`,";
+    $strQuery .= "`tl_jvh_db_puzzel_product`.`alias_nl`,";
+    $strQuery .= "`tl_jvh_db_puzzel_product`.`alias_en`,";
     $strQuery .= "`tl_jvh_db_collection`.`collection`, `tl_jvh_db_collection`.`id`, `tl_jvh_db_collection`.`tstamp`, `tl_jvh_db_collection`.`comment`, `tl_jvh_db_collection`.`orderSRC` AS `collection_orderSRC`, ";
     $strQuery .= "`tl_jvh_db_collection_status_log`.`status`";
     $strQuery .= " FROM `tl_jvh_db_collection`";

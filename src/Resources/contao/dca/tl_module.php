@@ -20,5 +20,15 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['jvh_db_puzzel_plaat_lijst'] = '{tit
 $GLOBALS['TL_DCA']['tl_module']['palettes']['jvh_db_puzzel_plaat_reader'] = '{title_legend},name,headline,type;{source_legend},imgSize,fullsize;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['jvh_db_puzzel_product_lijst'] = '{title_legend},name,headline,type;{template_legend:hide},customTpl;{source_legend},imgSize,fullsize;{redirect_legend:hide},jumpTo;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['jvh_db_puzzel_product_reader'] = '{title_legend},name,headline,type;{template_legend:hide},customTpl;{source_legend},imgSize,fullsize;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID';
-$GLOBALS['TL_DCA']['tl_module']['palettes']['jvh_db_mijn_collectie_lijst'] = '{title_legend},name,headline,type;{source_legend},imgSize,fullsize;{redirect_legend:hide},jumpTo;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['jvh_db_mijn_collectie_lijst'] = '{title_legend},name,headline,type;{source_legend},imgSize,fullsize;{redirect_legend:hide},jumpTo;jvh_db_edit_jumpTo;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['jvh_db_mijn_collectie_reader'] = '{title_legend},name,headline,type;{source_legend},imgSize,fullsize;{redirect_legend:hide},jumpTo;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['jvh_db_isotope_product_actions'] = '{title_legend},name,headline,type;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID';
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['jvh_db_edit_jumpTo'] = [
+  'exclude'                 => true,
+  'inputType'               => 'pageTree',
+  'foreignKey'              => 'tl_page.title',
+  'eval'                    => array('fieldType'=>'radio'),
+  'sql'                     => "int(10) unsigned NOT NULL default 0",
+  'relation'                => array('type'=>'hasOne', 'load'=>'lazy')
+];

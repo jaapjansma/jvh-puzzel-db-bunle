@@ -1,0 +1,29 @@
+<?php if ($this->wishlist_exists): ?>
+<div class="wishlist-item">
+    <img src="/	files/layout/svg/collectie/op-wensenlijst-marker.svg" title="{{ifnlng::nl}}On your Wishlist{{ifnlng}}{{iflng::nl}}Op je Wishlist{{iflng}}">
+</div>
+<?php endif; ?>
+
+<?php if ($this->collection_exists): ?>
+<div class="collection-counter">
+    <span class="count"><?= $this->collection_exists; ?></span>
+    <img src="/files/layout/svg/collectie/in-collectie-marker.svg" title="{{ifnlng::nl}}Number in your collection{{ifnlng}}{{iflng::nl}}Aantal in je collectie{{iflng}}">
+</div>
+<?php endif; ?>
+
+<div class="add-to-collection <?php if ($this->collection_exists): ?>disabled<?php endif; ?>">
+    <a href="<?= $this->collection_url; ?>">
+        <img src="/files/layout/svg/collectie/heb-ik.svg" title="{{ifnlng::nl}}I have this one, add to your collection{{ifnlng}}{{iflng::nl}}Deze heb ik, toevoegen aan je collectie{{iflng}}">
+    </a>
+</div>
+<div class="add-to-wishlist <?php if ($this->wishlist_exists): ?>disabled<?php endif; ?>">
+    <?php if ($this->wishlist_exists): ?>
+        <a href="<?= $this->wishlist_url; ?>">
+            <img src="/files/layout/svg/collectie/wil-ik-hebben-active.svg" title="{{ifnlng::nl}}Already added to your collection{{ifnlng}}{{iflng::nl}}Al toegevoegd aan je collectie{{iflng}}">
+        </a>
+    <?php else: ?>
+        <a href="<?= $this->wishlist_url; ?>">
+            <img src="/files/layout/svg/collectie/wil-ik-hebben.svg" title="{{ifnlng::nl}}I want this one{{ifnlng}}{{iflng::nl}}Deze wil ik hebben{{iflng}}">
+        </a>
+    <?php endif; ?>
+</div>

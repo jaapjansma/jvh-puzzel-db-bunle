@@ -25,3 +25,5 @@ $GLOBALS['TL_LANG']['FMD']['jvh_db_puzzel_product_lijst'] = 'JvH Puzzel Product 
 $GLOBALS['TL_LANG']['FMD']['jvh_db_puzzel_product_reader'] = 'JvH Puzzel Product Item';
 $GLOBALS['TL_LANG']['FMD']['jvh_db_mijn_collectie_lijst'] = 'JvH Mijn Collectie lijst';
 $GLOBALS['TL_LANG']['FMD']['jvh_db_mijn_collectie_reader'] = 'JvH Mijn Collectie Item';
+$GLOBALS['TL_LANG']['FMD']['jvh_db_isotope_product_actions'] = 'JvH Mijn Collectie Webshop Product Acties';
+$GLOBALS['TL_LANG']['tl_module']['jvh_db_edit_jumpTo'] = ['Link naar bewerk pagina', ''];
