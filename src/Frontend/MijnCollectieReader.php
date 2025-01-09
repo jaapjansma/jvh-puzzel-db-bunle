@@ -251,6 +251,7 @@ class MijnCollectieReader extends AbstractModule
         $auto_item = null;
       }
       $currentUrl = $objPage->getFrontendUrl($auto_item);
+      $currentUrl .= '?id='.$id;
     }
 
     /** @var Connection $connections */
@@ -264,7 +265,7 @@ class MijnCollectieReader extends AbstractModule
         $row['status'] = $GLOBALS['TL_LANG']['tl_jvh_db_collection_status_log']['collection_status'][0];
       }
       $row['tstamp'] = date('d-m-Y', $row['tstamp']);
-      $row['delete_status_url'] = $currentUrl . '?delete_status_log=' . $row['id'];
+      $row['delete_status_url'] = $currentUrl . '&delete_status_log=' . $row['id'];
       $return[] = $row;
     }
     return $return;

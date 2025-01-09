@@ -96,7 +96,6 @@ abstract class AbstractModule extends \Contao\Module {
     $objStatus->delete();
     if ($redirect) {
       $url = $this->generateCurrentUrl();
-      $url .= '#product-'.$product_id;
       $this->redirect($url);
     }
   }
