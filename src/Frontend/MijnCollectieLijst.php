@@ -28,6 +28,7 @@ use Contao\StringUtil;
 use Contao\System;
 use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
+use Isotope\Model\Product;
 use JvH\JvHPuzzelDbBundle\Model\CollectionModel;
 use JvH\JvHPuzzelDbBundle\Model\DoosModel;
 use JvH\JvHPuzzelDbBundle\Model\PuzzelProductModel;
@@ -122,6 +123,19 @@ class MijnCollectieLijst extends AbstractModule
     }
 
     $arrResult = $this->getProducts();
+
+    $arrProductIds = [];
+    foreach ($arrResult as $item) {
+      if (!empty($item['product_id'])) {
+        $arrProductIds[] = $item['product_id'];
+      }
+    }
+    $prefetchedProducts = Product::findAvailableByIds($arrProductIds);
+    $arrProducts = [];
+    foreach($prefetchedProducts->getModels() as $objProductModel) {
+      $arrProducts[$objProductModel->id] = $objProductModel;
+    }
+
     $ids = [];
     foreach($arrResult as $index => $item) {
       $ids[] = $item['id'];
@@ -158,7 +172,10 @@ class MijnCollectieLijst extends AbstractModule
       $arrResult[$index]['collection_links'] = '';
       $arrResult[$index]['delete_link'] = $objPage->getFrontendUrl() . '?delete=' . $item['id'];
       $arrResult[$index]['edit_link'] = $objEditTarget->getFrontendUrl() . '?id=' . $item['id'];
-      $arrResult[$index]['webshop_cart_url'] = $this->generateCartUrl($item['puzzel_product']);
+      $arrResult[$index]['webshop_cart_url'] = '';
+      if (isset($arrProducts[$item['product_id']])) {
+        $arrResult[$index]['webshop_cart_url'] = $this->generateCartUrl($item['puzzel_product']);
+      }
 
       $arrResult[$index]['figures'] = [];
       $orderSrc = '';
