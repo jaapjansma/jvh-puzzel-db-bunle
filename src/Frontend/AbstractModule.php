@@ -21,11 +21,13 @@ namespace JvH\JvHPuzzelDbBundle\Frontend;
 use Contao\FrontendTemplate;
 use Contao\FrontendUser;
 use Contao\PageModel;
+use Contao\System;
 use Isotope\Frontend;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Isotope;
 use Isotope\Model\Product;
 use Isotope\Model\Product\AbstractProduct;
+use JvH\JvHPuzzelDbBundle\Event\CollectionUpdatedEvent;
 use JvH\JvHPuzzelDbBundle\Model\CollectionModel;
 use JvH\JvHPuzzelDbBundle\Model\CollectionStatusLogModel;
 use JvH\JvHPuzzelDbBundle\Model\PuzzelProductModel;
@@ -65,6 +67,9 @@ abstract class AbstractModule extends \Contao\Module {
       $statusLog->status = 1;
       $statusLog->tstamp = time();
       $statusLog->save();
+
+      $event = new CollectionUpdatedEvent($collectionModel, 'added');
+      System::getContainer()->get('event_dispatcher')->dispatch($event, CollectionUpdatedEvent::EVENT);
     }
     if ($redirect) {
       $url = $this->generateCurrentUrl();

@@ -24,9 +24,13 @@ use Contao\DataContainer;
 use Contao\Image;
 use Contao\StringUtil;
 use Contao\System;
+use JvH\JvHPuzzelDbBundle\Event\LabelCallback;
+use JvH\JvHPuzzelDbBundle\Model\CollectionModel;
 use JvH\JvHPuzzelDbBundle\Model\PuzzelProductModel;
 
 class PuzzelProduct extends Backend {
+
+  private $collectionCount = array();
 
   /**
    * Return the "toggle visibility" button
@@ -123,7 +127,30 @@ class PuzzelProduct extends Backend {
     if (!empty($row['puzzel_formaat'])) {
       $labels[$stukjesKey] = PuzzelProductModel::getStukjes($row['puzzel_formaat']);
     }
+    $collectCountKey = array_search('collection_count', $fields, true);
+    $collectWishlistKey = array_search('wishlist_count', $fields, true);
+    if (!empty($row['id'])) {
+      $labels[$collectCountKey] = $this->getCollectionCountForProduct($row['id'], CollectionModel::COLLECTION);
+      $labels[$collectWishlistKey] = $this->getCollectionCountForProduct($row['id'], CollectionModel::WISHLIST);
+    }
+    $event = new LabelCallback($row, $label, $dc, $labels );
+    System::getContainer()->get('event_dispatcher')->dispatch($event, LabelCallback::EVENT_NAME);
+    $labels = $event->labels;
     return $labels;
+  }
+
+  protected function getCollectionCountForProduct(int $productId, int $collection): int {
+    if (empty($this->collectionCount)) {
+      $sql = "SELECT COUNT(DISTINCT `member`) as `count`, `puzzel_product`, `collection` FROM `tl_jvh_db_collection` GROUP BY `puzzel_product`, `collection`";
+      $results = $this->Database->prepare($sql)->execute();
+      foreach ($results->fetchAllAssoc() as $row) {
+        $this->collectionCount[$row['collection']][$row['puzzel_product']] = $row['count'];
+      }
+    }
+    if (isset($this->collectionCount[$collection][$productId])) {
+      return $this->collectionCount[$collection][$productId];
+    }
+    return 0;
   }
 
 }

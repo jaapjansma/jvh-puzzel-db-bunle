@@ -135,8 +135,12 @@ class MijnCollectieReader extends AbstractModule
     $item['doos'] = DoosModel::getLabel($item['doos']);
     $item['uitgever'] = UitgeverModel::getNaam($item['uitgever']);
     $item['release_date'] = Date::parse($objPage->dateFormat, $item['release_date']);
-    $item['stukjes'] = PuzzelProductModel::getStukjes($item['puzzel_formaat']);
-    $item['tekenaar'] = PuzzelProductModel::getTekenaars($item['puzzel_formaat']);
+    $item['stukjes'] = '';
+    $item['tekenaar'] = '';
+    if (!empty($item['puzzel_formaat'])) {
+      $item['stukjes'] = PuzzelProductModel::getStukjes($item['puzzel_formaat']);
+      $item['tekenaar'] = PuzzelProductModel::getTekenaars($item['puzzel_formaat']);
+    }
     $item['status_id'] = $item['status'];
     $item['status'] = $GLOBALS['TL_LANG']['tl_jvh_db_collection_status_log']['collection_status'][0];
     if (isset($GLOBALS['TL_LANG']['tl_jvh_db_collection_status_log']['collection_status'][$item['status']])) {

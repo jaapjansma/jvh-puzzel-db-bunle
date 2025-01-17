@@ -38,15 +38,15 @@ $GLOBALS['TL_DCA']['tl_jvh_db_puzzel_product'] = array
   (
     'sorting' => array
     (
-      'mode'                    => 1,
-      'fields'                  => array('ean', 'naam_nl', 'naam_en'),
+      'mode'                    => 2,
+      'fields'                  => array('ean', 'product_number', 'naam_nl', 'naam_en'),
       'flag'                    => 11,
-      'panelLayout'             => 'search,limit,filter',
+      'panelLayout'             => 'filter;search,sort,limit',
     ),
     'label' => array
     (
       'showColumns'             => true,
-      'fields'                  => array('product_number', 'naam_nl', 'naam_en', 'serie', 'doos', 'uitgever', 'stukjes'),
+      'fields'                  => array('product_number', 'naam_nl', 'naam_en', 'serie', 'doos', 'uitgever', 'stukjes', 'collection_count', 'wishlist_count'),
       'label_callback'         => array(\JvH\JvHPuzzelDbBundle\DCA\PuzzelProduct::class, 'labelCallback'),
     ),
     'global_operations' => array
@@ -238,6 +238,16 @@ $GLOBALS['TL_DCA']['tl_jvh_db_puzzel_product'] = array
       'default'                 => '0',
     ),
     'stukjes' => array
+    (
+      'inputType'               => 'text',
+      'default'                 => '0',
+    ),
+    'collection_count' => array
+    (
+      'inputType'               => 'text',
+      'default'                 => '0',
+    ),
+    'wishlist_count' => array
     (
       'inputType'               => 'text',
       'default'                 => '0',

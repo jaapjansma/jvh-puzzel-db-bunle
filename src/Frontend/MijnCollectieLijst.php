@@ -29,6 +29,7 @@ use Contao\System;
 use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
 use Isotope\Model\Product;
+use JvH\JvHPuzzelDbBundle\Event\CollectionUpdatedEvent;
 use JvH\JvHPuzzelDbBundle\Model\CollectionModel;
 use JvH\JvHPuzzelDbBundle\Model\DoosModel;
 use JvH\JvHPuzzelDbBundle\Model\PuzzelProductModel;
@@ -75,8 +76,7 @@ class MijnCollectieLijst extends AbstractModule
     System::loadLanguageFile('tl_jvh_db_puzzel_plaat');
     System::loadLanguageFile('tl_jvh_db_collection');
     System::loadLanguageFile('tl_jvh_db_collection_status_log');
-    if (\is_array(Input::get('keywords')))
-    {
+    if (\is_array(Input::get('keywords'))) {
       throw new BadRequestHttpException('Expected string, got array');
     }
     $this->Template->uniqueId = $this->id;
@@ -94,10 +94,15 @@ class MijnCollectieLijst extends AbstractModule
       if (is_array($ids) && count($ids)) {
         $action_type = Input::post('action_type');
         if ($action_type == 'delete') {
+          $collections = CollectionModel::findMultipleByIds($ids);
           $strQuery = "DELETE FROM `tl_jvh_db_collection_status_log` WHERE `pid` IN (" . implode(",", $ids) . ")";
           Database::getInstance()->prepare($strQuery)->execute();
           $strQuery = "DELETE FROM `tl_jvh_db_collection` WHERE `id` IN (" . implode(",", $ids) . ")";
           Database::getInstance()->prepare($strQuery)->execute();
+          foreach ($collections as $collectionModel) {
+            $event = new CollectionUpdatedEvent($collectionModel, 'deleted');
+            System::getContainer()->get('event_dispatcher')->dispatch($event, CollectionUpdatedEvent::EVENT);
+          }
         } elseif ($action_type == 'addToCart') {
           foreach ($ids as $id) {
             $collectionItem = CollectionModel::findByPk($id);
@@ -108,7 +113,7 @@ class MijnCollectieLijst extends AbstractModule
 
       $url = $objPage->getFrontendUrl();
       $queryParams = [];
-      foreach($_GET as $key => $value) {
+      foreach ($_GET as $key => $value) {
         if (in_array($key, ['collection_item', 'auto_item'])) {
           continue;
         }
@@ -132,8 +137,10 @@ class MijnCollectieLijst extends AbstractModule
     }
     $prefetchedProducts = Product::findAvailableByIds($arrProductIds);
     $arrProducts = [];
-    foreach($prefetchedProducts->getModels() as $objProductModel) {
-      $arrProducts[$objProductModel->id] = $objProductModel;
+    if ($prefetchedProducts) {
+      foreach ($prefetchedProducts->getModels() as $objProductModel) {
+        $arrProducts[$objProductModel->id] = $objProductModel;
+      }
     }
 
     $ids = [];

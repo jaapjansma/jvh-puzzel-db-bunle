@@ -40,6 +40,7 @@ class CollectionModel extends Model {
     /** @var Model\Collection $items */
     $items = CollectionModel::findBy(['puzzel_product=?', 'member=?', 'collection=?'], [$product_id, $member_id, CollectionModel::WISHLIST]);
     foreach($items as $item) {
+      /** @var $item CollectionModel */
       $item->delete();
     }
   }
