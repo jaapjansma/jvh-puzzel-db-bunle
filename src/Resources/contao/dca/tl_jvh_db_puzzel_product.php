@@ -23,7 +23,7 @@ $GLOBALS['TL_DCA']['tl_jvh_db_puzzel_product'] = array
   // Config
   'config' => array
   (
-    'dataContainer'               => 'Table',
+    'dataContainer'               => \JvH\JvHPuzzelDbBundle\Driver\DC_Withexport::class,
     'sql' => array
     (
       'keys' => array
@@ -80,6 +80,13 @@ $GLOBALS['TL_DCA']['tl_jvh_db_puzzel_product'] = array
         'attributes'          => 'onclick="Backend.getScrollOffset()" accesskey="t"',
         'icon'                => 'featured.svg',
         'href'                => 'table=tl_jvh_db_stukjes',
+      ),
+      'export' => array
+      (
+        'href'                => 'act=export',
+        'class'               => 'header_export',
+        'attributes'          => 'onclick="Backend.getScrollOffset()"',
+        'icon'                => 'tablewizard.svg',
       ),
       'all' => array
       (
